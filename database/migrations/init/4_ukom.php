@@ -107,7 +107,7 @@ return new class extends Migration
                 $table->string('jenjang_code')->nullable();
                 $table->string('tujuan_jenjang_code');
                 $table->unsignedBigInteger('instansi_id')->nullable();
-                $table->string('unit_kerja_id')->nullable();
+                $table->unsignedBigInteger('unit_kerja_id')->nullable();
                 $table->json('detail')->nullable();
                 $table->string('pendaftaran_code')->default(Str::uuid());
 
