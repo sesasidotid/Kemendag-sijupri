@@ -14,7 +14,107 @@ class SystemConfiturationSeeder extends Seeder
         $sysconf->code = 'rumus_ukom';
         $sysconf->name = 'Parameter Rumus Ukom';
         $sysconf->property = ((object) $this->rumus_ukom());
+        $sysconf->type = 'static';
+        $sysconf->validation = '/^(?:[-+*\/<>()]\s*\d+(?:\.\d+)?(?:\s*\(?\s*|\s*\)?)\s*(?:\s|$)|(?:[-+*\/<>()]\s*\(\s*\d+(?:\.\d+)?(?:\s*|\s*\)?\s*)))+$/';
         $sysconf->save();
+
+        $sysconf = new SystemConfiguration();
+        $sysconf->code = 'review_akp';
+        $sysconf->name = 'Parameter Review AKP';
+        $sysconf->property = ((object) $this->review_akp());
+        $sysconf->type = 'static';
+        $sysconf->validation = '/^(true|false)$/';
+        $sysconf->save();
+
+        $sysconf = new SystemConfiguration();
+        $sysconf->code = 'file_persyaratan_ukom';
+        $sysconf->name = 'Parameter Dokumen Ukom';
+        $sysconf->property = ((object) $this->file_persyaratan_ukom());
+        $sysconf->type = 'dynamic';
+        $sysconf->validation = '/^(?!^[0-9])[a-zA-Z0-9\s]*$/';
+        $sysconf->save();
+
+        $sysconf = new SystemConfiguration();
+        $sysconf->code = 'file_persyaratan_formasi';
+        $sysconf->name = 'Parameter Data Dukung Formasi';
+        $sysconf->property = ((object) $this->file_persyaratan_formasi());
+        $sysconf->type = 'dynamic';
+        $sysconf->validation = '/^(?!^[0-9])[a-zA-Z0-9\s]*$/';
+        $sysconf->save();
+    }
+
+    private function review_akp()
+    {
+        return (object) [
+            "rekan" => (object) [
+                "value" => "false",
+                "input_type" => "checkbox"
+            ]
+        ];
+    }
+
+    private function file_persyaratan_formasi()
+    {
+        return (object) [
+            "pendaftaran" => (object) [
+                "values" => [
+                    "Dokumen ABK",
+                    "Dokumen ABB",
+                    "Dokumen ABTO",
+                    "Dokumen Alibaba"
+                ],
+                "input_type" => "text"
+            ]
+        ];
+    }
+
+    private function file_persyaratan_ukom()
+    {
+        return (object) [
+            "external" => (object) [
+                "promosi" => (object) [
+                    "values" => [
+                        "Dokumen Perserahan",
+                        "Dokumen Mana Tahu",
+                        "Dokumen Tertentu"
+                    ],
+                    "input_type" => "text"
+                ],
+                "perpindahan" => (object) [
+                    "values" => [
+                        "Dokumen Perserahan"
+                    ],
+                    "input_type" => "text"
+                ],
+                "kenaikan_jenjang" => (object) [
+                    "values" => [
+                        "Dokumen Mana Tahu",
+                        "Dokumen Tertentu"
+                    ],
+                    "input_type" => "text"
+                ]
+            ],
+            "internal" => (object) [
+                "promosi" => (object) [
+                    "values" => [
+                        "Dokumen Perserahan"
+                    ],
+                    "input_type" => "text"
+                ],
+                "perpindahan" => (object) [
+                    "values" => [
+                        "Dokumen Mana Tahu"
+                    ],
+                    "input_type" => "text"
+                ],
+                "kenaikan_jenjang" => (object) [
+                    "values" => [
+                        "Dokumen Tertentu"
+                    ],
+                    "input_type" => "text"
+                ]
+            ]
+        ];
     }
 
     private function rumus_ukom()
