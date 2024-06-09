@@ -37,31 +37,6 @@ return new class extends Migration
                 $table->foreign('unit_kerja_id')->references('id')->on('tbl_unit_kerja');
             });
 
-        if (!Schema::hasTable('tbl_formasi_score'))
-            Schema::create('tbl_formasi_score', function (Blueprint $table) {
-                $table->id();
-                $table->timestamps();
-                $table->string('created_by')->nullable();
-                $table->string('updated_by')->nullable();
-                $table->unsignedBigInteger('main_id')->nullable();
-                $table->unsignedBigInteger('parent_id')->nullable();
-                $table->text('unsur');
-                $table->float('volume')->nullable();
-                $table->float('score')->nullable();
-                $table->string('lvl')->nullable();
-                $table->boolean('delete_flag')->default(false);
-                $table->boolean('inactive_flag')->default(false);
-                $table->string('task_status')->nullable();
-                $table->string('comment')->nullable();
-                $table->unsignedBigInteger('formasi_id')->nullable();
-                $table->string('jenjang_code')->nullable();
-                $table->unsignedBigInteger('formasi_unsur_id')->nullable();
-
-                $table->foreign('formasi_id')->references('id')->on('tbl_formasi');
-                $table->foreign('jenjang_code')->references('code')->on('tbl_jenjang');
-                $table->foreign('formasi_unsur_id')->references('id')->on('tbl_formasi_unsur');
-            });
-
 
         if (!Schema::hasTable('tbl_formasi'))
             Schema::create('tbl_formasi', function (Blueprint $table) {
@@ -87,6 +62,31 @@ return new class extends Migration
                 $table->foreign('formasi_dokumen_id')->references('id')->on('tbl_formasi_dokumen');
                 $table->foreign('jabatan_code')->references('code')->on('tbl_jabatan');
                 $table->foreign('unit_kerja_id')->references('id')->on('tbl_unit_kerja');
+            });
+
+        if (!Schema::hasTable('tbl_formasi_score'))
+            Schema::create('tbl_formasi_score', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+                $table->string('created_by')->nullable();
+                $table->string('updated_by')->nullable();
+                $table->unsignedBigInteger('main_id')->nullable();
+                $table->unsignedBigInteger('parent_id')->nullable();
+                $table->text('unsur');
+                $table->float('volume')->nullable();
+                $table->float('score')->nullable();
+                $table->string('lvl')->nullable();
+                $table->boolean('delete_flag')->default(false);
+                $table->boolean('inactive_flag')->default(false);
+                $table->string('task_status')->nullable();
+                $table->string('comment')->nullable();
+                $table->unsignedBigInteger('formasi_id')->nullable();
+                $table->string('jenjang_code')->nullable();
+                $table->unsignedBigInteger('formasi_unsur_id')->nullable();
+
+                $table->foreign('formasi_id')->references('id')->on('tbl_formasi');
+                $table->foreign('jenjang_code')->references('code')->on('tbl_jenjang');
+                $table->foreign('formasi_unsur_id')->references('id')->on('tbl_formasi_unsur');
             });
 
         if (!Schema::hasTable('tbl_formasi_result'))
