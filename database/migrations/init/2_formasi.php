@@ -37,27 +37,6 @@ return new class extends Migration
                 $table->foreign('unit_kerja_id')->references('id')->on('tbl_unit_kerja');
             });
 
-        if (!Schema::hasTable('tbl_formasi_result'))
-            Schema::create('tbl_formasi_result', function (Blueprint $table) {
-                $table->id();
-                $table->timestamps();
-                $table->string('created_by')->nullable();
-                $table->string('updated_by')->nullable();
-                $table->decimal('total', 10, 2);
-                $table->decimal('sdm', 10, 2);
-                $table->integer('pembulatan');
-                $table->integer('result')->nullable();
-                $table->string('jenjang_code');
-                $table->boolean('delete_flag')->default(false);
-                $table->boolean('inactive_flag')->default(false);
-                $table->string('task_status')->nullable();
-                $table->string('comment')->nullable();
-                $table->unsignedBigInteger('formasi_id');
-
-                $table->foreign('jenjang_code')->references('code')->on('tbl_jenjang');
-                $table->foreign('formasi_id')->references('id')->on('tbl_formasi');
-            });
-
         if (!Schema::hasTable('tbl_formasi_score'))
             Schema::create('tbl_formasi_score', function (Blueprint $table) {
                 $table->id();
@@ -108,6 +87,27 @@ return new class extends Migration
                 $table->foreign('formasi_dokumen_id')->references('id')->on('tbl_formasi_dokumen');
                 $table->foreign('jabatan_code')->references('code')->on('tbl_jabatan');
                 $table->foreign('unit_kerja_id')->references('id')->on('tbl_unit_kerja');
+            });
+
+        if (!Schema::hasTable('tbl_formasi_result'))
+            Schema::create('tbl_formasi_result', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+                $table->string('created_by')->nullable();
+                $table->string('updated_by')->nullable();
+                $table->decimal('total', 10, 2);
+                $table->decimal('sdm', 10, 2);
+                $table->integer('pembulatan');
+                $table->integer('result')->nullable();
+                $table->string('jenjang_code');
+                $table->boolean('delete_flag')->default(false);
+                $table->boolean('inactive_flag')->default(false);
+                $table->string('task_status')->nullable();
+                $table->string('comment')->nullable();
+                $table->unsignedBigInteger('formasi_id');
+
+                $table->foreign('jenjang_code')->references('code')->on('tbl_jenjang');
+                $table->foreign('formasi_id')->references('id')->on('tbl_formasi');
             });
     }
 
