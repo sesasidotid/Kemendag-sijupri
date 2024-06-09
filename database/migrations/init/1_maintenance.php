@@ -16,7 +16,7 @@ return new class extends Migration
                 $table->string('type'); // replace, dynamic
                 $table->json('property');
                 $table->string('validation');
-                $table->string('validation_type');
+                $table->string('validation_type')->nullable();
             });
 
         if (!Schema::hasTable('tbl_storage'))

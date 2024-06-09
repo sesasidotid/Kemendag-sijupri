@@ -16,6 +16,7 @@ class SystemConfiturationSeeder extends Seeder
         $sysconf->property = ((object) $this->rumus_ukom());
         $sysconf->type = 'static';
         $sysconf->validation = "/^(?:[-+*\/<>()]\s*\d+(?:\.\d+)?(?:\s*\(?\s*|\s*\)?)\s*(?:\s|$)|(?:[-+*\/<>()]\s*\(\s*\d+(?:\.\d+)?(?:\s*|\s*\)?\s*)))+$/";
+        $sysconf->validation_type = 'math';
         $sysconf->save();
 
         $sysconf = new SystemConfiguration();
@@ -24,6 +25,7 @@ class SystemConfiturationSeeder extends Seeder
         $sysconf->property = ((object) $this->review_akp());
         $sysconf->type = 'static';
         $sysconf->validation = "/^(true|false)$/";
+        $sysconf->validation_type = null;
         $sysconf->save();
 
         $sysconf = new SystemConfiguration();
@@ -32,6 +34,7 @@ class SystemConfiturationSeeder extends Seeder
         $sysconf->property = ((object) $this->file_persyaratan_ukom());
         $sysconf->type = 'dynamic';
         $sysconf->validation = "/^(?!^[0-9])[a-zA-Z0-9\s]*$/";
+        $sysconf->validation_type = null;
         $sysconf->save();
 
         $sysconf = new SystemConfiguration();
@@ -40,6 +43,7 @@ class SystemConfiturationSeeder extends Seeder
         $sysconf->property = ((object) $this->file_persyaratan_formasi());
         $sysconf->type = 'dynamic';
         $sysconf->validation = "/^(?!^[0-9])[a-zA-Z0-9\s]*$/";
+        $sysconf->validation_type = null;
         $sysconf->save();
     }
 
