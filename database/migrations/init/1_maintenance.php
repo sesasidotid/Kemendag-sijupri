@@ -142,6 +142,27 @@ return new class extends Migration
                 $table->string('comment')->nullable();
             });
 
+        if (!Schema::hasTable('tbl_kab_kota'))
+            Schema::create('tbl_kab_kota', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+                $table->string('created_by')->nullable();
+                $table->string('updated_by')->nullable();
+                $table->string('type');
+                $table->string('name');
+                $table->string('description');
+                $table->boolean('delete_flag')->default(false);
+                $table->boolean('inactive_flag')->default(false);
+                $table->string('task_status')->nullable();
+                $table->string('comment')->nullable();
+                $table->double('latitude')->nullable();
+                $table->double('longitude')->nullable();
+
+                $table->unsignedBigInteger('provinsi_id');
+
+                $table->foreign('provinsi_id')->references('id')->on('tbl_provinsi');
+            });
+
         if (!Schema::hasTable('tbl_instansi'))
             Schema::create('tbl_instansi', function (Blueprint $table) {
                 $table->id();
@@ -163,27 +184,6 @@ return new class extends Migration
                 $table->foreign('kabupaten_id')->references('id')->on('tbl_kab_kota');
                 $table->foreign('kota_id')->references('id')->on('tbl_kab_kota');
                 $table->foreign('tipe_instansi_code')->references('code')->on('tbl_tipe_instansi');
-            });
-
-        if (!Schema::hasTable('tbl_kab_kota'))
-            Schema::create('tbl_kab_kota', function (Blueprint $table) {
-                $table->id();
-                $table->timestamps();
-                $table->string('created_by')->nullable();
-                $table->string('updated_by')->nullable();
-                $table->string('type');
-                $table->string('name');
-                $table->string('description');
-                $table->boolean('delete_flag')->default(false);
-                $table->boolean('inactive_flag')->default(false);
-                $table->string('task_status')->nullable();
-                $table->string('comment')->nullable();
-                $table->double('latitude')->nullable();
-                $table->double('longitude')->nullable();
-
-                $table->unsignedBigInteger('provinsi_id');
-
-                $table->foreign('provinsi_id')->references('id')->on('tbl_provinsi');
             });
 
         if (!Schema::hasTable('tbl_unit_kerja'))
