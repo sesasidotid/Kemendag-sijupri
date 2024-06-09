@@ -15,7 +15,7 @@ class SystemConfiturationSeeder extends Seeder
         $sysconf->name = 'Parameter Rumus Ukom';
         $sysconf->property = ((object) $this->rumus_ukom());
         $sysconf->type = 'static';
-        $sysconf->validation = '/^(?:[-+*\/<>()]\s*\d+(?:\.\d+)?(?:\s*\(?\s*|\s*\)?)\s*(?:\s|$)|(?:[-+*\/<>()]\s*\(\s*\d+(?:\.\d+)?(?:\s*|\s*\)?\s*)))+$/';
+        $sysconf->validation = "/^(?:[-+*\/<>()]\s*\d+(?:\.\d+)?(?:\s*\(?\s*|\s*\)?)\s*(?:\s|$)|(?:[-+*\/<>()]\s*\(\s*\d+(?:\.\d+)?(?:\s*|\s*\)?\s*)))+$/";
         $sysconf->save();
 
         $sysconf = new SystemConfiguration();
@@ -23,7 +23,7 @@ class SystemConfiturationSeeder extends Seeder
         $sysconf->name = 'Parameter Review AKP';
         $sysconf->property = ((object) $this->review_akp());
         $sysconf->type = 'static';
-        $sysconf->validation = '/^(true|false)$/';
+        $sysconf->validation = "/^(true|false)$/";
         $sysconf->save();
 
         $sysconf = new SystemConfiguration();
@@ -31,7 +31,7 @@ class SystemConfiturationSeeder extends Seeder
         $sysconf->name = 'Parameter Dokumen Ukom';
         $sysconf->property = ((object) $this->file_persyaratan_ukom());
         $sysconf->type = 'dynamic';
-        $sysconf->validation = '/^(?!^[0-9])[a-zA-Z0-9\s]*$/';
+        $sysconf->validation = "/^(?!^[0-9])[a-zA-Z0-9\s]*$/";
         $sysconf->save();
 
         $sysconf = new SystemConfiguration();
@@ -39,7 +39,7 @@ class SystemConfiturationSeeder extends Seeder
         $sysconf->name = 'Parameter Data Dukung Formasi';
         $sysconf->property = ((object) $this->file_persyaratan_formasi());
         $sysconf->type = 'dynamic';
-        $sysconf->validation = '/^(?!^[0-9])[a-zA-Z0-9\s]*$/';
+        $sysconf->validation = "/^(?!^[0-9])[a-zA-Z0-9\s]*$/";
         $sysconf->save();
     }
 
