@@ -1,4 +1,4 @@
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (22,NULL,NULL,'system',NULL,'DAS_1','admin_formasi',NULL,0,0),
 	 (23,NULL,NULL,'system',NULL,'FOR_1','admin_formasi',NULL,0,0),
 	 (24,NULL,NULL,'system',NULL,'FOR_8','admin_formasi',NULL,0,0),
@@ -9,7 +9,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (29,NULL,NULL,'system',NULL,'MNT_4','admin_formasi',NULL,0,0),
 	 (30,NULL,NULL,'system',NULL,'MNT_5','admin_formasi',NULL,0,0),
 	 (31,NULL,NULL,'system',NULL,'MNT_6','admin_formasi',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (32,NULL,NULL,'system',NULL,'DAS_1','admin_ukom',NULL,0,0),
 	 (33,NULL,NULL,'system',NULL,'UKM_1','admin_ukom',NULL,0,0),
 	 (34,NULL,NULL,'system',NULL,'MNT_1','admin_ukom',NULL,0,0),
@@ -20,7 +20,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (39,NULL,NULL,'system',NULL,'MNT_6','admin_ukom',NULL,0,0),
 	 (40,NULL,NULL,'system',NULL,'UKM_1','admin_ukom',NULL,0,0),
 	 (44,NULL,NULL,'system',NULL,'DAS_1','admin_pak',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (45,NULL,NULL,'system',NULL,'PAK_1','admin_pak',NULL,0,0),
 	 (46,NULL,NULL,'system',NULL,'MNT_1','admin_pak',NULL,0,0),
 	 (47,NULL,NULL,'system',NULL,'MNT_2','admin_pak',NULL,0,0),
@@ -31,7 +31,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (63,NULL,NULL,'system',NULL,'DAS_1','pusbin',NULL,0,0),
 	 (64,NULL,NULL,'system',NULL,'USR_1','pusbin',NULL,0,0),
 	 (65,NULL,NULL,'system',NULL,'USR_2','pusbin',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (66,NULL,NULL,'system',NULL,'USR_3','pusbin',NULL,0,0),
 	 (67,NULL,NULL,'system',NULL,'MNT_1','pusbin',NULL,0,0),
 	 (68,NULL,NULL,'system',NULL,'MNT_2','pusbin',NULL,0,0),
@@ -42,7 +42,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (73,NULL,NULL,'system',NULL,'DAS_1','unit_pembina',NULL,0,0),
 	 (74,NULL,NULL,'system',NULL,'USR_1','unit_pembina',NULL,0,0),
 	 (75,NULL,NULL,'system',NULL,'USR_2','unit_pembina',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (76,NULL,NULL,'system',NULL,'USR_3','unit_pembina',NULL,0,0),
 	 (77,NULL,NULL,'system',NULL,'MNT_1','unit_pembina',NULL,0,0),
 	 (78,NULL,NULL,'system',NULL,'MNT_2','unit_pembina',NULL,0,0),
@@ -53,7 +53,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (83,NULL,NULL,'system',NULL,'DAS_1','bkpsdm_bkd',NULL,0,0),
 	 (84,NULL,NULL,'system',NULL,'USR_1','bkpsdm_bkd',NULL,0,0),
 	 (85,NULL,NULL,'system',NULL,'USR_2','bkpsdm_bkd',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (86,NULL,NULL,'system',NULL,'USR_3','bkpsdm_bkd',NULL,0,0),
 	 (87,NULL,NULL,'system',NULL,'MNT_1','bkpsdm_bkd',NULL,0,0),
 	 (88,NULL,NULL,'system',NULL,'MNT_2','bkpsdm_bkd',NULL,0,0),
@@ -64,7 +64,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (93,NULL,NULL,'system',NULL,'DAS_1','ses',NULL,0,0),
 	 (94,NULL,NULL,'system',NULL,'USR_1','ses',NULL,0,0),
 	 (95,NULL,NULL,'system',NULL,'USR_4','ses',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (96,NULL,NULL,'system',NULL,'FOR_1','ses',NULL,0,0),
 	 (103,NULL,NULL,'system',NULL,'FOR_9','ses',NULL,0,0),
 	 (109,NULL,NULL,'system',NULL,'DAS_1','unit_kerja',NULL,0,0),
@@ -75,7 +75,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (125,NULL,NULL,'system',NULL,'DAS_1','opd',NULL,0,0),
 	 (126,NULL,NULL,'system',NULL,'USR_1','opd',NULL,0,0),
 	 (127,NULL,NULL,'system',NULL,'USR_4','opd',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (128,NULL,NULL,'system',NULL,'FOR_1','opd',NULL,0,0),
 	 (135,NULL,NULL,'system',NULL,'FOR_9','opd',NULL,0,0),
 	 (141,NULL,NULL,'system',NULL,'DAS_1','user_external',NULL,0,0),
@@ -86,7 +86,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (147,NULL,NULL,'system',NULL,'FOR_10','user_external',NULL,0,0),
 	 (150,NULL,NULL,'system',NULL,'FOR_12','admin_formasi',NULL,0,0),
 	 (547,NULL,NULL,'111111111111111111',NULL,'DAS_1','admin_akp',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (548,NULL,NULL,'111111111111111111',NULL,'AKP_1','admin_akp',NULL,0,0),
 	 (549,NULL,NULL,'111111111111111111',NULL,'AKP_3','admin_akp',NULL,0,0),
 	 (550,NULL,NULL,'111111111111111111',NULL,'AKP_4','admin_akp',NULL,0,0),
@@ -97,7 +97,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (555,NULL,NULL,'111111111111111111',NULL,'MNT_4','admin_akp',NULL,0,0),
 	 (556,NULL,NULL,'111111111111111111',NULL,'MNT_5','admin_akp',NULL,0,0),
 	 (557,NULL,NULL,'111111111111111111',NULL,'MNT_6','admin_akp',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (558,NULL,NULL,'111111111111111111',NULL,'UKM_1','admin_akp',NULL,0,0),
 	 (561,NULL,NULL,'111111111111111111',NULL,'UKM_5','admin_akp',NULL,0,0),
 	 (562,NULL,NULL,'111111111111111111',NULL,'UKM_6','admin_akp',NULL,0,0),
@@ -108,7 +108,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (675,NULL,NULL,'system',NULL,'AKP_2','user_internal',NULL,0,0),
 	 (676,NULL,NULL,'system',NULL,'UKM_1','user_internal',NULL,0,0),
 	 (678,NULL,NULL,'system',NULL,'FOR_1','user_internal',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (679,NULL,NULL,'system',NULL,'FOR_10','user_internal',NULL,0,0),
 	 (685,NULL,NULL,'system',NULL,'UKM_10','user_external',NULL,0,0),
 	 (686,NULL,NULL,'system',NULL,'UKM_10','user_internal',NULL,0,0),
@@ -119,7 +119,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (692,NULL,NULL,'system',NULL,'FOR_13','unit_kerja',NULL,0,0),
 	 (693,NULL,NULL,'system',NULL,'FOR_14','unit_kerja',NULL,0,0),
 	 (694,NULL,NULL,'system',NULL,'FOR_13','opd',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (695,NULL,NULL,'system',NULL,'FOR_14','opd',NULL,0,0),
 	 (838,NULL,NULL,'111111111111111111',NULL,'DAS_1','super_admin',NULL,0,0),
 	 (839,NULL,NULL,'111111111111111111',NULL,'AKP_1','super_admin',NULL,0,0),
@@ -130,7 +130,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (844,NULL,NULL,'111111111111111111',NULL,'UKM_2','super_admin',NULL,0,0),
 	 (845,NULL,NULL,'111111111111111111',NULL,'UKM_5','super_admin',NULL,0,0),
 	 (846,NULL,NULL,'111111111111111111',NULL,'UKM_6','super_admin',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (847,NULL,NULL,'111111111111111111',NULL,'UKM_8','super_admin',NULL,0,0),
 	 (848,NULL,NULL,'111111111111111111',NULL,'FOR_1','super_admin',NULL,0,0),
 	 (849,NULL,NULL,'111111111111111111',NULL,'FOR_11','super_admin',NULL,0,0),
@@ -141,7 +141,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (854,NULL,NULL,'111111111111111111',NULL,'MNT_1','super_admin',NULL,0,0),
 	 (855,NULL,NULL,'111111111111111111',NULL,'MNT_10','super_admin',NULL,0,0),
 	 (856,NULL,NULL,'111111111111111111',NULL,'MNT_2','super_admin',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (857,NULL,NULL,'111111111111111111',NULL,'MNT_3','super_admin',NULL,0,0),
 	 (858,NULL,NULL,'111111111111111111',NULL,'MNT_4','super_admin',NULL,0,0),
 	 (859,NULL,NULL,'111111111111111111',NULL,'MNT_5','super_admin',NULL,0,0),
@@ -152,7 +152,7 @@ INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by
 	 (864,NULL,NULL,'111111111111111111',NULL,'PAK_1','super_admin',NULL,0,0),
 	 (865,NULL,NULL,'111111111111111111',NULL,'PAK_2','super_admin',NULL,0,0),
 	 (866,NULL,NULL,'111111111111111111',NULL,'AUD_1','super_admin',NULL,0,0);
-INSERT INTO test_2.tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
+INSERT INTO tbl_role_menu (id,created_at,updated_at,created_by,updated_by,menu_code,role_code,description,delete_flag,inactive_flag) VALUES
 	 (867,NULL,NULL,'111111111111111111',NULL,'AUD_2','super_admin',NULL,0,0),
 	 (868,NULL,NULL,'111111111111111111',NULL,'AUD_3','super_admin',NULL,0,0),
 	 (869,NULL,NULL,'111111111111111111',NULL,'SEC_1','super_admin',NULL,0,0),
