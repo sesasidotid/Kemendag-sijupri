@@ -13,14 +13,26 @@ class TestSeeder extends Seeder
 {
     public function run()
     {
-        User::create([
-            'nip' => '111111111111111111',
-            'created_at' => now(),
-            'created_by' => "system",
-            'password' => (Crypt::encrypt(Hash::make('111111111111111111'))),
-            'name' => "SUPER ADMIN",
-            'role_code' => 'super_admin',
-            'app_code' => 'PUSBIN',
+        // User::create([
+        //     'nip' => '111111111111111111',
+        //     'created_at' => now(),
+        //     'created_by' => "system",
+        //     'password' => Crypt::encrypt(Hash::make('111111111111111111')),
+        //     'name' => "SUPER ADMIN",
+        //     'role_code' => 'super_admin',
+        //     'app_code' => 'PUSBIN',
+        // ]);
+
+        DB::table('tbl_user')->insert([
+            [
+                'nip' => '111111111111111111',
+                'created_at' => now(),
+                'created_by' => "system",
+                'password' => Crypt::encrypt(Hash::make('111111111111111111')),
+                'name' => "SUPER ADMIN",
+                'role_code' => 'super_admin',
+                'app_code' => 'PUSBIN',
+            ]
         ]);
     }
 }
