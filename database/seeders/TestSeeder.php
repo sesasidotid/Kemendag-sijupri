@@ -21,6 +21,7 @@ class TestSeeder extends Seeder
                 'name' => "SUPER ADMIN",
                 'role_code' => 'super_admin',
                 'app_code' => 'PUSBIN',
+                'access_method' => (object) ["read" => true, "create" => true, "delete" => true, "update" => true]
             ]
         ]);
     }
