@@ -42,7 +42,7 @@
             <img height="60%" style="margin-left: 50% ; mar" src="{{ asset('images/binboot.jpg') }}">
         </div>
         <div class="login-content" style="width: 80%;">
-            <form action="{{ route('do_login') }}" method="POST">
+            <form action="" method="POST">
                 @csrf <!-- Tambahkan token CSRF -->
                 @if (Session::get('status') === 1)
                     <div class="alert alert-danger" style="font-size: 0.8rem" role="alert">
