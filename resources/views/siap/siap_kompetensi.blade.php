@@ -17,7 +17,7 @@
                     </label>
                     <select name="kategori" class="form-select mb-3" aria-label="KategoriKompetensi"
                         id="KategoriKompetensi">
-                        <option value="" selected>Pilih Kategori Pengembagan</option>
+                        <option value="" selected>Pilih Kategori Pengembangan</option>
                         <option value="Pelatihan Fungsional">Pelatihan Fungsional</option>
                         <option value="Pelatihan Teknis">Pelatihan Teknis</option>
                         <option value="Coaching/Mentoring">Coaching/Mentoring</option>

@@ -105,13 +105,12 @@ class UnitKerja extends Model
 
     public function statusRekomendasi()
     {
-        if ($this->formasi && count($this->formasi) > 0) {
-            if ($this->whereHas("formasi", function (Builder $query) {
-                $query->where("rekomendasi_flag", false);
-            })->first()) {
-                return false;
-            } else {
+        $formasiDokument = $this->formasiDokumen;
+        if ($formasiDokument) {
+            if ($formasiDokument->task_status === TaskStatus::APPROVE) {
                 return true;
+            } else {
+                return false;
             }
         } else return null;
     }

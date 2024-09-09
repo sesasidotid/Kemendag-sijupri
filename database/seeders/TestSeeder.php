@@ -25,11 +25,11 @@ class TestSeeder extends Seeder
 
         DB::table('tbl_user')->insert([
             [
-                'nip' => '111111111111111111',
+                'nip' => '197909142010121001',
                 'created_at' => now(),
                 'created_by' => "system",
-                'password' => Crypt::encrypt(Hash::make('111111111111111111')),
-                'name' => "SUPER ADMIN",
+                'password' => Crypt::encrypt(Hash::make('197909142010121001')),
+                'name' => "Amir Syarifuddin",
                 'role_code' => 'super_admin',
                 'app_code' => 'PUSBIN',
             ]

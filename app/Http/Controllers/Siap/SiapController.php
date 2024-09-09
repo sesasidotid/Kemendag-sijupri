@@ -138,7 +138,7 @@ class SiapController extends Controller
             ));
         } else if ($userContext->role->base == RoleCode::ADMIN_INSTANSI) {
             $data['attr']['role'] = ["base" => RoleCode::PENGATUR_SIAP];
-            $data['attr']['tipe_instansi_code'] = $userContext->tipe_instansi_code;
+            $data['attr']['instansi_id'] = $userContext->instansi_id;
             $data['attr']['delete_flag'] = false;
             $data['cond']['delete_flag'] = '=';
             $userList = $user->findSearchPaginate($data);

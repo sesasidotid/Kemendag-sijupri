@@ -47,7 +47,7 @@
                         <select wire:model="request.level"
                             class="form-select mb-3 @error('request.level') is-invalid @enderror"
                             aria-label="Pendidikan" id="Pendidikan">
-                            <option disabled selected>Pilih Kategori Pengembagan</option>
+                            <option disabled selected>Pilih Kategori Pengembangan</option>
                            <option value="">Pelatihan Fungsional</option>
                            <option value="">Pelatihan Teknis</option>
 

@@ -512,27 +512,19 @@ class FormasiController extends Controller
             $unitKerja->file_rekomendasi_formasi = $rekomendasiFormasi["bucket_file_name"];
             $unitKerja->customUpdate();
 
-            // if (isset($request->formasi)) {
-            //     foreach ($request->formasi as $key => $formasi_id) {
-            //         $formasi = $formasi->findById($formasi_id);
-            //         $formasi->rekomendasi_flag = true;
-            //         $formasi->customUpdate();
+            AuditTimeline::create([
+                'association' => 'tbl_formasi_dokumen',
+                'association_key' => $formasiDokumen->id,
+                'description' => 'penerbitan surat rekomendasi'
+            ]);
 
-            //         AuditTimeline::create([
-            //             'association' => 'tbl_formasi',
-            //             'association_key' => $formasi->id,
-            //             'description' => 'penerbitan surat rekomendasi'
-            //         ]);
-
-            //         MaintenanceStorage::create([
-            //             'association' => 'tbl_unit_kerja',
-            //             'association_key' => $unitKerja->id,
-            //             'file' => $rekomendasiFormasi["bucket_file_name"],
-            //             'task_status' => TaskStatus::APPROVE,
-            //             'name' => 'Rekomendasi Formasi'
-            //         ]);
-            //     }
-            // }
+            MaintenanceStorage::create([
+                'association' => 'tbl_unit_kerja',
+                'association_key' => $unitKerja->id,
+                'file' => $rekomendasiFormasi["bucket_file_name"],
+                'task_status' => TaskStatus::APPROVE,
+                'name' => 'Rekomendasi Formasi'
+            ]);
 
             $storage = new LocalStorageService();
             $storage->putObject('formasi', $rekomendasiFormasi["file_name"], $file);
@@ -663,6 +655,7 @@ class FormasiController extends Controller
             $formasiDokumen->created_by = $userContext->nip ?? null;
             $formasiDokumen->unit_kerja_id = $unitKerja->id;
             $formasiDokumen->inactive_flag = false;
+            $formasiDokumen->task_status = TaskStatus::PENDING;
             $formasiDokumen->save();
 
             $storageService = new StorageService();

@@ -164,7 +164,7 @@
                     <div class="col-3">Tempat, Tanggal Lahir</div>
                     <div class="col">
                         {{ $user->userDetail->tempat_lahir ?? '-' }},
-                        {{ $user->userDetail->tanggal_lahir ?? '-' }}
+                        {{ substr($user->userDetail->tanggal_lahir ?? '-', 0, 10) }}
                     </div>
                 </div>
                 <div class="row text-dark">

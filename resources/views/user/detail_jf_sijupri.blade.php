@@ -70,7 +70,7 @@
                                 <div class="col-3">Tempat, Tanggal Lahir</div>
                                 <div class="col">
                                     {{ $userDetail->tempat_lahir ?? '-' }},
-                                    {{ $userDetail->tanggal_lahir ?? '-' }}
+                                    {{ substr($userDetail->tanggal_lahir ?? '-', 0, 10) }}
                                 </div>
                             </div>
                             <div class="row text-dark">

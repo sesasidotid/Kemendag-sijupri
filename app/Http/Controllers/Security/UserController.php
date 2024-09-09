@@ -38,7 +38,7 @@ class UserController extends Controller
                 $userList = $user->findSearchPaginate($data);
                 return view('user.index_jf_sijupri', compact('userList'));
             case RoleCode::ADMIN_INSTANSI:
-                $data['tipe_instansi_code'] = $userContext->tipe_instansi_code;
+                $data['attr']['instansi_id'] = $userContext->instansi_id;
                 $userList = $user->findSearchPaginate($data);
                 return view('instansi.user.index', compact(
                     'userList'
@@ -86,7 +86,16 @@ class UserController extends Controller
                 $userPakList = $user->userPak;
                 $userKompetensiList = $user->userKompetensi;
                 $userSertifikasiList = $user->userSertifikasi;
-                return;
+                return view('user.detail_jf_sijupri', compact(
+                    'user',
+                    'userDetail',
+                    'userPendidikanList',
+                    'userJabatanList',
+                    'userPangkatList',
+                    'userPakList',
+                    'userKompetensiList',
+                    'userSertifikasiList',
+                ));
             case RoleCode::PENGATUR_SIAP:
                 $userDetail = new UserDetailService();
                 $userPendidikan = new UserPendidikanService();
