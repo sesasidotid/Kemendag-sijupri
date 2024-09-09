@@ -20,6 +20,14 @@ class KabKotaService extends KabKota
             ->where('delete_flag', false)->get();
     }
 
+    public function findByTypeAndProvinsiId($type, $provinsi_id)
+    {
+        return $this->where('type', strtoupper($type))
+            ->where('provinsi_id', $provinsi_id)
+            ->where('delete_flag', false)
+            ->get();
+    }
+
     public function findById($id)
     {
         return $this->where('id', $id)

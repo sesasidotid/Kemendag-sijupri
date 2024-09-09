@@ -42,6 +42,7 @@ class PakUpdate extends Component
             "request.nilai_perilaku" => 'required',
             "request.predikat" => 'required',
             "request.file_doc_ak" => 'required|mimes:pdf|max:2048',
+            "request.file_dok_konversi" => 'mimes:pdf|max:2048',
             "request.file_hasil_eval" => 'required|mimes:pdf|max:2048',
             "request.file_akumulasi_ak" => 'required|mimes:pdf|max:2048',
 

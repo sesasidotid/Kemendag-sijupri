@@ -413,6 +413,7 @@ class SiapController extends Controller
             "nilai_kinerja" => 'required',
             "nilai_perilaku" => 'required',
             "predikat" => 'required',
+            "file_dok_konversi" => 'mimes:pdf|max:2048',
         ];
         if (!isset($request->id)) {
             $validation['file_doc_ak'] = 'required|mimes:pdf|max:2048';

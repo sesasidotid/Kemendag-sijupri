@@ -22,8 +22,14 @@ class AdminInstansi extends Component
     public $data = [];
     public $request = [
         'provinsi_id' => null,
+        'kabupaten_id' => null,
         'tipe_instansi_code' => null,
     ];
+
+    public $provinsiList = [];
+    public $kabupatenList = [];
+    public $kotaList = [];
+    public $instansiList = [];
 
     public function mount(TipeInstansiService $tipeInstansi, ProvinsiService $provinsi, KabKotaService $kabKota, InstansiService $instansi)
     {
@@ -35,16 +41,28 @@ class AdminInstansi extends Component
 
     public function render()
     {
-        $provinsiList = $this->provinsi->findAll();
-        $kabupatenList = $this->kabKota->findByType('kabupaten');
-        $kotaList = $this->kabKota->findByType('kota');
-        $instansiList = $this->instansi->findByTipeInstansi($this->request['tipe_instansi_code']);
-        return view('livewire.registration.admin-instansi', compact(
-            'provinsiList',
-            'kabupatenList',
-            'kotaList',
-            'instansiList'
-        ));
+        if (count($this->provinsiList) == 0) {
+            $this->provinsiList = $this->provinsi->findAll();
+        }
+        if (count($this->kabupatenList) == 0) {
+            $this->kabupatenList = $this->kabKota->findByType('kabupaten');
+        }
+        if (count($this->kotaList) == 0) {
+            $this->kotaList = $this->kabKota->findByType('kota');
+        }
+        if (count($this->instansiList) == 0) {
+            $this->instansiList = $this->instansi->findByTipeInstansi($this->request['tipe_instansi_code']);
+        }
+        return view('livewire.registration.admin-instansi');
+    }
+
+    public function updatedRequestProvinsiId($provinsiId)
+    {
+        if ($this->request['tipe_instansi_code'] == "kabupaten") {
+            $this->kabupatenList = $this->kabKota->findByTypeAndProvinsiId('kabupaten', $provinsiId);
+        } else if ($this->request['tipe_instansi_code'] == TipeInstansi::KABUPATEN) {
+            $this->kotaList = $this->kabKota->findByTypeAndProvinsiId('kota', $provinsiId);
+        }
     }
 
     public function store()
