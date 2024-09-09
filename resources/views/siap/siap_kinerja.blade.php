@@ -83,7 +83,7 @@
                     <label for="AngkaKredit" class="form-label">
                         Angka Kredit
                     </label>
-                    <input name="angka_kredit" type="number" class="form-control" id="AngkaKredit"
+                    <input name="angka_kredit" type="number" step="0.001" min="0" class="form-control" id="AngkaKredit"
                         placeholder="Masukkan Angka Kredit">
                 </div>
             </div>
