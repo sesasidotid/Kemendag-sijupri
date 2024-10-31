@@ -8,7 +8,7 @@
                     User Detail
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('/profile/detail') }}">
+                    <form method="POST" action="{{ route('/profile/unit_kerja_instansi_daerah') }}">
                         @csrf
                         <div class="row">
                             @if (isset($user->unitKerja->name))
@@ -84,7 +84,8 @@
                                     </label>
                                     <input name="email" type="email"
                                         class="form-control @error('email') is-invalid @enderror" id="AlamatEmail"
-                                        placeholder="Enter your email">
+                                        placeholder="Enter your email"
+                                        @if (isset($user->userDetail->email)) value="{{ $user->userDetail->email }}" @endif>
                                     @error('email')
                                         <span class="invalid-feedback">
                                             <strong>{{ str_replace('', '', $message) }}</strong>
@@ -99,7 +100,8 @@
                                     </label>
                                     <input name="no_hp" type="text"
                                         class="form-control @error('no_hp') is-invalid @enderror" id="NoHandphone"
-                                        placeholder="Masukkan Nomor Handphone">
+                                        placeholder="Masukkan Nomor Handphone"
+                                        @if (isset($user->userDetail->no_hp)) value="{{ $user->userDetail->no_hp }}" @endif>
                                     @error('no_hp')
                                         <span class="invalid-feedback">
                                             <strong>{{ str_replace('', '', $message) }}</strong>

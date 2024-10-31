@@ -103,7 +103,7 @@
                                     </td>
                                     <td class="text-center" style="font-size: 0.9rem">
                                         <div class="dropdown d-inline-block">
-                                            <a href="/user/user_jf/detail/{{ $user->nip }}"
+                                            <a href="{{ route('/user/user_jf/detail', ['nip' => $user->nip]) }}"
                                                 class="btn btn-soft-primary btn-sm " aria-expanded="false">Detail
                                                 <i class="mdi mdi-eye"></i>
                                             </a>

@@ -58,9 +58,9 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-sm-10">
                     <div class="text-center mt-lg-5 pt-5">
-                        <h1 class="display-6 fw-semibold mb-3 lh-base">Selamat datang di Sistem Informasi Pejabat
-                            Fungsional Kemendag RI
-                            <span class="text-primary">SIjuPRI</span>
+                        <h1 class="display-6 fw-semibold mb-3 lh-base">
+                            Sistem Informasi Jabatan Fungsional Perdagangan Republik Indonesia
+                            <span class="text-primary">SIJuPRI</span>
                         </h1>
                     </div>
                 </div>

@@ -54,8 +54,8 @@
                                 </td>
                                 <td class="text-center" style="font-size: 0.9rem">
                                     <div class="dropdown d-inline-block">
-                                        <a href="/opd/user/detail/{{ $user->nip }}" class="btn btn-soft-primary btn-sm "
-                                            aria-expanded="false">Detail
+                                        <a href="{{ route('/opd/user/detail', ['nip' => $user->nip]) }}"
+                                            class="btn btn-soft-primary btn-sm " aria-expanded="false">Detail
                                             <i class="mdi mdi-eye"></i>
                                         </a>
                                     </div>

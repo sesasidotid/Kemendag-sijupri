@@ -21,7 +21,7 @@
         <div class="img">
             <div class="containerx" style="position: absolute;">
                 <h1 style="font-size: 30px;">Selamat Datang Di </h1>
-                <h1> SIJUPRI </h1>
+                <h1> SIJuPRI </h1>
             </div>
 
             <img src="{{ asset('auth/img/bg.svg') }}">
@@ -50,12 +50,8 @@
                     </div>
                     <div class="div">
                         <h5>Password</h5>
-
                         <input name="password" id="pass" type="password" class="input">
-                        <i onclick="see()" id="mata" class="ix fas fa-eye-slash"
-                            style="display: none; color:  #355c7d;;"></i>
-
-
+                        <i onclick="see()" class="ix fas fa-eye-slash" style="color:  #355c7d;"></i>
                     </div>
                 </div>
                 <a href="#" style="text-align: right; display: block;">Lupa kata sandi?</a>
@@ -102,10 +98,10 @@
                         font-size: 14px;
                     }
                 </style>
-                <a href="/user/register"
+                {{-- <a href="{{ route('/user/register') }}"
                     style=" color: rgba(100, 41, 41, 0.55);  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"><span
                         class="badge bg-info text-white" style="font-size: small; font-weight: 600;">Registrasi
-                        Sekarang</span></a>
+                        Sekarang</span></a> --}}
             </form>
 
         </div>

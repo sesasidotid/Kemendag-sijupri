@@ -35,7 +35,11 @@ class AuthController extends Controller
         $user = new UserService();
         $user = $user->findById($request->nip);
 
-        if (in_array($user->user_status, [UserStatus::ACTIVE, UserStatus::NOT_ACTIVE])) {
+        if (!$user || $user->user_status == UserStatus::DELETED) {
+            Session::flash('login_message', 'Akun Tidak Ditemukan');
+        }
+
+        if (in_array($user->user_status, [UserStatus::ACTIVE])) {
             if (Hash::check($request->password, Crypt::decrypt($user->password))) {
                 return DB::transaction(function () use ($request, $user) {
                     Auth::login($user);
@@ -72,15 +76,16 @@ class AuthController extends Controller
                     return redirect()->route('/dashboard');
                 });
             } else {
-                Session::flash('status', 1);
+                Session::flash('login_message', 'NIP / PASSWORD SALAH !');
                 return redirect()->route('login');
             }
         } else {
-            throw new BusinessException([
-                "message" => "User Status Tidak Ditemukan",
-                "error code" => "SEC-000002",
-                "code" => 500
-            ], 500);
+            if ($user->user_status == UserStatus::DELETED) {
+                Session::flash('login_message', 'NIP / PASSWORD SALAH !');
+            } else {
+                Session::flash('login_message', 'Akun Tidak Aktif');
+            }
+            return redirect()->route('login');
         }
     }
 
@@ -118,7 +123,6 @@ class AuthController extends Controller
         $user->password = $request['password'];
         $user->customUpdate();
 
-        Session::flash('status', '1');
         return redirect()->route('login');
     }
 

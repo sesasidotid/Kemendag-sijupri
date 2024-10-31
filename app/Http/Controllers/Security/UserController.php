@@ -86,7 +86,7 @@ class UserController extends Controller
                 $userPakList = $user->userPak;
                 $userKompetensiList = $user->userKompetensi;
                 $userSertifikasiList = $user->userSertifikasi;
-                return view('user.detail_jf_sijupri', compact(
+                return view('user.detail_jf_instansi', compact(
                     'user',
                     'userDetail',
                     'userPendidikanList',
@@ -174,10 +174,12 @@ class UserController extends Controller
         $user->user_status = $request->user_status;
         $user->role_code = $request->role_code;
         $user->access_method = ((object) $access_method);
-        if ($request->user_status == UserStatus::DELETED) $user->delete_flag = true;
-        else $user->delete_flag = false;
+        $user->delete_flag = $request->delete_flag ? true : false;
 
         $user->customupdate();
+
+        if ($user->delete_flag)
+            return redirect()->route('/security/user');
         return redirect()->back();
     }
 
@@ -246,17 +248,11 @@ class UserController extends Controller
         }
     }
 
-    public function indexAdminInstansi()
-    {
-    }
+    public function indexAdminInstansi() {}
 
-    public function indexAdminUnitKerjaOPD()
-    {
-    }
+    public function indexAdminUnitKerjaOPD() {}
 
-    public function indexUserJF()
-    {
-    }
+    public function indexUserJF() {}
 
     public function verifikasi()
     {
@@ -466,11 +462,7 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function access()
-    {
-    }
+    public function access() {}
 
-    public function editAccess()
-    {
-    }
+    public function editAccess() {}
 }

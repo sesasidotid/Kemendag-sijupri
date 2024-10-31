@@ -39,141 +39,138 @@
                     <tbody>
                         @if (isset($userList))
                             @foreach ($userList as $index => $user)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->nip }}</td>
+                                    <td>
+                                        @if (isset($user->userDetail))
+                                            @if ($user->userDetail->task_status == null || $user->userDetail->task_status == 'PENDING')
+                                                <a class="btn btn-soft-warning btn-sm "
+                                                    href="{{ route('/task/user_jf/detail', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Perlu Diverifikasi
+                                                </a>
+                                            @else
+                                                <a class="btn btn-soft-primary btn-sm "
+                                                    href="{{ route('/task/user_jf/detail', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Lihat
+                                                </a>
+                                            @endif
+                                        @else
+                                            <span class="text-gray">Belum Diajukan</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($user->checkPendidikan() !== null)
+                                            @if (!$user->checkPendidikan())
+                                                <a class="btn btn-soft-warning btn-sm "
+                                                    href="{{ route('/task/user_jf/pendidikan', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Perlu Diverifikasi
+                                                </a>
+                                            @else
+                                                <a class="btn btn-soft-primary btn-sm "
+                                                    href="{{ route('/task/user_jf/pendidikan', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Lihat
+                                                </a>
+                                            @endif
+                                        @else
+                                            <span class="text-gray">Belum Diajukan</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($user->checkJabatan() !== null)
+                                            @if (!$user->checkJabatan())
+                                                <a class="btn btn-soft-warning btn-sm "
+                                                    href="{{ route('/task/user_jf/jabatan', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Perlu Diverifikasi
+                                                </a>
+                                            @else
+                                                <a class="btn btn-soft-primary btn-sm "
+                                                    href="{{ route('/task/user_jf/jabatan', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Lihat
+                                                </a>
+                                            @endif
+                                        @else
+                                            <span class="text-gray">Belum Diajukan</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($user->checkPangkat() !== null)
+                                            @if (!$user->checkPangkat())
+                                                <a class="btn btn-soft-warning btn-sm "
+                                                    href="{{ route('/task/user_jf/pangkat', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Perlu Diverifikasi
+                                                </a>
+                                            @else
+                                                <a class="btn btn-soft-primary btn-sm "
+                                                    href="{{ route('/task/user_jf/pangkat', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Lihat
+                                                </a>
+                                            @endif
+                                        @else
+                                            <span class="text-gray">Belum Diajukan</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($user->checkKompetensi() !== null)
+                                            @if (!$user->checkKompetensi())
+                                                <a class="btn btn-soft-warning btn-sm "
+                                                    href="{{ route('/task/user_jf/kompetensi', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Perlu Diverifikasi
+                                                </a>
+                                            @else
+                                                <a class="btn btn-soft-primary btn-sm "
+                                                    href="{{ route('/task/user_jf/kompetensi', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Lihat
+                                                </a>
+                                            @endif
+                                        @else
+                                            <span class="text-gray">Belum Diajukan</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($user->checkSertifikasi() !== null)
+                                            @if (!$user->checkSertifikasi())
+                                                <a class="btn btn-soft-warning btn-sm "
+                                                    href="{{ route('/task/user_jf/sertifikasi', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Perlu Diverifikasi
+                                                </a>
+                                            @else
+                                                <a class="btn btn-soft-primary btn-sm "
+                                                    href="{{ route('/task/user_jf/sertifikasi', ['nip' => $user->nip]) }}">
+                                                    <i class="mdi mdi-eye"></i> Lihat
+                                                </a>
+                                            @endif
+                                        @else
+                                            <span class="text-gray">Belum Diajukan</span>
+                                        @endif
+                                    </td>
+                                    <td>
 
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->nip }}</td>
-                                        <td>
-                                            @if (isset($user->userDetail))
-                                                @if ($user->userDetail->task_status == null || $user->userDetail->task_status == 'PENDING')
-                                                    <a class="btn btn-soft-warning btn-sm "
-                                                        href="{{ route('/task/user_jf/detail', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Perlu Diverifikasi
-                                                    </a>
-                                                @else
-                                                    <a class="btn btn-soft-primary btn-sm "
-                                                        href="{{ route('/task/user_jf/detail', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Lihat
-                                                    </a>
-                                                @endif
+                                        @if ($user->user_status == 'ACTIVE')
+                                            <span class="badge bg-success">Aktif</span>
+                                        @else
+                                            <span class="badge bg-danger">Belum Aktif</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <form action="user/aktivasi/{{ $user->nip }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            @if ($user->user_status == 'ACTIVE')
+                                                <button class="btn btn-soft-primary btn-sm" name="aktivasi"
+                                                    value="NOT_ACTIVE" type="submit">
+                                                    Non Aktifkan
+                                                </button>
                                             @else
-                                                <span class="text-gray">Belum Diajukan</span>
+                                                <button class="btn btn-soft-primary btn-sm" name="aktivasi" value="ACTIVE"
+                                                    type="submit">
+                                                    Aktifkan
+                                                </button>
                                             @endif
-                                        </td>
-                                        <td>
-                                            @if ($user->checkPendidikan() !== null)
-                                                @if (!$user->checkPendidikan())
-                                                    <a class="btn btn-soft-warning btn-sm "
-                                                        href="{{ route('/task/user_jf/pendidikan', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Perlu Diverifikasi
-                                                    </a>
-                                                @else
-                                                    <a class="btn btn-soft-primary btn-sm "
-                                                        href="{{ route('/task/user_jf/pendidikan', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Lihat
-                                                    </a>
-                                                @endif
-                                            @else
-                                                <span class="text-gray">Belum Diajukan</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($user->checkJabatan() !== null)
-                                                @if (!$user->checkJabatan())
-                                                    <a class="btn btn-soft-warning btn-sm "
-                                                        href="{{ route('/task/user_jf/jabatan', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Perlu Diverifikasi
-                                                    </a>
-                                                @else
-                                                    <a class="btn btn-soft-primary btn-sm "
-                                                        href="{{ route('/task/user_jf/jabatan', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Lihat
-                                                    </a>
-                                                @endif
-                                            @else
-                                                <span class="text-gray">Belum Diajukan</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($user->checkPangkat() !== null)
-                                                @if (!$user->checkPangkat())
-                                                    <a class="btn btn-soft-warning btn-sm "
-                                                        href="{{ route('/task/user_jf/pangkat', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Perlu Diverifikasi
-                                                    </a>
-                                                @else
-                                                    <a class="btn btn-soft-primary btn-sm "
-                                                        href="{{ route('/task/user_jf/pangkat', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Lihat
-                                                    </a>
-                                                @endif
-                                            @else
-                                                <span class="text-gray">Belum Diajukan</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($user->checkKompetensi() !== null)
-                                                @if (!$user->checkKompetensi())
-                                                    <a class="btn btn-soft-warning btn-sm "
-                                                        href="{{ route('/task/user_jf/kompetensi', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Perlu Diverifikasi
-                                                    </a>
-                                                @else
-                                                    <a class="btn btn-soft-primary btn-sm "
-                                                        href="{{ route('/task/user_jf/kompetensi', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Lihat
-                                                    </a>
-                                                @endif
-                                            @else
-                                                <span class="text-gray">Belum Diajukan</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($user->checkSertifikasi() !== null)
-                                                @if (!$user->checkSertifikasi())
-                                                    <a class="btn btn-soft-warning btn-sm "
-                                                        href="{{ route('/task/user_jf/sertifikasi', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Perlu Diverifikasi
-                                                    </a>
-                                                @else
-                                                    <a class="btn btn-soft-primary btn-sm "
-                                                        href="{{ route('/task/user_jf/sertifikasi', ['nip' => $user->nip]) }}">
-                                                        <i class="mdi mdi-eye"></i> Lihat
-                                                    </a>
-                                                @endif
-                                            @else
-                                                <span class="text-gray">Belum Diajukan</span>
-                                            @endif
-                                        </td>
-                                        <td>
-
-                                            @if ($user->user_status == "3")
-                                                <span class="badge bg-success">Aktif</span>
-                                            @else
-                                                <span class="badge bg-danger">Belum Aktif</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <form action="user/aktivasi/{{$user->nip}}" method="post">
-                                                @csrf
-                                                @method('PUT')
-                                                @if ($user->user_status == "3")
-                                                    <button class="btn btn-soft-primary btn-sm" name="aktivasi" value="NOT_ACTIVE"
-                                                        type="submit">
-                                                        Non Aktifkan
-                                                    </button>
-                                                @else
-                                                    <button class="btn btn-soft-primary btn-sm" name="aktivasi" value="ACTIVE"
-                                                        type="submit">
-                                                        Aktifkan
-                                                    </button>
-
-                                                @endif
-                                            </form>
-                                        </td>
-                                    </tr>
-
+                                        </form>
+                                    </td>
+                                </tr>
                             @endforeach
                         @endif
                     </tbody>

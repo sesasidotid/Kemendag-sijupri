@@ -56,7 +56,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($user->user_status == '3')
+                                        @if ($user->user_status == 'ACTIVE')
                                             <span class="badge bg-success">Aktif</span>
                                         @else
                                             <span class="badge bg-danger">Belum Aktif</span>
@@ -66,7 +66,7 @@
                                         <form action="user/aktivasi/{{ $user->nip }}" method="post">
                                             @csrf
                                             @method('PUT')
-                                            @if ($user->user_status == '3')
+                                            @if ($user->user_status == 'ACTIVE')
                                                 <button class="btn btn-soft-primary btn-sm" name="aktivasi"
                                                     value="NOT_ACTIVE" type="submit">
                                                     Non Aktifkan

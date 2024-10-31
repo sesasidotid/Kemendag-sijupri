@@ -26,7 +26,7 @@ class UnitKerjaController extends Controller
         $userContext = auth()->user();
         switch ($userContext->role->base) {
             case RoleCode::ADMIN_SIJUPRI:
-                $unitKerjaList = $this->unitKerja->findAll();
+                $unitKerjaList = $this->unitKerja->findSearchPaginate([]);
 
                 if ($userContext->roleCode === RoleCode::ADMIN_FORMASI) {
                     return view('sijupri.opd.index', compact(
@@ -40,7 +40,10 @@ class UnitKerjaController extends Controller
             case RoleCode::ADMIN_INSTANSI:
                 $userContext = auth()->user();
 
-                $unitKerjaList = $this->unitKerja->findByTipeInstansiCodeAndInstansiId($userContext->tipe_instansi_code, $userContext->instansi_id);
+                $data = [];
+                $data['attr']['instansi']['tipe_instansi_code'] = $userContext->tipe_instansi_code;
+                $data['attr']['instansi_id'] = $userContext->instansi_id;
+                $unitKerjaList = $this->unitKerja->findSearchPaginate($data);
                 return view('instansi.opd.index', compact(
                     'unitKerjaList'
                 ));

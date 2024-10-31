@@ -574,7 +574,7 @@
 
 .navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse]:after {
     display: block;
-    content: "󰅂";
+    content: "\F0142";
     font-family: Material Design Icons;
     margin-left: auto;
     transition: transform .2s;
@@ -2422,7 +2422,7 @@
 .custom-accordionwithicon .accordion-button:after {
     background-image: none !important;
     font-family: Material Design Icons;
-    content: "󰅂";
+    content: "\F0142";
     font-size: 1.1rem;
     vertical-align: middle;
     line-height: .8
@@ -2430,14 +2430,14 @@
 
 .custom-accordionwithicon .accordion-button:not(.collapsed):after {
     background-image: none !important;
-    content: "󰅀";
+    content: "\F0140";
     margin-right: -3px
 }
 
 .custom-accordionwithicon-plus .accordion-button:after {
     background-image: none !important;
     font-family: Material Design Icons;
-    content: "󰐕";
+    content: "\F0415";
     font-size: 1.1rem;
     vertical-align: middle;
     line-height: .8
@@ -2445,7 +2445,7 @@
 
 .custom-accordionwithicon-plus .accordion-button:not(.collapsed):after {
     background-image: none !important;
-    content: "󰍴";
+    content: "\F0374";
     margin-right: -3px
 }
 
@@ -4828,7 +4828,7 @@ strong {
 
 .alert-dismissible .btn-close:after {
     background: transparent !important;
-    content: "󰅖" !important;
+    content: "\F0156" !important;
     font-size: 18px;
     line-height: 15px;
     font-family: Material Design Icons !important
@@ -5899,7 +5899,7 @@ a {
     margin-left: .255em;
     font-size: 15px;
     line-height: 15px;
-    content: "󰅀";
+    content: "\F0140";
     font-family: Material Design Icons
 }
 
@@ -6888,7 +6888,7 @@ a {
 }
 
 .table .sort:before {
-    content: "󰍝";
+    content: "\F035D";
     position: absolute;
     right: .5rem;
     top: 18px;
@@ -6899,7 +6899,7 @@ a {
 .table .sort:after {
     position: absolute;
     right: .5rem;
-    content: "󰍠";
+    content: "\F0360";
     font-family: Material Design Icons;
     font-size: .8rem;
     top: 12px
@@ -7674,7 +7674,7 @@ a {
 }
 
 .form-check-outline .form-check-input:checked[type=checkbox]:before {
-    content: "󰄬";
+    content: "\F012C";
     font-family: Material Design Icons;
     top: -2px;
     position: absolute;
@@ -7740,7 +7740,7 @@ a {
 }
 
 .form-radio-outline .form-check-input:checked[type=radio]:before {
-    content: "󰝥";
+    content: "\F0765";
     font-family: Material Design Icons;
     top: 0;
     position: absolute;
@@ -7860,7 +7860,7 @@ a {
 }
 
 .form-switch-custom .form-check-input:before {
-    content: "󰝥";
+    content: "\F0765";
     font-family: Material Design Icons;
     top: -9px;
     position: absolute;
@@ -11484,7 +11484,7 @@ table.dataTable>thead .sorting_asc:before,
 table.dataTable>thead .sorting_desc:before,
 table.dataTable>thead .sorting_asc_disabled:before,
 table.dataTable>thead .sorting_desc_disabled:before {
-    content: "󰍠";
+    content: "\F0360";
     position: absolute;
     right: .5rem;
     top: 12px;
@@ -11497,7 +11497,7 @@ table.dataTable>thead .sorting_asc:after,
 table.dataTable>thead .sorting_desc:after,
 table.dataTable>thead .sorting_asc_disabled:after,
 table.dataTable>thead .sorting_desc_disabled:after {
-    content: "󰍝";
+    content: "\F035D";
     position: absolute;
     right: .5rem;
     top: 18px;
@@ -11928,7 +11928,7 @@ div.dtr-modal div.dtr-modal-close:hover {
 }
 
 .choices[data-type*=select-one]:after {
-    content: "󰅀";
+    content: "\F0140";
     position: absolute;
     border: 0;
     border-color: #272a3a transparent transparent;
@@ -13109,7 +13109,7 @@ span.flatpickr-weekday {
 
 [data-option-flag-name]:before,
 [data-option-flag-img-name]:before {
-    content: "󰅀";
+    content: "\F0140";
     font-family: Material Design Icons;
     position: absolute;
     right: .9rem;
@@ -16614,7 +16614,7 @@ span.flatpickr-weekday {
 }
 
 .file-manager-menu li .sub-menu li:before {
-    content: "󰍴";
+    content: "\F0374";
     position: absolute;
     left: 0;
     font-family: Material Design Icons;

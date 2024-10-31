@@ -110,7 +110,10 @@
                             </div>
                             <div class="col-lg-12">
                                 <div class="hstack gap-2 justify-content-end">
-                                    <button type="submit" class="btn btn-secondary">Simpan</button>
+                                    <button type="submit" class="btn btn-sm btn-danger" name="delete_flag" value="true">
+                                        Hapus
+                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-success">Simpan</button>
                                 </div>
                             </div>
                         </div>

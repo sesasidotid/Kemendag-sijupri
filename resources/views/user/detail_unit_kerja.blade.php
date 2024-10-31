@@ -18,7 +18,8 @@
                 <div class="card-header">
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('/user/admin_instansi/edit', ['nip' => $detailUser->nip]) }}">
+                    <form method="POST"
+                        action="{{ route('/user/admin_unit_kerja_instansi_daerah/edit', ['nip' => $detailUser->nip]) }}">
                         @csrf
                         @method('PUT')
                         <div class="row">
@@ -46,9 +47,11 @@
                                         <span class="text-danger fw-bold">*</span> Status
                                     </label>
                                     <select id="user_status" name="user_status" class="form-control">
-                                        <option value="ACTIVE" {{ $detailUser->user_status == 3 ? 'selected' : '' }}>Aktif
+                                        <option value="ACTIVE" {{ $detailUser->user_status == 'ACTIVE' ? 'selected' : '' }}>
+                                            Aktif
                                         </option>
-                                        <option value="NOT_ACTIVE" {{ $detailUser->user_status == 1 ? 'selected' : '' }}>
+                                        <option value="NOT_ACTIVE"
+                                            {{ $detailUser->user_status == 'NOT_ACTIVE' ? 'selected' : '' }}>
                                             Tidak Aktif
                                         </option>
                                     </select>
