@@ -668,7 +668,6 @@ class FormasiController extends Controller
 
     public function verifiaksiFormasi(Request $request)
     {
-        Log::info(json_encode($request->all()));
         $formasiDocument = new FormasiDocumentService();
         $formasiDocument = $formasiDocument->findById($request->id);
 
@@ -685,7 +684,7 @@ class FormasiController extends Controller
             foreach ($formasiDocument->formasi as $key => $formasiValue) {
                 $totalResult = 0;
                 foreach ($formasiValue->formasiResult as $key => $formasiResultValue) {
-                    $result = $request[$formasiValue->jabatan_code][$formasiResultValue->jenjang_code];
+                    $result = $request[$formasiResultValue->jenjang_code];
                     $totalResult = $totalResult + $result;
 
                     $formasiResultValue->result = $result;
