@@ -34,7 +34,7 @@
                                 @foreach ($akpMatrixList as $index => $akpMatrix)
                                     <tr>
                                         <td style="font-size: 0.9rem">{{ $index + 1 }}</td>
-                                        <td style="font-size: 0.9rem">{{ $akpMatrix->akpPelatihan->name }}</td>
+                                        <td style="font-size: 0.9rem">{{ $akpMatrix->akpPelatihan->name ?? '' }}</td>
                                     </tr>
                                 @endforeach
                             @endif
