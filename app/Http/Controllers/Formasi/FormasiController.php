@@ -68,7 +68,7 @@ class FormasiController extends Controller
                     'formasiListInactive'
                 ));
             case RoleCode::USER:
-                $formasiData = $this->formasi->findByJabatanCodeAndUnitKerjaIdAndTaskStatus($userContext->unitKerja->id, TaskStatus::APPROVE);
+                $formasiData = $this->formasi->findByUnitKerjaIdAndTaskStatus($userContext->unitKerja->id, TaskStatus::APPROVE);
                 return view('formasi.jabatan.detail_2', compact('formasiData'));
         }
     }
