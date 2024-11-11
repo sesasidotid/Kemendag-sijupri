@@ -675,10 +675,7 @@ class FormasiController extends Controller
         $validation = [];
         foreach ($formasiDocument->formasi as $key => $formasi) {
             foreach ($formasi->formasiResult as $key => $value) {
-                Log::info($formasi->jabatan_code);
-                Log::info($value->jenjang_code);
-                Log::info("-------");
-                $validation[$formasi->jabatan_code][$value->jenjang_code] = 'required';
+                $validation[$value->jenjang_code] = 'required';
             }
         }
         $request->validate($validation);
