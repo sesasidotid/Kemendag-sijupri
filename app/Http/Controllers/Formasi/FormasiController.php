@@ -668,7 +668,7 @@ class FormasiController extends Controller
 
     public function verifiaksiFormasi(Request $request)
     {
-        Log::info("SSSSSSSSSSSSSSSSSSSS");
+        Log::info(json_encode($request->all()));
         $formasiDocument = new FormasiDocumentService();
         $formasiDocument = $formasiDocument->findById($request->id);
 
