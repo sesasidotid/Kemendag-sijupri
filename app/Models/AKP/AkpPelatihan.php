@@ -13,7 +13,7 @@ class AkpPelatihan extends Model
     protected $table = 'tbl_akp_pelatihan';
 
     protected $fillable = [
-        'name',
+        'nama',
         'description',
         'jabatan_code'
     ];

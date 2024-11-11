@@ -14,7 +14,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <div class="flex-shrink-0 alert alert-primary w-100">
-                        Rekomendasi AKP Instrument ({{ $akpInstrumen->nama }})
+                        Rekomendasi AKP Instrument ({{ $akpInstrumen->name }})
                         <a class="btn btn-sm btn-success float-end" href="javascript:void(0);"
                             onclick="previewModal({{ json_encode($akp->file_rekomendasi) }}, 'Rekomendasi Formasi')">
                             Cetak Rekomendasi
