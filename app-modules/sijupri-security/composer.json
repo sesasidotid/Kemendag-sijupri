@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/sijupri-security",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\SijupriSecurity\\": "src/",
+			"Eyegil\\SijupriSecurity\\Tests\\": "tests/",
+			"Eyegil\\SijupriSecurity\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\SijupriSecurity\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\SijupriSecurity\\Providers\\SijupriSecurityServiceProvider"
+			]
+		}
+	}
+}

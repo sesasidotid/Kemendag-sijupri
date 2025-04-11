@@ -1,19 +1,28 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Eyegil\NotificationDriverDb\Services\NotificationMessageService;
+use Eyegil\SijupriUkom\Services\ExamGradeService;
+use Eyegil\SijupriUkom\Services\RoomUkomService;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schedule;
 
-/*
-|--------------------------------------------------------------------------
-| Console Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
-|
-*/
+// NOTIFICATION TERMINATOR
+Schedule::call(function (NotificationMessageService $notificationMessageService) {
+    Log::info("Start Notification Daily Cleanup");
+    $deletedRows = $notificationMessageService->deleteExpired();
+    Log::info("Finished Notification Daily Cleanup: Deleted " . $deletedRows['deletedForUsers'] . " user notifications and " . $deletedRows['deletedForTopics'] . " topic notifications.");
+})->daily();
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+//PARTICIPANT UKOM ENTER ROOM
+Schedule::call(function (RoomUkomService $roomUkomService) {
+    Log::info("Start Room Selection Participant");
+    $roomUkomService->registeringRoom();
+    Log::info("Finished Room Selection Participant");
+})->everyMinute();
+
+//GRADE EXAM
+Schedule::call(function (ExamGradeService $examGradeService) {
+    Log::info("Start Grade Exam");
+    $examGradeService->gradeExam();
+    Log::info("Finished Grade Exam");
+})->everyMinute();

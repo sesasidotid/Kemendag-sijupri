@@ -1,30 +1,51 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "The skeleton application for the Laravel framework.",
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
-        "doctrine/dbal": "^4.0",
-        "fruitcake/laravel-cors": "^2.0.5",
-        "geekcom/phpjasper": "^3.4",
-        "guzzlehttp/guzzle": "^7.2",
-        "intervention/image": "^3.4",
-        "laravel/framework": "^9.0",
-        "laravel/sanctum": "^2.14",
-        "laravel/tinker": "^2.7",
-        "livewire/livewire": "^2.12",
-        "maatwebsite/excel": "^3.1",
-        "simplesoftwareio/simple-qrcode": "~4"
+        "php": "^8.2",
+        "eyegil/base": "*",
+        "eyegil/eyegil-lms": "*",
+        "eyegil/notification-base": "^1.0",
+        "eyegil/notification-driver-db": "*",
+        "eyegil/notification-firebase": "*",
+        "eyegil/notification-smtp": "*",
+        "eyegil/report-jasper": "*",
+        "eyegil/security-base": "*",
+        "eyegil/security-basic": "*",
+        "eyegil/security-oauth2": "*",
+        "eyegil/security-password": "*",
+        "eyegil/sijupri-akp": "*",
+        "eyegil/sijupri-formasi": "*",
+        "eyegil/sijupri-maintenance": "*",
+        "eyegil/sijupri-pak": "*",
+        "eyegil/sijupri-security": "*",
+        "eyegil/sijupri-siap": "*",
+        "eyegil/sijupri-ukom": "*",
+        "eyegil/storage-base": "*",
+        "eyegil/storage-system": "*",
+        "eyegil/workflow-base": "*",
+        "internachi/modular": "^2.2",
+        "kreait/laravel-firebase": "^5.9",
+        "laravel/framework": "^11.9",
+        "laravel/passport": "^12.0",
+        "laravel/tinker": "^2.9",
+        "phpoffice/phpspreadsheet": "^3.3",
+        "phpxmlrpc/phpxmlrpc": "^4.10",
+        "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "fakerphp/faker": "^1.23",
+        "laravel/pint": "^1.13",
+        "laravel/sail": "^1.26",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.0",
+        "phpunit/phpunit": "^11.0.1"
     },
     "autoload": {
         "psr-4": {
@@ -50,7 +71,9 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
         ]
     },
     "extra": {
@@ -61,8 +84,45 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "app-modules/*",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/EyeGil/eyegil-base-laravel"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/EyeGil/storage-base-laravel"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/EyeGil/storage-system-laravel"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/EyeGil/job-base-laravel"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/EyeGil/report-base-laravel"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/EyeGil/report-jasper-laravel"
+        }
+    ]
 }

@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/sijupri-ukom",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\SijupriUkom\\": "src/",
+			"Eyegil\\SijupriUkom\\Tests\\": "tests/",
+			"Eyegil\\SijupriUkom\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\SijupriUkom\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\SijupriUkom\\Providers\\SijupriUkomServiceProvider"
+			]
+		}
+	}
+}

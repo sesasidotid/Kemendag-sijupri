@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/notification-base",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\NotificationBase\\": "src/",
+			"Eyegil\\NotificationBase\\Tests\\": "tests/",
+			"Eyegil\\NotificationBase\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\NotificationBase\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\NotificationBase\\Providers\\NotificationBaseServiceProvider"
+			]
+		}
+	}
+}

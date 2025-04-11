@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/sijupri-siap",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\SijupriSiap\\": "src/",
+			"Eyegil\\SijupriSiap\\Tests\\": "tests/",
+			"Eyegil\\SijupriSiap\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\SijupriSiap\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\SijupriSiap\\Providers\\SijupriSiapServiceProvider"
+			]
+		}
+	}
+}

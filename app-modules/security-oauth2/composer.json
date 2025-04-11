@@ -1,0 +1,26 @@
+{
+	"name": "eyegil/security-oauth2",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {
+		"laravel/passport": "^12.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\SecurityOauth2\\": "src/",
+			"Eyegil\\SecurityOauth2\\Tests\\": "tests/",
+			"Eyegil\\SecurityOauth2\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\SecurityOauth2\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\SecurityOauth2\\Providers\\SecurityOauth2ServiceProvider"
+			]
+		}
+	}
+}

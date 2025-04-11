@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/eyegil-lms",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\EyegilLms\\": "src/",
+			"Eyegil\\EyegilLms\\Tests\\": "tests/",
+			"Eyegil\\EyegilLms\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\EyegilLms\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\EyegilLms\\Providers\\EyegilLmsServiceProvider"
+			]
+		}
+	}
+}

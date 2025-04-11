@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/notification-driver-db",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\NotificationDriverDb\\": "src/",
+			"Eyegil\\NotificationDriverDb\\Tests\\": "tests/",
+			"Eyegil\\NotificationDriverDb\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\NotificationDriverDb\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\NotificationDriverDb\\Providers\\NotificationDriverDbServiceProvider"
+			]
+		}
+	}
+}

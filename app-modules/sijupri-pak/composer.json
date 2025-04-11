@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/sijupri-pak",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\SijupriPak\\": "src/",
+			"Eyegil\\SijupriPak\\Tests\\": "tests/",
+			"Eyegil\\SijupriPak\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\SijupriPak\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\SijupriPak\\Providers\\SijupriPakServiceProvider"
+			]
+		}
+	}
+}

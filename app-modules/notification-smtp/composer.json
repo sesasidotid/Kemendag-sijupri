@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/notification-smtp",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\NotificationSmtp\\": "src/",
+			"Eyegil\\NotificationSmtp\\Tests\\": "tests/",
+			"Eyegil\\NotificationSmtp\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\NotificationSmtp\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\NotificationSmtp\\Providers\\NotificationSmtpServiceProvider"
+			]
+		}
+	}
+}

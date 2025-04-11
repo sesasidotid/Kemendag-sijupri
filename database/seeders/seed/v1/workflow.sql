@@ -1,0 +1,2 @@
+INSERT INTO ewf_flows (code,flow_list,version,updated_by,last_updated,delete_flag,inactive_flag,created_by,date_created,idx) VALUES
+	 ('maintenance','[{"timed": null, "roleToExe": [], "userToExe": []}, {"timed": null, "roleToExe": ["ADMIN", "SUPER_ADMIN"], "userToExe": ["admin"]}, {"timed": {"day": 0, "hour": 0, "year": 0, "month": 0, "minute": 0, "second": "10"}, "roleToExe": [], "userToExe": []}]',NULL,'admin','2024-05-23 01:35:00',false,false,NULL,'2024-05-14 15:21:36',NULL);

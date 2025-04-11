@@ -1,0 +1,26 @@
+{
+	"name": "eyegil/workflow-base",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\WorkflowBase\\": "src/",
+			"Eyegil\\WorkflowBase\\Tests\\": "tests/",
+			"Eyegil\\WorkflowBase\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\WorkflowBase\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\WorkflowBase\\Providers\\WorkflowBaseServiceProvider"
+			]
+		}
+	},
+	"require": {
+		"symfony/workflow": "^7.1"
+	}
+}

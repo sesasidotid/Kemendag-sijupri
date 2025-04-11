@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/security-basic",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\SecurityBasic\\": "src/",
+			"Eyegil\\SecurityBasic\\Tests\\": "tests/",
+			"Eyegil\\SecurityBasic\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\SecurityBasic\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\SecurityBasic\\Providers\\SecurityBasicServiceProvider"
+			]
+		}
+	}
+}

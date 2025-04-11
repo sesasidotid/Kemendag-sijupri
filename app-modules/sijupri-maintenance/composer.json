@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/sijupri-maintenance",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\SijupriMaintenance\\": "src/",
+			"Eyegil\\SijupriMaintenance\\Tests\\": "tests/",
+			"Eyegil\\SijupriMaintenance\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\SijupriMaintenance\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\SijupriMaintenance\\Providers\\SijupriMaintenanceServiceProvider"
+			]
+		}
+	}
+}

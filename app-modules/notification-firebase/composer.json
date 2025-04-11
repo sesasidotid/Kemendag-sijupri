@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/notification-firebase",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\NotificationFirebase\\": "src/",
+			"Eyegil\\NotificationFirebase\\Tests\\": "tests/",
+			"Eyegil\\NotificationFirebase\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\NotificationFirebase\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\NotificationFirebase\\Providers\\NotificationFirebaseServiceProvider"
+			]
+		}
+	}
+}
