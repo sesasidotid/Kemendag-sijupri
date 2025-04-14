@@ -79,7 +79,7 @@ class JFTaskService
         $jenisKelamin = JenisKelamin::findOrThrowNotFound($jfDto->jenis_kelamin_code);
         $jfDto->jenis_kelamin_name = $jenisKelamin->name;
 
-        $jfDto_old->jenis_kelamin_name = $jf->jenisKelamin->name;
+        $jfDto_old->jenis_kelamin_name = optional($jf->jenisKelamin)->name ?? null;
         return $this->workflowService->startUpdateTask(
             $this::workflow_name,
             $jfDto->nip,

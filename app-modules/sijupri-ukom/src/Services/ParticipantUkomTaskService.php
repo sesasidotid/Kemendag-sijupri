@@ -368,12 +368,10 @@ class ParticipantUkomTaskService
                 $encriptionKey = EncriptionKey::builder(["participant_ukom_id" => $participantUkomDto->id])
                     ->validFrom($currentDate->toString())
                     ->validTo($currentDate->copy()->addMinutes($expiredTime)->toString())
-                    ->accessAmount(1)
                     ->generate();
             } else {
                 $encriptionKey = EncriptionKey::builder(["participant_ukom_id" => $participantUkomDto->id])
                     ->validFrom($currentDate->toString())
-                    ->accessAmount(1)
                     ->generate();
             }
 
