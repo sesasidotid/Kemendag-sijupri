@@ -168,7 +168,7 @@ class RiwayatKinerjaTaskService
                 }
                 if ($riwayatKinerjaDto->file_doc_akumulasi_ak) {
                     $riwayatKinerjaDto->doc_akumulasi_ak = $this->storageService->putObjectFromBase64WithFilename("system", "jf", "doc_akumulasi_ak_" . Carbon::now()->format('YmdHis'), $riwayatKinerjaDto->file_doc_akumulasi_ak);
-                    $riwayatKinerjaDto->doc_penetapan_ak_url = $this->storageService->getUrl("system", "jf", $riwayatKinerjaDto->doc_penetapan_ak);
+                    $riwayatKinerjaDto->doc_akumulasi_ak_url = $this->storageService->getUrl("system", "jf", $riwayatKinerjaDto->doc_penetapan_ak);
                     $riwayatKinerjaDto->file_doc_akumulasi_ak = null;
                 }
                 if ($riwayatKinerjaDto->file_doc_penetapan_ak) {
