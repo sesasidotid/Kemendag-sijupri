@@ -85,6 +85,8 @@ class UserService
             $user->fromArray($userDto->toArray());
             $user->created_by = $userContext->id;
             $user->status =  "ACTIVE";
+            $user->delete_flag = true;
+            $user->inactive_flag = true;
             $user->save();
             $this->userRoleService->save($userDto);
             $this->userApplicationChannelService->update($userDto);
