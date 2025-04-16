@@ -59,13 +59,16 @@ class UserService
         return DB::transaction(function () use ($userDto, $userContext) {
             $userExist = User::where("id", $userDto->id)->where("status", UserStatus::DELETED->value)->where("delete_flag", true)->first();
             if ($userExist) {
-                if($userExist->status != UserStatus::DELETED->value || !$userExist->delete_flag) {
+                if ($userExist->status != UserStatus::DELETED->value || !$userExist->delete_flag) {
                     throw new RecordExistException("user already exist");
                 }
 
                 if (config('eyegil.security.reuseDeletedUser', false)) {
                     $userExist->fromArray($userDto->toArray());
                     $userExist->updated_by = $userContext->id;
+                    $userExist->status =  UserStatus::ACTIVE->value;
+                    $userExist->delete_flag = false;
+                    $userExist->inactive_flag = false;
                     $userExist->save();
                     if ($userDto->role_code_list && count($userDto->role_code_list) > 0) {
                         $this->userRoleService->update($userDto);
@@ -78,20 +81,19 @@ class UserService
                 } else {
                     throw new RecordExistException("unable to use this user id");
                 }
+            } else {
+                $user = new User();
+                $user->fromArray($userDto->toArray());
+                $user->created_by = $userContext->id;
+                $user->status =  UserStatus::ACTIVE->value;
+                $user->delete_flag = false;
+                $user->inactive_flag = false;
+                $user->save();
+                $this->userRoleService->save($userDto);
+                $this->userApplicationChannelService->update($userDto);
+
+                return $user;
             }
-
-
-            $user = new User();
-            $user->fromArray($userDto->toArray());
-            $user->created_by = $userContext->id;
-            $user->status =  "ACTIVE";
-            $user->delete_flag = false;
-            $user->inactive_flag = false;
-            $user->save();
-            $this->userRoleService->save($userDto);
-            $this->userApplicationChannelService->update($userDto);
-
-            return $user;
         });
     }
 
