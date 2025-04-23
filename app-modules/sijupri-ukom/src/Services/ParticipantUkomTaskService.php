@@ -367,7 +367,7 @@ class ParticipantUkomTaskService
             if ($expiredTime > 0) {
                 $encriptionKey = EncriptionKey::builder(["participant_ukom_id" => $participantUkomDto->id])
                     ->validFrom($currentDate->toString())
-                    ->validTo($currentDate->copy()->addMinutes($expiredTime)->toString())
+                    ->validTo($currentDate->copy()->addYears($expiredTime)->toString())
                     ->generate();
             } else {
                 $encriptionKey = EncriptionKey::builder(["participant_ukom_id" => $participantUkomDto->id])
