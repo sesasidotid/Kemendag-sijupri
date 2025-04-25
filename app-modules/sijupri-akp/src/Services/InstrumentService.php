@@ -18,6 +18,6 @@ class InstrumentService
 
     public function findAll()
     {
-        return Instrument::all();
+        return Instrument::where('delete_flag', false)->where('inactive_flag', false)->get();
     }
 }
