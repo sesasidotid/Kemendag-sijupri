@@ -1,0 +1,24 @@
+{
+	"name": "eyegil/sijupri-upload-file",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Eyegil\\sijupriuploadnilai\\": "src/",
+			"Eyegil\\sijupriuploadnilai\\Tests\\": "tests/",
+			"Eyegil\\sijupriuploadnilai\\Database\\Factories\\": "database/factories/",
+			"Eyegil\\sijupriuploadnilai\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Eyegil\\sijupriuploadnilai\\Providers\\SijupriUploadNilaiProvider.php"
+			]
+		}
+	}
+}
