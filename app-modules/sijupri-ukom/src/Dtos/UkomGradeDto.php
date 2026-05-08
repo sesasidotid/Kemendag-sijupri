@@ -6,7 +6,7 @@ use Eyegil\Base\Dtos\BaseDto;
 
 class UkomGradeDto extends BaseDto
 {
-    
+
     public $id;
 
     public $nb_cat;
@@ -29,6 +29,10 @@ class UkomGradeDto extends BaseDto
     public $portofolio_grade_id;
     public $portofolio_grade_score;
 
+    public $nb_studi_kasus;
+    public $studi_kasus_grade_id;
+    public $studi_kasus_grade_score;
+
     public $jpm;
     public $score;
     public $ukt;
@@ -43,4 +47,7 @@ class UkomGradeDto extends BaseDto
     public $participant_id;
     public $participant_name;
     public $nip;
+
+    public $rekomendasi;
+    public $rekomendasi_url;
 }

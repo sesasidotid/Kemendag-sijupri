@@ -22,7 +22,8 @@ class DocumentUkomService
         private DokumenPersyaratanService $dokumenPersyaratanService,
         private JabatanService $jabatanService,
         private JenjangService $jenjangService,
-    ) {}
+    ) {
+    }
 
     public function findById($id)
     {
@@ -42,6 +43,7 @@ class DocumentUkomService
             $dokumenUkomDto->jabatan_code = $dokumenPersyaratan->additional_2 ?? null;
             $dokumenUkomDto->jenjang_code = $dokumenPersyaratan->additional_3 ?? null;
             $dokumenUkomDto->is_mengulang = $dokumenPersyaratan->additional_4 == "true" ?? null;
+            $dokumenUkomDto->specification = $dokumenPersyaratan->additional_5 ?? null;
             if ($dokumenUkomDto->jabatan_code) {
                 $dokumenUkomDto->jabatan_name = $this->jabatanService->findByCode($dokumenUkomDto->jabatan_code)->name;
             }
@@ -52,19 +54,21 @@ class DocumentUkomService
         });
     }
 
-    public function findAllByJenisUkom($jenis_ukom, $jabatan_code = null, $jenjang_code = null, $is_mengulang = null)
+    public function findAllByJenisUkom($jenis_ukom, $jabatan_code = null, $jenjang_code = null, $is_mengulang = null, $specification = null)
     {
         return $this->dokumenPersyaratanService->findByAssociationAndAdditionals("ukm_participant", [
             'additional_1' => $jenis_ukom,
             'additional_2' => $jabatan_code,
             'additional_3' => $jenjang_code,
             'additional_4' => $is_mengulang,
+            'additional_5' => $specification,
         ])->map(function ($dokumenPersyaratan) {
             $dokumenUkomDto = DocumentUkomConverter::dokumenPersyaratanToDto($dokumenPersyaratan);
             $dokumenUkomDto->jenis_ukom = $dokumenPersyaratan->additional_1;
             $dokumenUkomDto->jabatan_code = $dokumenPersyaratan->additional_2 ?? null;
             $dokumenUkomDto->jenjang_code = $dokumenPersyaratan->additional_3 ?? null;
             $dokumenUkomDto->is_mengulang = $dokumenPersyaratan->additional_4 == "true" ?? null;
+            $dokumenUkomDto->specification = $dokumenPersyaratan->additional_5 ?? null;
             if ($dokumenUkomDto->jabatan_code) {
                 $dokumenUkomDto->jabatan_name = $this->jabatanService->findByCode($dokumenUkomDto->jabatan_code)->name;
             }
@@ -87,7 +91,7 @@ class DocumentUkomService
     public function save(ParticipantUkomDto $participantUkomDto)
     {
         return DB::transaction(function () use ($participantUkomDto) {
-            if (!in_array($participantUkomDto->jenis_ukom, [JenisUkom::KENAIKAN_JENJANG->value, JenisUkom::PERPINDAHAN_JABATAN->value, JenisUkom::PROMOSI->value])) {
+            if (!in_array($participantUkomDto->jenis_ukom, [JenisUkom::KENAIKAN_JENJANG->value, JenisUkom::PERPINDAHAN_JABATAN->value, JenisUkom::PROMOSI->value, JenisUkom::PROMOSI_JF->value])) {
                 throw new RecordNotFoundException("jenis_ukom not found", ["jenis_ukom" => $participantUkomDto->jenis_ukom]);
             }
 
@@ -107,7 +111,11 @@ class DocumentUkomService
 
     public function saveDokumen(DocumentUkomDto $documentUkomDto)
     {
-        return DB::transaction(function () use ($documentUkomDto) {
+        return DB::transaction(callback: function () use ($documentUkomDto) {
+            if ($documentUkomDto->specification && !in_array($documentUkomDto->specification, ["jf", "non_jf"])) {
+                throw new RecordNotFoundException("specification not found", ["specification" => $documentUkomDto->specification]);
+            }
+
             $dokumenPersyaratanDto = new DokumenPersyaratanDto();
             $dokumenPersyaratanDto->name = $documentUkomDto->dokumen_persyaratan_name;
             $dokumenPersyaratanDto->association = "ukm_participant";
@@ -115,8 +123,26 @@ class DocumentUkomService
             $dokumenPersyaratanDto->additional_2 = $documentUkomDto->jabatan_code;
             $dokumenPersyaratanDto->additional_3 = $documentUkomDto->jenjang_code;
             $dokumenPersyaratanDto->additional_4 = $documentUkomDto->is_mengulang ? "true" : "false";
+            $dokumenPersyaratanDto->additional_5 = $documentUkomDto->specification;
 
             return $this->dokumenPersyaratanService->save($dokumenPersyaratanDto);
+        });
+    }
+
+    public function updateDokumen(DocumentUkomDto $documentUkomDto)
+    {
+        return DB::transaction(function () use ($documentUkomDto) {
+            $dokumenPersyaratanDto = new DokumenPersyaratanDto();
+            $dokumenPersyaratanDto->id = $documentUkomDto->dokumen_persyaratan_id;
+            $dokumenPersyaratanDto->name = $documentUkomDto->dokumen_persyaratan_name;
+            $dokumenPersyaratanDto->association = "ukm_participant";
+            $dokumenPersyaratanDto->additional_1 = $documentUkomDto->jenis_ukom;
+            $dokumenPersyaratanDto->additional_2 = $documentUkomDto->jabatan_code;
+            $dokumenPersyaratanDto->additional_3 = $documentUkomDto->jenjang_code;
+            $dokumenPersyaratanDto->additional_4 = $documentUkomDto->is_mengulang ? "true" : "false";
+            $dokumenPersyaratanDto->additional_5 = $documentUkomDto->specification;
+
+            return $this->dokumenPersyaratanService->update($dokumenPersyaratanDto);
         });
     }
 

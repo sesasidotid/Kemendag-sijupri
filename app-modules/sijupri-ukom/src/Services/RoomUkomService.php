@@ -8,11 +8,14 @@ use Eyegil\Base\Exceptions\BusinessException;
 use Eyegil\Base\Pageable;
 use Eyegil\NotificationBase\Dtos\NotificationDto;
 use Eyegil\SijupriMaintenance\Services\BidangJabatanService;
+use Eyegil\SijupriUkom\Dtos\ExaminerRoomDto;
 use Eyegil\SijupriUkom\Dtos\ParticipantUkomDto;
 use Eyegil\SijupriUkom\Dtos\RoomUkomDto;
-use Eyegil\SijupriUkom\Dtos\RoomUkomQuestionDto;
+use Eyegil\SijupriUkom\Models\ExaminerRoomUkom;
+use Eyegil\SijupriUkom\Models\ExaminerSchedule;
 use Eyegil\SijupriUkom\Models\ExamQuestion;
 use Eyegil\SijupriUkom\Models\ExamSchedule;
+use Eyegil\SijupriUkom\Models\ExamScheduleSupervised;
 use Eyegil\SijupriUkom\Models\ParticipantRoomUkom;
 use Eyegil\SijupriUkom\Models\ParticipantUkom;
 use Eyegil\SijupriUkom\Models\RoomUkom;
@@ -23,13 +26,13 @@ use Illuminate\Support\Facades\Log;
 class RoomUkomService
 {
     public function __construct(
-        private DocumentUkomService $documentUkomService,
         private BidangJabatanService $bidangJabatanService,
         private ParticipantRoomUkomService $participantRoomUkomService,
         private UkomBanService $ukomBanService,
         private ExamQuestionService $examQuestionService,
-        private SendNotifyService $sendNotifyService
-    ) {}
+        private SendNotifyService $sendNotifyService,
+    ) {
+    }
 
     public function findSearch(Pageable $pageable)
     {
@@ -47,7 +50,9 @@ class RoomUkomService
     {
         $search = $this->examQuestionService->findSearch($pageable, $exam_type_code, $room_ukom_id);
         return $search->setCollection($search->getCollection()->map(function (ExamQuestion $examQuestion) {
-            return $examQuestion->question;
+            $question = $examQuestion->question;
+            $question->questionGroup;
+            return $question;
         }));
     }
 
@@ -71,13 +76,6 @@ class RoomUkomService
         });
     }
 
-    public function setQuestion(RoomUkomQuestionDto $RoomUkomQuestionDto)
-    {
-        DB::transaction(function () use ($RoomUkomQuestionDto) {
-            $this->examQuestionService->save($RoomUkomQuestionDto);
-        });
-    }
-
     public function update(RoomUkomDto $roomUkomDto)
     {
         DB::transaction(function () use ($roomUkomDto) {
@@ -94,6 +92,7 @@ class RoomUkomService
 
             $roomUkom->fromArray($roomUkomDto->toArray());
             $roomUkom->updated_by = $userContext->id;
+            $roomUkom->bidang_jabatan_code = $roomUkomDto->bidang_jabatan_code;
             $roomUkom->exam_start_at = Carbon::parse($roomUkomDto->exam_start_at);
             $roomUkom->exam_end_at = Carbon::parse($roomUkomDto->exam_end_at);
             $roomUkom->save();
@@ -119,6 +118,30 @@ class RoomUkomService
         });
     }
 
+    public function setExaminer(ExaminerRoomDto $examinerRoomDto)
+    {
+        DB::transaction(function () use ($examinerRoomDto) {
+            $roomUkom = $this->findById($examinerRoomDto->room_id);
+            
+            ExaminerRoomUkom::where("room_id", $roomUkom->id)->delete();
+            ExaminerSchedule::whereHas("examSchedule", function ($query) use ($roomUkom) {
+                $query->where("room_ukom_id", $roomUkom->id)
+                    ->where("start_time", "<", now());
+            })->delete();
+            ExamScheduleSupervised::whereHas("examinerSchedule.examSchedule", function ($query) use ($roomUkom) {
+                $query->where("room_ukom_id", $roomUkom->id)
+                    ->where("start_time", "<", now());
+            })->delete();
+
+            foreach ($examinerRoomDto->examiner_id_list as $key => $examiner_id) {
+                $examinerRoomUkom = new ExaminerRoomUkom();
+                $examinerRoomUkom->room_id = $roomUkom->id;
+                $examinerRoomUkom->examiner_id = $examiner_id;
+                $examinerRoomUkom->saveWithUUid();
+            }
+        });
+    }
+
     public function registeringRoom()
     {
         DB::transaction(function () {
@@ -127,13 +150,23 @@ class RoomUkomService
                 "inactive_flag" => true
             ]);
 
-            $roomUkomDtoList = RoomUkom::select("ukm_room.*")
-                ->leftJoin("ukm_participant_room", "ukm_room.id", "=", "ukm_participant_room.room_id")
-                ->where("exam_start_at", ">=", Carbon::now()->addDays(3))
+            $roomUkomDtoList = RoomUkom::selectRaw("
+                ukm_room.*, 
+                COUNT(ukm_participant_room.id) as participant_count,
+                (ukm_room.participant_quota - COUNT(ukm_participant_room.id)) as remaining_quota
+            ")->leftJoin("ukm_participant_room", "ukm_room.id", "=", "ukm_participant_room.room_id")
+                ->where("exam_start_at", ">=", Carbon::now())
+                ->where("ukm_room.inactive_flag", false)
+                ->where("ukm_room.delete_flag", false)
                 ->groupBy("ukm_room.id")
                 ->havingRaw("COUNT(ukm_participant_room.id) < ukm_room.participant_quota")
-                ->get()->map(function (RoomUkom $roomUkom) {
-                    return (new RoomUkomDto())->fromModel($roomUkom);
+                ->get()
+                ->map(function (RoomUkom $roomUkom) {
+
+                    $dto = (new RoomUkomDto())->fromModel($roomUkom);
+                    $dto->participant_quota = $roomUkom->remaining_quota;
+
+                    return $dto;
                 });
 
 

@@ -10,7 +10,7 @@ class UkomGradeConverter
     public static function toDto(UkomGrade $ukomGrade): UkomGradeDto
     {
         $ukomGradeDto = new UkomGradeDto();
-        $ukomGradeDto->fromModel($ukomGrade);
+        $ukomGradeDto->fromModel(model: $ukomGrade);
 
         $catGrade = $ukomGrade->catGrade;
         if ($catGrade) {
@@ -31,6 +31,10 @@ class UkomGradeConverter
         $portofolioGrade = $ukomGrade->portofolioGrade;
         if ($portofolioGrade) {
             $ukomGradeDto->portofolio_grade_score = $portofolioGrade->score;
+        }
+        $studiKasusGrade = $ukomGrade->studiKasusGrade;
+        if ($studiKasusGrade) {
+            $ukomGradeDto->studi_kasus_grade_score = $studiKasusGrade->score;
         }
 
 

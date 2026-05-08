@@ -13,6 +13,7 @@ class ParticipantUkomDto extends UserDto
     public $phone;
     public $email;
     public $age;
+    public $tempat_lahir;
     public $tanggal_lahir;
     public $participant_status;
 
@@ -29,19 +30,25 @@ class ParticipantUkomDto extends UserDto
     public $pendidikan_terakhir_name;
     public $jurusan;
     public $predikat_kinerja_1_id;
+    public $predikat_kinerja1_id;
     public $predikat_kinerja_1_name;
+    public $predikat_kinerja1_name;
     public $predikat_kinerja_2_id;
+    public $predikat_kinerja2_id;
     public $predikat_kinerja_2_name;
-    public $is_mengulang;
+    public $predikat_kinerja2_name;
+    public bool $is_mengulang;
 
 
     public $jenis_ukom;
     public $rekomendasi;
     public $rekomendasi_url;
-    public $rekomendasi_file;
+    public $file_rekomendasi;
     public $pangkat_code;
     public $pangkat_name;
+    public $tmt_pangkat;
     public $jabatan_name;
+    public $tmt_jabatan;
     public $jenjang_name;
     public $next_jabatan_code;
     public $next_jabatan_name;
@@ -70,13 +77,14 @@ class ParticipantUkomDto extends UserDto
         if ($this->jenis_ukom == JenisUkom::KENAIKAN_JENJANG->value) {
             return $this->validate([
                 'dokumen_ukom_list' => 'required|array',
+                "next_jenjang_code" => "required|string",
             ]);
         } else if ($this->jenis_ukom == JenisUkom::PERPINDAHAN_JABATAN->value) {
             return $this->validate([
                 'next_jabatan_code' => 'required|string',
-                'next_jenjang_code' => 'required|string',
+                "next_jenjang_code" => "required|string",
                 'dokumen_ukom_list' => 'required|array',
-            "password" => "required|string",
+                "password" => "required|string",
             ]);
         }
     }
@@ -113,6 +121,18 @@ class ParticipantUkomDto extends UserDto
                 'next_jenjang_code' => 'required|string',
                 'dokumen_ukom_list' => 'required|array',
             ]);
+        } else if ($this->jenis_ukom == JenisUkom::KENAIKAN_JENJANG->value) {
+            return $this->validate([
+                'nip' => 'required|string',
+                'name' => 'required|string',
+                'email' => 'required|string',
+                "jabatan_name" => "required|string",
+                "jenjang_name" => "required|string",
+                "unit_kerja_name" => "required|string",
+                'next_jabatan_code' => 'required|string',
+                'next_jenjang_code' => 'required|string',
+                'dokumen_ukom_list' => 'required|array',
+            ]);
         }
     }
 
@@ -120,6 +140,21 @@ class ParticipantUkomDto extends UserDto
     {
         return $this->validate([
             "dokumen_ukom_list" => "required|array",
+        ]);
+    }
+
+    public function validateUploadRekomendasi()
+    {
+        return $this->validate([
+            "id" => "required",
+            "file_rekomendasi" => "required",
+        ]);
+    }
+
+    public function validateUploadRekomendasiBatch()
+    {
+        return $this->validate([
+            "compressed_file" => "required",
         ]);
     }
 }

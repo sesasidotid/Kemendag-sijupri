@@ -29,6 +29,10 @@ class DokumenPersyaratan extends Metadata
     private $additional_4;
     #[Column(["type" => "string", "nullable" => true])]
     private $additional_5;
+    #[Column(["type" => "string", "nullable" => true])]
+    private $additional_6;
+    #[Column(["type" => "string", "nullable" => true])]
+    private $additional_7;
 
     protected $fillable = ['id', 'association'];
     public function __construct()

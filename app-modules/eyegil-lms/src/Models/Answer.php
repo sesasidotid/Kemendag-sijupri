@@ -24,12 +24,20 @@ class Answer extends Updatable
     private $answer_upload;
     #[Column(["type" => "text", "nullable" => true, "enum" => Choices::class])]
     private $answer_choice;
-    #[Column(["type" => "string", "index" => true])]
-    private $exam_id;
+    #[Column(["type" => "text", "nullable" => true])]
+    private $answer_list;
+    #[Column(["type" => "float", "nullable" => true])]
+    private $score;
+    #[Column(["type" => "boolean", "default" => false])]
+    private $is_uncertain;
     #[Column(["type" => "string", "index" => true])]
     private $participant_id;
     #[Column(["type" => "string", "foreign" => Question::class])]
     private $question_id;
+
+    protected $casts = [
+        'answer_list' => 'array',
+    ];
 
     protected $fillable = ['id', 'answer', 'type', 'metadata', 'participant_id', 'question_id'];
     public function __construct()

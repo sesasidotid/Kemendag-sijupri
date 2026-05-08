@@ -30,6 +30,7 @@ class ParticipantUkomPendingTaskDto extends BaseDto
     public $phone;
     public $email;
     public $age;
+    public $tempat_lahir;
     public $tanggal_lahir;
     public $participant_status;
 
@@ -48,12 +49,14 @@ class ParticipantUkomPendingTaskDto extends BaseDto
     public $predikat_kinerja_1_name;
     public $predikat_kinerja_2_id;
     public $predikat_kinerja_2_name;
-    public $is_mengulang;
+    public bool $is_mengulang;
 
     public $jenis_ukom;
     public $pangkat_code;
     public $pangkat_name;
+    public $tmt_pangkat;
     public $jabatan_name;
+    public $tmt_jabatan;
     public $jenjang_name;
     public $rekomendasi;
     public $rekomendasi_url;

@@ -9,4 +9,6 @@ enum ExamTypes: string
     case SEMINAR = "SEMINAR";
     case PRAKTIK = "PRAKTIK";
     case PORTOFOLIO = "PORTOFOLIO";
+    case MAKALAH = "MAKALAH";
+    case STUDI_KASUS = "STUDI_KASUS";
 }

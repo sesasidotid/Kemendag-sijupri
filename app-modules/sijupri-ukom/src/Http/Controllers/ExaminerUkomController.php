@@ -17,7 +17,8 @@ class ExaminerUkomController
 {
     public function __construct(
         private ExaminerUkomService $examinerUkomService,
-    ) {}
+    ) {
+    }
 
     #[Get("/search")]
     public function findSearch(Request $request)
@@ -29,6 +30,12 @@ class ExaminerUkomController
     public function findById(Request $request)
     {
         return $this->examinerUkomService->findById($request->id);
+    }
+
+    #[Get("/room/{room_id}")]
+    public function findByRoomId($room_id)
+    {
+        return $this->examinerUkomService->findByRoomId($room_id);
     }
 
     #[Post()]

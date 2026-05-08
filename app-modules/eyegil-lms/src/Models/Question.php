@@ -28,10 +28,19 @@ class Question extends Updatable
     #[Column(["type" => "string", "nullable" => true])]
     private $attachment;
 
+    #[Column(["type" => "float", "nullable" => true])]
+    private $weight;
+
+    #[Column(["type" => "text", "nullable" => true])]
+    private $hint;
+
     #[Column(["type" => "string", "index" => true])]
     private $module_id;
 
-    protected $fillable = ['id', 'question', 'type', 'metadata', 'module_id'];
+    #[Column(["type" => "string", "foreign" => Question::class, "nullable" => true])]
+    private $parent_question_id;
+
+    protected $fillable = ['id', 'question', 'type', 'metadata', 'module_id', 'parent_question_id', 'attachment'];
     public function __construct()
     {
         $this->fillable = array_merge($this->fillable, parent::getFillable());
@@ -46,7 +55,23 @@ class Question extends Updatable
         return $this->hasMany(MultipleChoice::class, "question_id", "id");
     }
 
-    public function questionGroup() {
+    public function checkList()
+    {
+        return $this->hasMany(Checklist::class, "question_id", "id");
+    }
+
+    public function questionGroup()
+    {
         return $this->hasOne(QuestionGroup::class, "question_id", "id");
+    }
+
+    public function parentQuestion()
+    {
+        return $this->belongsTo(Question::class, "parent_question_id", "id");
+    }
+
+    public function childQuestionList()
+    {
+        return $this->hasMany(Question::class, "parent_question_id", "id");
     }
 }

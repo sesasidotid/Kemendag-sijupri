@@ -173,7 +173,62 @@ class NotificationSeeder extends Seeder
                     "code" => NotificationTemplateCode::FORGOT_PASSWORD,
                 ],
                 [
-                    "template" => '<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Pendaftaran UKom</title>    <style>        body {            font-family: Arial, sans-serif;            margin: 0;            padding: 0;            background-color: #f4f4f4;        }        .email-container {            width: 100%;            max-width: 600px;            margin: 0 auto;            background-color: #ffffff;            padding: 20px;            box-sizing: border-box;            border-radius: 8px;            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);        }        .email-header {            text-align: left;            padding-bottom: 20px;            border-bottom: 1px solid #eeeeee;        }        .email-header h1 {            color: #333333;            font-size: 24px;        }        .email-content {            margin-top: 20px;            text-align: left;        }        .email-content p {            font-size: 16px;            color: #555555;        }        .btn {            display: inline-block;            padding: 12px 25px;            margin-top: 20px;            background-color: #ff0000;            color: #ffffff;            text-decoration: none;            border-radius: 5px;            font-size: 16px;            margin: 10px 0;        }        .btn:hover {            background-color: #b34b00;        }        .btn-secondary {            background-color: #28a745;        }        .btn-secondary:hover {            background-color: #218838;        }        /* Center the image */        .email-content img {            display: block;            margin: 20px auto;            max-width: 100%;        }    </style></head><body>    <div class="email-container">        <div class="email-header">            <h1>Halo, $name</h1>        </div>        <div class="email-content">            <p>Selamat anda telah berhasil mendaftar uji kompetensi JF Perdagangan Tahun $year. Gunakan kode atau qr                code berikut untuk mengetahui proses selanjutnya.</p>            <a href="$page_url">                $page_url            </a>            <img src="$image_url"                alt="QR Code">        </div>    </div></body></html><!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Pendaftaran UKom</title>    <style>        body {            font-family: Arial, sans-serif;            margin: 0;            padding: 0;            background-color: #f4f4f4;        }        .email-container {            width: 100%;            max-width: 600px;            margin: 0 auto;            background-color: #ffffff;            padding: 20px;            box-sizing: border-box;            border-radius: 8px;            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);        }        .email-header {            text-align: left;            padding-bottom: 20px;            border-bottom: 1px solid #eeeeee;        }        .email-header h1 {            color: #333333;            font-size: 24px;        }        .email-content {            margin-top: 20px;            text-align: left;        }        .email-content p {            font-size: 16px;            color: #555555;        }        .btn {            display: inline-block;            padding: 12px 25px;            margin-top: 20px;            background-color: #ff0000;            color: #ffffff;            text-decoration: none;            border-radius: 5px;            font-size: 16px;            margin: 10px 0;        }        .btn:hover {            background-color: #b34b00;        }        .btn-secondary {            background-color: #28a745;        }        .btn-secondary:hover {            background-color: #218838;        }        /* Center the image */        .email-content img {            display: block;            margin: 20px auto;            max-width: 100%;        }    </style></head><body>    <div class="email-container">        <div class="email-header">            <h1>Halo, $name</h1>        </div>        <div class="email-content">            <p>Klik url di bawah ini untuk mengubah password anda. jikalau anda tidak mengingat melakukan perintah ini silahkan untuk mengabaikan perintah ini.</p> <a href="$page_url"> $page_url </a>         </div>    </div></body></html>',
+                    "template" => '<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Pendaftaran UKom</title>    <style>        body {            font-family: Arial, sans-serif;            margin: 0;            padding: 0;            background-color: #f4f4f4;        }        .email-container {            width: 100%;            max-width: 600px;            margin: 0 auto;            background-color: #ffffff;            padding: 20px;            box-sizing: border-box;            border-radius: 8px;            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);        }        .email-header {            text-align: left;            padding-bottom: 20px;            border-bottom: 1px solid #eeeeee;        }        .email-header h1 {            color: #333333;            font-size: 24px;        }        .email-content {            margin-top: 20px;            text-align: left;        }        .email-content p {            font-size: 16px;            color: #555555;        }        .btn {            display: inline-block;            padding: 12px 25px;            margin-top: 20px;            background-color: #ff0000;            color: #ffffff;            text-decoration: none;            border-radius: 5px;            font-size: 16px;            margin: 10px 0;        }        .btn:hover {            background-color: #b34b00;        }        .btn-secondary {            background-color: #28a745;        }        .btn-secondary:hover {            background-color: #218838;        }        /* Center the image */        .email-content img {            display: block;            margin: 20px auto;            max-width: 100%;        }    </style></head><body>    <div class="email-container">        <div class="email-header">            <h1>Halo, $name</h1>        </div>        <div class="email-content">            <p>Klik url di bawah ini untuk mengubah password anda. jikalau anda tidak mengingat melakukan perintah ini                silahkan untuk mengabaikan perintah ini.</p> <a href="$page_url"> $page_url </a>        </div>    </div></body></html>',
+                    "parent_code" => null,
+                    "notification_code" => NotificationCode::SMTP
+                ]
+            );
+
+            NotificationTemplate::updateOrCreate(
+                [
+                    "code" => NotificationTemplateCode::NOTIFY_AMEND_UKOM,
+                ],
+                [
+                    "template" => "Halo,\n\nPermintaan UKom anda perlu diperbaiki.",
+                    "parent_code" => null,
+                    "notification_code" => NotificationCode::FIREBASE
+                ]
+            );
+
+            NotificationTemplate::updateOrCreate(
+                [
+                    "code" => NotificationTemplateCode::NOTIFY_REJECT_UKOM,
+                ],
+                [
+                    "template" => "Halo,\n\nPendaftaran UKom anda telah di tolak.",
+                    "parent_code" => null,
+                    "notification_code" => NotificationCode::FIREBASE
+                ]
+            );
+
+            NotificationTemplate::updateOrCreate(
+                [
+                    "code" => NotificationTemplateCode::NOTIFY_FINISH_UKOM,
+                ],
+                [
+                    "template" => "Halo,\n\nPermintaan UKom anda telah selesai.",
+                    "parent_code" => null,
+                    "notification_code" => NotificationCode::FIREBASE
+                ]
+            );
+            
+            NotificationTemplate::updateOrCreate(
+                [
+                    "code" => NotificationTemplateCode::NOTIFY_UKOM_SCHEDULE,
+                ],
+                [
+                    "template" => '<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Pendaftaran UKom</title>    <style>        body {            font-family: Arial, sans-serif;            margin: 0;            padding: 0;            background-color: #f4f4f4;        }        .email-container {            width: 100%;            max-width: 600px;            margin: 0 auto;            background-color: #ffffff;            padding: 20px;            box-sizing: border-box;            border-radius: 8px;            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);        }        .email-header {            text-align: left;            padding-bottom: 20px;            border-bottom: 1px solid #eeeeee;        }        .email-header h1 {            color: #333333;            font-size: 24px;        }        .email-content {            margin-top: 20px;            text-align: left;        }        .email-content p {            font-size: 16px;            color: #555555;        }        .btn {            display: inline-block;            padding: 12px 25px;            margin-top: 20px;            background-color: #ff0000;            color: #ffffff;            text-decoration: none;            border-radius: 5px;            font-size: 16px;            margin: 10px 0;        }        .btn:hover {            background-color: #b34b00;        }        .btn-secondary {            background-color: #28a745;        }        .btn-secondary:hover {            background-color: #218838;        }        /* Center the image */        .email-content img {            display: block;            margin: 20px auto;            max-width: 100%;        }    </style></head><body>    <div class="email-container">        <div class="email-header">            <h1>Halo, Bapak/Ibu</h1>        </div>        <div class="email-content">            <p>Berikut adalah jadwal pelaksanaan UKom :</a>            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">                <tr>                    <th style="border: 1px solid #dddddd; padding: 8px;">pelaksanaan</th>                    <th style="border: 1px solid #dddddd; padding: 8px;">Waktu Dimulai</th>                    <th style="border: 1px solid #dddddd; padding: 8px;">Waktu Berakhir</th>                </tr>                $SMTP_0006        </div>    </div></body></html>',
+                    "parent_code" => null,
+                    "notification_code" => NotificationCode::SMTP
+                ]
+            );
+            
+            NotificationTemplate::updateOrCreate(
+                [
+                    "code" => NotificationTemplateCode::NOTIFY_UKOM_SCHEDULE_CHILD,
+                ],
+                [
+                    "template" => '<tr>                    <td style="border: 1px solid #dddddd; padding: 8px;">$exam_type</td>                    <td style="border: 1px solid #dddddd; padding: 8px;">$start_time</td>                    <td style="border: 1px solid #dddddd; padding: 8px;">$end_time</td>                </tr>',
                     "parent_code" => null,
                     "notification_code" => NotificationCode::SMTP
                 ]

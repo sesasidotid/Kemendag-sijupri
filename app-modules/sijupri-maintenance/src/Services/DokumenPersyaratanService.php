@@ -33,7 +33,10 @@ class DokumenPersyaratanService
 
     public function findByAssociation($association)
     {
-        return DokumenPersyaratan::where('association', $association)->where('delete_flag', false)->get();
+        return DokumenPersyaratan::where('association', $association)
+            ->where('delete_flag', false)
+            ->orderBy('date_created', 'desc')
+            ->get();
     }
 
     public function findByAssociationAndAdditionals($association, array $additionals)
@@ -43,7 +46,9 @@ class DokumenPersyaratanService
             if ($additional)
                 $query->where($key, $additional);
         }
-        return $query->get();
+        return $query
+            ->orderBy('date_created', 'desc')
+            ->get();
     }
 
     public function save(DokumenPersyaratanDto $dokumenPersyaratanDto)
@@ -51,6 +56,19 @@ class DokumenPersyaratanService
         return DB::transaction(function () use ($dokumenPersyaratanDto) {
             $userContext = user_context();
             $dokumenPersyaratan = new DokumenPersyaratan();
+            $dokumenPersyaratan->fromArray($dokumenPersyaratanDto->toArray());
+            $dokumenPersyaratan->created_by = $userContext->id;
+            $dokumenPersyaratan->saveWithUUid();
+
+            return $dokumenPersyaratan;
+        });
+    }
+
+    public function update(DokumenPersyaratanDto $dokumenPersyaratanDto)
+    {
+        return DB::transaction(function () use ($dokumenPersyaratanDto) {
+            $userContext = user_context();
+            $dokumenPersyaratan = $this->findById($dokumenPersyaratanDto->id);
             $dokumenPersyaratan->fromArray($dokumenPersyaratanDto->toArray());
             $dokumenPersyaratan->created_by = $userContext->id;
             $dokumenPersyaratan->saveWithUUid();

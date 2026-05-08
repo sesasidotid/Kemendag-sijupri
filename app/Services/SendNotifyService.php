@@ -145,12 +145,28 @@ class SendNotifyService
         $this->notificationService->sendToUserIds("firebase", [$nip], NotificationTemplateCode::NOTIFY_AKP_PERSONAL->value, $notificationDto);
     }
 
+    public function notifyAmendUkom(NotificationDto $notificationDto, $nip)
+    {
+        $notificationDto->subject = "Dokumen UKom Telah Ditolak. Mohon di perbaiki";
+        $notificationDto->additionalData = $notificationDto->additionalData ?? [];
+        $notificationDto->additionalData['category'] = "ukom";
+        $this->notificationService->sendToUserIds("firebase", [$nip], NotificationTemplateCode::NOTIFY_AMEND_UKOM->value, $notificationDto);
+    }
+
     public function notifyRejectUkom(NotificationDto $notificationDto, $nip)
     {
-        $notificationDto->subject = "Dokumen UKom Telah Ditolak";
+        $notificationDto->subject = "Pendaftaran UKom anda telah di tolak";
         $notificationDto->additionalData = $notificationDto->additionalData ?? [];
         $notificationDto->additionalData['category'] = "ukom";
         $this->notificationService->sendToUserIds("firebase", [$nip], NotificationTemplateCode::NOTIFY_REJECT_UKOM->value, $notificationDto);
+    }
+
+    public function notifyFinishUkom(NotificationDto $notificationDto, $nip)
+    {
+        $notificationDto->subject = "Pendaftaran UKom anda telah di terima";
+        $notificationDto->additionalData = $notificationDto->additionalData ?? [];
+        $notificationDto->additionalData['category'] = "ukom";
+        $this->notificationService->sendToUserIds("firebase", [$nip], NotificationTemplateCode::NOTIFY_FINISH_UKOM->value, $notificationDto);
     }
 
     // SMTP WITH TOPIC
@@ -227,5 +243,11 @@ class SendNotifyService
     {
         $notificationDto->subject = "Registrasi Ukom";
         $this->notificationService->sendTo("smtp", [$email], NotificationTemplateCode::NOTIFY_UKOM_REG_NON_JF->value, $notificationDto);
+    }
+
+    public function sendEmailExamSchedule(NotificationDto $notificationDto, $email)
+    {
+        $notificationDto->subject = "Jadwal Ukom";
+        $this->notificationService->sendTo("smtp", [$email], NotificationTemplateCode::NOTIFY_UKOM_SCHEDULE->value, $notificationDto);
     }
 }

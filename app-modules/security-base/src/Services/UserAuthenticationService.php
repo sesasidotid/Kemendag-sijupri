@@ -5,9 +5,11 @@ namespace Eyegil\SecurityBase\Services;
 use Eyegil\Base\Exceptions\BusinessException;
 use Eyegil\SecurityBase\Dtos\MenuDto;
 use Eyegil\SecurityBase\Dtos\UserDto;
+use Eyegil\SecurityBase\Enums\UserStatus;
 use Eyegil\SecurityBase\LoginContext;
 use Eyegil\SecurityBase\Models\ApplicationChannel;
 use Eyegil\SecurityBase\Models\UserApplicationChannel;
+use Illuminate\Database\RecordNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class UserAuthenticationService
@@ -53,6 +55,9 @@ class UserAuthenticationService
         $auth_type = $authentication_type ?? $this->default_authentication_type;
 
         $user = $this->userService->findById($user_id);
+        if ($user->status == UserStatus::DELETED->value || $user->delete_flag == true) {
+            throw new RecordNotFoundException("User not found");
+        }
         if (!UserApplicationChannel::where('user_id', $user_id)->where('application_code', $application_code)->first()) {
             throw new BusinessException("not authorized for authentication", "");
         }
@@ -159,7 +164,7 @@ class UserAuthenticationService
         $urlMap = [];
 
         foreach ($input as $key => $value) {
-            $seperation =  explode("|", $value);
+            $seperation = explode("|", $value);
             $url = $seperation[0];
             $combination = $seperation[1];
 

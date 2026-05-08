@@ -114,11 +114,11 @@ class NotificationMessageService implements INotificationDriverService
         return DB::transaction(function () {
             $deletedForUsers = NotificationMessage::whereNotNull('user_id')
                 ->where('read', true)
-                ->where('expire_date', '<', Carbon::now())
+                ->where('expiry_date', '<', Carbon::now())
                 ->delete();
 
             $deletedForTopics = NotificationMessage::whereNotNull('notification_topic_code')
-                ->where('expire_date', '<', Carbon::now())
+                ->where('expiry_date', '<', Carbon::now())
                 ->delete();
 
             return ["deletedForUsers" => $deletedForUsers, "deletedForTopics" => $deletedForTopics];

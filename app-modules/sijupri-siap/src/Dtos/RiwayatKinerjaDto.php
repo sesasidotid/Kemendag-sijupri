@@ -54,4 +54,31 @@ class RiwayatKinerjaDto extends BaseDto
             'predikat_kinerja_id' => 'required',
         ]);
     }
+
+    public function validateTask()
+    {
+        return $this->validate([
+            'type' => 'required',
+            'date_start' => 'required',
+            'date_end' => 'required',
+            'angka_kredit' => 'required',
+            'doc_evaluasi' => 'required',
+            'doc_evaluasi_url' => 'required',
+            'doc_predikat' => 'required',
+            'doc_predikat_url' => 'required',
+            'doc_akumulasi_ak' => 'required',
+            'doc_akumulasi_ak_url' => 'required',
+            'doc_penetapan_ak' => 'required',
+            'doc_penetapan_ak_url' => 'required',
+            'rating_hasil_id' => 'required',
+            'rating_hasil_name' => 'required',
+            'rating_hasil_value' => 'required',
+            'rating_kinerja_id' => 'required',
+            'rating_kinerja_name' => 'required',
+            'rating_kinerja_value' => 'required',
+            'predikat_kinerja_id' => 'required',
+            'predikat_kinerja_name' => 'required',
+            'predikat_kinerja_value' => 'required',
+        ]);
+    }
 }

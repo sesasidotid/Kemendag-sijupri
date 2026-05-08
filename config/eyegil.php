@@ -275,6 +275,23 @@ return [
                     ]
                 ]
             ],
+            'ukomCatReport' => [
+                'input' => env("BASE_PROJECT") . "storage/app/report/ukomCatReport.jasper",
+                'name' => 'Ukom Report',
+                'storage_engine' => 'system',
+                'report_engine' => 'jasper',
+                'fileTypes' => ['xlsx', 'xls', 'csv'],
+                'parameter' => [
+                    'date_from' => [
+                        'type' => JasperDataType::Date,
+                        'required' => true,
+                    ],
+                    'date_to' => [
+                        'type' => JasperDataType::Date,
+                        'required' => true,
+                    ]
+                ]
+            ],
         ],
     ],
 
@@ -310,6 +327,11 @@ return [
         "secretKey" => env("CAPTCHA_SECRET_KEY"),
     ],
 
+    "backup" => [
+        "enable" => env("BACKUP_ENABLED", false),
+        "path" => env("BACKUP_PATH", "/home"),
+    ],
+
     "middlewares" => [
         "global" => ['response_handler', "case_support", "client", "auth:api", "request_context", "user_context"],
         "local" => [
@@ -317,6 +339,7 @@ return [
                 "excludes" => ["client", "auth:api", "request_context", "user_context"],
                 "includes" => [],
                 "routes" => [
+                    "/api/v1/exam_schedule/testing_aja",
                     "/api/v1/application",
                     "/storage_system/{bucket_id}/{object_name}",
                     "/api/v1/akp/reviewer/{reviewer}/{id}",
@@ -357,6 +380,9 @@ return [
                     "/api/v1/bidang_jabatan/jabatan/{jabatan_code}",
                     "/api/v1/forgot_password" => ["post"],
                     "/api/v1/password/forgot" => ["put"],
+                    "/api/v1/exam_type",
+                    "/api/v1/ukom_grade/participant",
+                    "/api/v1/exam_grade/{exam_schedule_id}",
                 ]
             ],
         ],

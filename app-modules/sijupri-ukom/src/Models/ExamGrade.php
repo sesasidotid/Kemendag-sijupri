@@ -2,9 +2,9 @@
 
 namespace Eyegil\SijupriUkom\Models;
 
+use Deprecated;
 use Eyegil\Base\Commons\Migration\Column;
 use Eyegil\Base\Models\Creatable;
-use Eyegil\EyegilLms\Models\QuestionGroup;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ExamGrade extends Creatable
@@ -19,17 +19,28 @@ class ExamGrade extends Creatable
     #[Column(["type" => "string", "primary" => true])]
     private $id;
 
-    #[Column(["type" => "string", "foreign" => ExamType::class])]
-    private $exam_type_code;
-
-    #[Column(["type" => "string", "foreign" => RoomUkom::class])]
-    private $room_ukom_id;
+    #[Column(["type" => "double", "nullable" => true])]
+    private $score;
 
     #[Column(["type" => "string", "foreign" => ParticipantUkom::class, 'cascade' => ['DELETE']])]
     private $participant_id;
 
-    #[Column(["type" => "double", "default" => 0])]
-    private $score;
+    // new column
+    #[Column(["type" => "string", "nullable" => false, "foreign" => ExamSchedule::class, 'cascade' => ['DELETE']])]
+    private $exam_schedule_id;
+
+    // new column
+    #[Column(["type" => "boolean", "default" => false])]
+    private $inactive_flag;
+
+    // waiting for remove
+    // #[Deprecated]
+    // #[Column(["type" => "string", "foreign" => ExamType::class])]
+    // private $exam_type_code;
+
+    // #[Deprecated]
+    // #[Column(["type" => "string", "foreign" => RoomUkom::class])]
+    // private $room_ukom_id;
 
     protected $fillable = ['id', 'exam_type_code', 'room_ukom_id', 'participant_id', 'score'];
     public function __construct()
@@ -37,9 +48,13 @@ class ExamGrade extends Creatable
         $this->fillable = array_merge($this->fillable, parent::getFillable());
     }
 
-    public function examQuestionList()
+    public function participant()
     {
-        return $this->hasMany(ExamQuestion::class, 'exam_type_code', 'exam_type_code')
-            ->whereColumn('ukm_exam_question.room_ukom_id', 'room_ukom_id');
+        return $this->belongsTo(ParticipantUkom::class, 'participant_id', 'id');
+    }
+
+    public function examSchedule()
+    {
+        return $this->belongsTo(ExamSchedule::class, 'exam_schedule_id', 'id');
     }
 }

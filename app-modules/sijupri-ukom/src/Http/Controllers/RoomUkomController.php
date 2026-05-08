@@ -9,6 +9,7 @@ use Eyegil\Base\Commons\Rest\Put;
 use Eyegil\Base\Commons\Rest\Delete;
 use Eyegil\Base\Pageable;
 use Eyegil\SijupriUkom\Converters\RoomUkomConverter;
+use Eyegil\SijupriUkom\Dtos\ExaminerRoomDto;
 use Eyegil\SijupriUkom\Dtos\RoomUkomDto;
 use Eyegil\SijupriUkom\Dtos\RoomUkomQuestionDto;
 use Eyegil\SijupriUkom\Services\ExamScheduleService;
@@ -21,7 +22,8 @@ class RoomUkomController
     public function __construct(
         private RoomUkomService $roomUkomService,
         private ExamScheduleService $examScheduleService,
-    ) {}
+    ) {
+    }
 
     #[Get("/search")]
     public function findSearch(Request $request)
@@ -45,7 +47,7 @@ class RoomUkomController
     public function saveExamSchedule(Request $request)
     {
         $roomUkomDto = RoomUkomDto::fromRequest($request)->validateSaveSchedule();
-        return $this->examScheduleService->save($roomUkomDto);
+        return $this->examScheduleService->replace($roomUkomDto);
     }
 
     #[Post()]
@@ -55,12 +57,19 @@ class RoomUkomController
         return $this->roomUkomService->save($roomUkomDto);
     }
 
-    #[Post("/question")]
-    public function setQuestion(Request $request)
+    #[Post("/examiner")]
+    public function setExaminer(Request $request)
     {
-        $roomUkomDto = RoomUkomQuestionDto::fromRequest($request)->validateSave();
-        return $this->roomUkomService->setQuestion($roomUkomDto);
+        $examinerRoomDto = ExaminerRoomDto::fromRequest($request)->validateSave();
+        return $this->roomUkomService->setExaminer($examinerRoomDto);
     }
+
+    // #[Post("/question")]
+    // public function setQuestion(Request $request)
+    // {
+    //     $roomUkomDto = RoomUkomQuestionDto::fromRequest($request)->validateSave();
+    //     return $this->roomUkomService->setQuestion($roomUkomDto);
+    // }
 
     #[Put()]
     public function update(Request $request)

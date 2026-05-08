@@ -19,9 +19,16 @@ class DocumentUkomDto extends BaseDto
     public $jenjang_code;
     public $jenjang_name;
     public $is_mengulang;
+    public $specification;
     public $participant_ukom_id;
 
     public $remark;
+
+    public function validateDokumenPersyaratanUpdate() {
+        return $this->validate([
+            "dokumen_persyaratan_id" => "required"
+        ]);
+    }
 
     public function validateFlow1Reject()
     {

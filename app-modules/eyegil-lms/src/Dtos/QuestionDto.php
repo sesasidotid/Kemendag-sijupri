@@ -17,10 +17,18 @@ class QuestionDto extends BaseDto
     public $association_id;
     public $association;
     public $group_id;
+    public $weight;
+    public $hint;
+    public $parent_question_id;
 
     public $multiple_choice_dto_list;
 
+    public $checklist_dto_list;
+
     public $answer_dto;
+
+    public $kompetensi_indikator_id;
+    public $kompetensi_indikator_name;
 
     public function validateSave()
     {

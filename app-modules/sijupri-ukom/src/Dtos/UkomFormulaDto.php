@@ -16,6 +16,7 @@ class UkomFormulaDto extends BaseDto
     public $seminar_percentage;
     public $praktik_percentage;
     public $portofolio_percentage;
+    public $studi_kasus_percentage;
     public $ukt_percentage;
     public $ukmsk_percentage;
     public $grade_threshold;

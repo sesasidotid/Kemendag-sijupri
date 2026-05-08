@@ -9,15 +9,17 @@ use Eyegil\SecurityBase\Services\UserService;
 use Eyegil\SijupriSiap\Dtos\JFDto;
 use Eyegil\SijupriSiap\Models\JF;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 class JFService
 {
     public function __construct(
         private UserAuthenticationService $userAuthenticationService,
         private UserService $userService,
-    ) {}
+    ) {
+    }
 
-    public function findSearch(Pageable $pageable)
+    public function findSearch(Pageable $pageable, $urlQuery)
     {
         $userContext = user_context();
         if ($userContext->application_code == "sijupri-instansi") {
@@ -26,9 +28,28 @@ class JFService
             $pageable->addEqual("unit_kerja_id", $userContext->getDetails("unit_kerja_id"));
         }
 
+        JF::query();
         $pageable->addEqual("delete_flag", false);
         $pageable->addEqual("inactive_flag", false);
-        return $pageable->with(['user'])->searchHas(JF::class, ['user', 'unitKerja']);
+        return $pageable->with(['user'])
+            ->setWhereQueries(function (Pageable $pageable, Builder $query) use ($urlQuery) {
+
+                if (!empty($urlQuery["eq_instansi_id"]) || !empty($urlQuery["eq_provinsi_id"]) || !empty($urlQuery["eq_kabupaten_id"]) || !empty($urlQuery["eq_kota_id"])) {
+
+                    $query->whereHas("unitKerja.instansi", function ($instansiQ) use ($urlQuery) {
+                        if (!empty($urlQuery["eq_kabupaten_id"])) {
+                            $instansiQ->where("kabupaten_id", $urlQuery["eq_kabupaten_id"]);
+                        } else if (!empty($urlQuery["eq_kota_id"])) {
+                            $instansiQ->where("kota_id", $urlQuery["eq_kota_id"]);
+                        } else if (!empty($urlQuery["eq_provinsi_id"])) {
+                            $instansiQ->where("provinsi_id", $urlQuery["eq_provinsi_id"]);
+                        } else if (!empty($urlQuery["eq_instansi_id"])) {
+                            $instansiQ->where("id", $urlQuery["eq_instansi_id"]);
+                        }
+                    });
+                }
+            }, false)
+            ->searchHas(JF::class, ['user', 'unitKerja']);
     }
 
     public function findAll()
@@ -58,10 +79,21 @@ class JFService
             $jfDto->channel_code_list = ['WEB', 'MOBILE'];
             $this->userAuthenticationService->register($jfDto);
 
-            $jf = new JF();
-            $jf->fromArray($jfDto->toArray());
-            $jf->created_by = $userContext->id;
-            $jf->save();
+            $jf = $this->findByNipV2($jfDto->nip);
+            if ($jf) {
+                $jf->fromArray($jfDto->toArray());
+                $jf->created_by = $userContext->id;
+                $jf->updated_by = null;
+                $jf->last_updated = null;
+                $jf->delete_flag = false;
+                $jf->inactive_flag = false;
+                $jf->save();
+            } else {
+                $jf = new JF();
+                $jf->fromArray($jfDto->toArray());
+                $jf->created_by = $userContext->id;
+                $jf->save();
+            }
 
             return $jf;
         });
@@ -72,7 +104,8 @@ class JFService
         return DB::transaction(function () use ($jfDto) {
             $userContext = user_context();
             if ($userContext->application_code == "sijupri-external" || $userContext->application_code == "sijupri-internal") {
-                if ($userContext->id != $jfDto->nip) throw new BusinessException("Violation Access", "XXXX-1");
+                if ($userContext->id != $jfDto->nip)
+                    throw new BusinessException("Violation Access", "XXXX-1");
             }
 
             $jfDto->id = $jfDto->nip;

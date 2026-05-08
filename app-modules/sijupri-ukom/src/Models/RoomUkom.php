@@ -45,7 +45,12 @@ class RoomUkom extends Updatable
 
     public function participantRoomUkomList()
     {
-        $this->hasMany(ParticipantRoomUkom::class, "room_id", "id");
+        return $this->hasMany(ParticipantRoomUkom::class, "room_id", "id");
+    }
+
+    public function examinerRoomUkomList()
+    {
+        return $this->hasMany(ExaminerRoomUkom::class, "room_id", "id");
     }
 
     public function jabatan()

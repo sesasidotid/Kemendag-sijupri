@@ -3,11 +3,10 @@
 namespace Eyegil\SijupriUkom\Models;
 
 use Eyegil\Base\Commons\Migration\Column;
-use Eyegil\Base\Models\Creatable;
-use Eyegil\EyegilLms\Models\QuestionGroup;
+use Eyegil\Base\Models\Updatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class UkomGrade extends Creatable
+class UkomGrade extends Updatable
 {
     use HasFactory;
 
@@ -21,54 +20,63 @@ class UkomGrade extends Creatable
 
 
 
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $nb_cat;
     #[Column(["type" => "string", "nullable" => true, "foreign" => ExamGrade::class])]
     private $cat_grade_id;
 
 
 
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $nb_wawancara;
     #[Column(["type" => "string", "nullable" => true, "foreign" => ExamGrade::class])]
     private $wawancara_grade_id;
 
 
 
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $nb_seminar;
+    #[Column(["type" => "string", "nullable" => true, "foreign" => ExamGrade::class])]
+    private $makalah_grade_id;
     #[Column(["type" => "string", "nullable" => true, "foreign" => ExamGrade::class])]
     private $seminar_grade_id;
 
 
 
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $nb_praktik;
     #[Column(["type" => "string", "nullable" => true, "foreign" => ExamGrade::class])]
     private $praktik_grade_id;
 
 
 
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $nb_portofolio;
     #[Column(["type" => "string", "nullable" => true, "foreign" => ExamGrade::class])]
     private $portofolio_grade_id;
 
 
 
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
+    private $nb_studi_kasus;
+    #[Column(["type" => "string", "nullable" => true, "foreign" => ExamGrade::class])]
+    private $studi_kasus_grade_id;
+
+
+
+    #[Column(["type" => "double", "nullable" => true])]
     private $jpm;
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $score;
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $ukt;
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $nb_ukt;
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $ukmsk;
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $weight;
-    #[Column(["type" => "double", "default" => 0])]
+    #[Column(["type" => "double", "nullable" => true])]
     private $grade;
     #[Column(["type" => "boolean", "default" => false])]
     private $passed;
@@ -76,7 +84,7 @@ class UkomGrade extends Creatable
     private $status;
     #[Column(["type" => "string", "foreign" => RoomUkom::class])]
     private $room_ukom_id;
-    #[Column(["type" => "string", "foreign" => ParticipantUkom::class])]
+    #[Column(["type" => "string", "foreign" => ParticipantUkom::class, 'cascade' => ['DELETE']])]
     private $participant_id;
 
     protected $fillable = ['id', 'room_ukom_id', 'exam_type_code', 'participant_ukom'];
@@ -100,6 +108,11 @@ class UkomGrade extends Creatable
         return $this->belongsTo(ExamGrade::class, 'seminar_grade_id', 'id');
     }
 
+    public function makalahGrade()
+    {
+        return $this->belongsTo(ExamGrade::class, 'makalah_grade_id', 'id');
+    }
+
     public function praktikGrade()
     {
         return $this->belongsTo(ExamGrade::class, 'praktik_grade_id', 'id');
@@ -110,6 +123,11 @@ class UkomGrade extends Creatable
         return $this->belongsTo(ExamGrade::class, 'portofolio_grade_id', 'id');
     }
 
+    public function studiKasusGrade()
+    {
+        return $this->belongsTo(ExamGrade::class, 'studi_kasus_grade_id', 'id');
+    }
+
     public function participantUkom()
     {
         return $this->belongsTo(ParticipantUkom::class, 'participant_id', 'id');
@@ -118,11 +136,5 @@ class UkomGrade extends Creatable
     public function roomUkom()
     {
         return $this->belongsTo(RoomUkom::class, 'room_ukom_id', 'id');
-    }
-
-    public function examQuestionList()
-    {
-        return $this->hasMany(ExamQuestion::class, 'exam_type_code', 'exam_type_code')
-            ->whereColumn('ukm_exam_question.room_ukom_id', 'room_ukom_id');
     }
 }

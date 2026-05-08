@@ -15,13 +15,15 @@ class UserService
     public function __construct(
         private UserRoleService $userRoleService,
         private UserApplicationChannelService $userApplicationChannelService,
-    ) {}
+    ) {
+    }
 
     public function findSearch(Pageable $pageable)
     {
         $pageable->addNotEqualIn("status", [UserStatus::DELETED->value]);
         $pageable->addEqual("delete_flag", false);
         $pageable->addEqual("inactive_flag", false);
+        $pageable->addNotEqual("status", UserStatus::DELETED->value);
         return $pageable->setOrderQueries(function (Pageable $instance, $query) {
             if (empty($instance->sort)) {
                 $query->orderBy($instance->getTable() . '.date_created', 'desc');
@@ -49,7 +51,10 @@ class UserService
         return User::whereHas("userApplicationChannel", function ($query) use ($application_code, $channel_code) {
             $query->where('application_code', $application_code);
             $query->where('channel_code', $channel_code);
-        })->get();
+        })->where("delete_flag", false)
+            ->where("inactive_flag", false)
+            ->where("status", '!=', UserStatus::DELETED->value)
+            ->get();
     }
 
     public function save(UserDto $userDto): User
@@ -66,7 +71,7 @@ class UserService
                 if (config('eyegil.security.reuseDeletedUser', false)) {
                     $userExist->fromArray($userDto->toArray());
                     $userExist->updated_by = $userContext->id;
-                    $userExist->status =  UserStatus::ACTIVE->value;
+                    $userExist->status = UserStatus::ACTIVE->value;
                     $userExist->delete_flag = false;
                     $userExist->inactive_flag = false;
                     $userExist->save();
@@ -85,7 +90,7 @@ class UserService
                 $user = new User();
                 $user->fromArray($userDto->toArray());
                 $user->created_by = $userContext->id;
-                $user->status =  UserStatus::ACTIVE->value;
+                $user->status = UserStatus::ACTIVE->value;
                 $user->delete_flag = false;
                 $user->inactive_flag = false;
                 $user->save();
@@ -131,10 +136,10 @@ class UserService
 
     public function delete(string $id): User
     {
-        $userContext = user_context();
-        $user = $this->findById($id);
+        return DB::transaction(function () use ($id) {
+            $userContext = user_context();
+            $user = $this->findById($id);
 
-        return DB::transaction(function () use ($user, $userContext) {
             $user->updated_by = $userContext->id;
             $user->delete_flag = true;
             $user->status = UserStatus::DELETED->value;

@@ -5,6 +5,7 @@ namespace Eyegil\SijupriUkom\Http\Controllers;
 use Eyegil\Base\Commons\Rest\Controller;
 use Eyegil\Base\Commons\Rest\Get;
 use Eyegil\Base\Commons\Rest\Post;
+use Eyegil\Base\Commons\Rest\Put;
 use Eyegil\SijupriUkom\Dtos\DocumentUkomDto;
 use Eyegil\SijupriUkom\Services\DocumentUkomService;
 use Illuminate\Http\Request;
@@ -14,7 +15,8 @@ class DocumentUkomController
 {
     public function __construct(
         private DocumentUkomService $documentUkomService,
-    ) {}
+    ) {
+    }
 
     #[Get("/all")]
     public function findAll(Request $request)
@@ -32,10 +34,11 @@ class DocumentUkomController
     public function findAllByJenisUkom(Request $request)
     {
         return $this->documentUkomService->findAllByJenisUkom(
-            $request->jenis_ukom, 
-            $request->query("jabatan_code"), 
+            $request->jenis_ukom,
+            $request->query("jabatan_code"),
             $request->query("jenjang_code"),
             $request->query("is_mengulang"),
+            $request->query("specification"),
         );
     }
 
@@ -44,5 +47,12 @@ class DocumentUkomController
     {
         $documentUkom = DocumentUkomDto::fromRequest($request);
         return $this->documentUkomService->saveDokumen($documentUkom);
+    }
+
+    #[Put("/dokumen_persyaratan")]
+    public function updateDokumen(Request $request)
+    {
+        $documentUkom = DocumentUkomDto::fromRequest($request)->validateDokumenPersyaratanUpdate();
+        return $this->documentUkomService->updateDokumen($documentUkom);
     }
 }

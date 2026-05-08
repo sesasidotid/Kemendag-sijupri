@@ -11,6 +11,7 @@ use Eyegil\StorageBase\Services\StorageService;
 use Eyegil\WorkflowBase\Dtos\TaskDto;
 use Eyegil\WorkflowBase\Enums\TaskStatus;
 use Eyegil\WorkflowBase\Services\WorkflowService;
+use Illuminate\Database\RecordNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class RiwayatSertifikasiTaskService
@@ -103,7 +104,10 @@ class RiwayatSertifikasiTaskService
     {
         return DB::transaction(function () use ($taskDto) {
             $pendingTask = $this->workflowService->findTaskById($taskDto->id);
-
+            if (!$pendingTask->task_status == TaskStatus::PENDING->value) {
+                throw new RecordNotFoundException("Pending Task not found with id " . $taskDto->id);
+            }
+            
             if ($taskDto->object) {
                 $riwayatSertifikasiDtoOld = new RiwayatSertifikasiDto();
                 $riwayatSertifikasiDtoOld->fromArray((array) $pendingTask->objectTask->object);
@@ -124,21 +128,26 @@ class RiwayatSertifikasiTaskService
                 $kategoriSertifikasi = KategoriSertifikasi::findOrThrowNotFound($riwayatSertifikasiDto->kategori_sertifikasi_id);
                 $riwayatSertifikasiDto->kategori_sertifikasi_name = $kategoriSertifikasi->name;
                 $riwayatSertifikasiDto->kategori_sertifikasi_value = $kategoriSertifikasi->value;
+                $riwayatSertifikasiDto->nip = $riwayatSertifikasiDtoOld->nip;
 
+                $riwayatSertifikasiDto->validateTask();
                 $taskDto->object = $riwayatSertifikasiDto;
+
+                $object_name = $taskDto->object->kategori_sertifikasi_name;
             }
 
             $task = $this->workflowService->submitTask(
                 $taskDto->id,
                 $taskDto->task_action,
                 $taskDto->object,
-                $taskDto->remark
+                $taskDto->remark,
+                $object_name ?? null
             );
 
-            if ($task->flow == "siap_flow_1") {
+            if ($task->flow_id == "siap_flow_1") {
                 $notificationDto = new NotificationDto();
                 $this->sendNotifyService->notifyVerifySIAP($notificationDto);
-            } else if ($task->flow == "siap_flow_2") {
+            } else if ($task->flow_id == "siap_flow_2") {
                 $notificationDto = new NotificationDto();
                 $notificationDto->objectMap = [
                     "siap_type" => "Riwayat sertifikasi"

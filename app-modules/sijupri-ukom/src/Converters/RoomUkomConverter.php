@@ -34,4 +34,22 @@ class RoomUkomConverter
 
         return $roomUkomDto;
     }
+
+    public static function withPersonalSchedule(RoomUkom $roomUkom, $participant_id): RoomUkomDto
+    {
+        $roomUkomDto = static::toDto($roomUkom);
+
+        $roomUkomDto->exam_schedule_dto_list = [];
+        foreach ($roomUkom->examScheduleList as $key => $examSchedule) {
+            $examScheduleDto = (new ExamScheduleDto())->fromModel($examSchedule);
+            $participantSchedule = $examSchedule->participantSchedule($participant_id);
+
+            if ($participantSchedule) {
+                $examScheduleDto->personal_schedule = $participantSchedule->personal_schedule;
+                $roomUkomDto->exam_schedule_dto_list[] = $examScheduleDto;
+            }
+        }
+
+        return $roomUkomDto;
+    }
 }

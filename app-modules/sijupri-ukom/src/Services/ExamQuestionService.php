@@ -15,6 +15,11 @@ class ExamQuestionService
         private QuestionService $questionService
     ) {}
 
+    public function findByExamScheduleId($exam_schedule_id)
+    {
+        return ExamQuestion::with(["question", "question.choices"])->where("exam_schedule_id", $exam_schedule_id)->get();
+    }
+
     public function findByExamTypeCodeAndRoomUkomId($exam_type_code, $room_ukom_id)
     {
         return ExamQuestion::with(["question", "question.choices"])->where("exam_type_code", $exam_type_code)
@@ -29,33 +34,21 @@ class ExamQuestionService
         return $pageable->with(["question"])->searchHas(ExamQuestion::class, ["questionGroup", "question"]);
     }
 
-    public function save(RoomUkomQuestionDto $RoomUkomQuestionDto)
+    public function findQuestionByExamTypeCodeAndRoomUkomIdAndParticipantId($exam_type_code, $room_ukom_id, $participant_id)
     {
-        DB::transaction(function () use ($RoomUkomQuestionDto) {
-            $userContext = user_context();
-
-            $this->deleteByRommIdAndExamTypeCode($RoomUkomQuestionDto->id, $RoomUkomQuestionDto->exam_type_code);
-
-            foreach ($RoomUkomQuestionDto->question_id_list as $key => $question_id) {
-                $question = $this->questionService->findById($question_id);
-
-                if ($question->module_id != $RoomUkomQuestionDto->exam_type_code) {
-                    throw new BusinessException("module not match with exam type", "", [
-                        "exam_type_code" => $RoomUkomQuestionDto->exam_type_code,
-                        "module_id" => $question->module_id
-                    ]);
-                }
-
-                $examQuestion = new ExamQuestion();
-                $examQuestion->room_ukom_id = $RoomUkomQuestionDto->id;
-                $examQuestion->question_id = $question->id;
-                $examQuestion->exam_type_code = $question->module_id;
-                $examQuestion->saveWithUuid();
-            }
-        });
+        return ExamQuestion::where('room_ukom_id', $room_ukom_id)
+            ->where('exam_type_code', $exam_type_code)
+            ->whereHas('answer', function ($query) use ($participant_id) {
+                $query->where('participant_id', $participant_id);
+            })
+            ->with(['answer' => function ($query) use ($participant_id) {
+                $query->where('participant_id', $participant_id)
+                    ->select('question_id', 'is_uncertain');
+            }])
+            ->get();
     }
 
-    public function deleteByRommIdAndExamTypeCode($room_ukom_id, $exam_type_code)
+    public function deleteByRoomIdAndExamTypeCode($room_ukom_id, $exam_type_code)
     {
         DB::transaction(function () use ($room_ukom_id, $exam_type_code) {
             ExamQuestion::where("room_ukom_id", $room_ukom_id)

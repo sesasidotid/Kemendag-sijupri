@@ -11,6 +11,7 @@ use Eyegil\StorageBase\Services\StorageService;
 use Eyegil\WorkflowBase\Dtos\TaskDto;
 use Eyegil\WorkflowBase\Enums\TaskStatus;
 use Eyegil\WorkflowBase\Services\WorkflowService;
+use Illuminate\Database\RecordNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -23,7 +24,8 @@ class RiwayatPangkatTaskService
         private StorageService $storageService,
         private WorkflowService $workflowService,
         private SendNotifyService $sendNotifyService,
-    ) {}
+    ) {
+    }
 
     public function create(RiwayatPangkatDto $riwayatPangkatDto)
     {
@@ -37,7 +39,7 @@ class RiwayatPangkatTaskService
         $pangkat = Pangkat::findOrThrowNotFound($riwayatPangkatDto->pangkat_code);
         $riwayatPangkatDto->pangkat_name = $pangkat->name;
         $pendingTask = $this->workflowService->startCreateTask(
-            $this::workflow_name,
+                $this::workflow_name,
             $riwayatPangkatDto->id,
             $pangkat->name,
             [],
@@ -71,7 +73,7 @@ class RiwayatPangkatTaskService
 
         $riwayatPangkatDto_old->pangkat_name = $riwayatPangkat->pangkat->name;
         $pendingTask = $this->workflowService->startUpdateTask(
-            $this::workflow_name,
+                $this::workflow_name,
             Str::uuid(),
             $pangkat->name,
             [],
@@ -90,6 +92,9 @@ class RiwayatPangkatTaskService
     {
         return DB::transaction(function () use ($taskDto) {
             $pendingTask = $this->workflowService->findTaskById($taskDto->id);
+            if (!$pendingTask->task_status == TaskStatus::PENDING->value) {
+                throw new RecordNotFoundException("Pending Task not found with id " . $taskDto->id);
+            }
 
             if ($taskDto->object) {
                 $riwayatPangkatDtoOld = new RiwayatPangkatDto();
@@ -105,21 +110,26 @@ class RiwayatPangkatTaskService
 
                 $pangkat = Pangkat::findOrThrowNotFound($riwayatPangkatDto->pangkat_code);
                 $riwayatPangkatDto->pangkat_name = $pangkat->name;
+                $riwayatPangkatDto->nip = $riwayatPangkatDtoOld->nip;
 
+                $riwayatPangkatDto->validateTask();
                 $taskDto->object = $riwayatPangkatDto;
+
+                $object_name = $taskDto->object->pangkat_name;
             }
 
             $task = $this->workflowService->submitTask(
                 $taskDto->id,
                 $taskDto->task_action,
                 $taskDto->object,
-                $taskDto->remark
+                $taskDto->remark,
+                $object_name ?? null
             );
 
-            if ($task->flow == "siap_flow_1") {
+            if ($task->flow_id == "siap_flow_1") {
                 $notificationDto = new NotificationDto();
                 $this->sendNotifyService->notifyVerifySIAP($notificationDto);
-            } else if ($task->flow == "siap_flow_2") {
+            } else if ($task->flow_id == "siap_flow_2") {
                 $notificationDto = new NotificationDto();
                 $notificationDto->objectMap = [
                     "siap_type" => "Riwayat pangkat"

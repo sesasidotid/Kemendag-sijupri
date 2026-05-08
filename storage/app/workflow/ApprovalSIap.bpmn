@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0diggfb" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.24.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <bpmn:process id="approvalSiap" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1upo1fn</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="siap_flow_1" name="Pengajuan Siap">
+      <bpmn:incoming>Flow_0sous6p</bpmn:incoming>
+      <bpmn:incoming>Flow_1upo1fn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zur5a0</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1txzx5j">
+      <bpmn:incoming>Flow_0zur5a0</bpmn:incoming>
+      <bpmn:outgoing>Flow_0o0p4vv</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0x4pn6v</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0zur5a0" sourceRef="siap_flow_1" targetRef="Gateway_1txzx5j" />
+    <bpmn:userTask id="siap_flow_2" name="Perbaikan Siap">
+      <bpmn:incoming>Flow_0o0p4vv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0sous6p</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0o0p4vv" name="reject" sourceRef="Gateway_1txzx5j" targetRef="siap_flow_2">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$action == "reject"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_08ch6cl">
+      <bpmn:incoming>Flow_0x4pn6v</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0x4pn6v" name="approve" sourceRef="Gateway_1txzx5j" targetRef="Event_08ch6cl">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$action == "approve"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0sous6p" sourceRef="siap_flow_2" targetRef="siap_flow_1" />
+    <bpmn:sequenceFlow id="Flow_1upo1fn" sourceRef="StartEvent_1" targetRef="siap_flow_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="approvalSiap">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="239" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1oc0961_di" bpmnElement="siap_flow_1">
+        <dc:Bounds x="300" y="217" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1txzx5j_di" bpmnElement="Gateway_1txzx5j" isMarkerVisible="true">
+        <dc:Bounds x="465" y="232" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ur8ykg_di" bpmnElement="siap_flow_2">
+        <dc:Bounds x="440" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_08ch6cl_di" bpmnElement="Event_08ch6cl">
+        <dc:Bounds x="592" y="239" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0zur5a0_di" bpmnElement="Flow_0zur5a0">
+        <di:waypoint x="400" y="257" />
+        <di:waypoint x="465" y="257" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0o0p4vv_di" bpmnElement="Flow_0o0p4vv">
+        <di:waypoint x="490" y="232" />
+        <di:waypoint x="490" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="491" y="193" width="28" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0x4pn6v_di" bpmnElement="Flow_0x4pn6v">
+        <di:waypoint x="515" y="257" />
+        <di:waypoint x="592" y="257" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="533" y="239" width="41" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sous6p_di" bpmnElement="Flow_0sous6p">
+        <di:waypoint x="440" y="120" />
+        <di:waypoint x="350" y="120" />
+        <di:waypoint x="350" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1upo1fn_di" bpmnElement="Flow_1upo1fn">
+        <di:waypoint x="215" y="257" />
+        <di:waypoint x="300" y="257" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

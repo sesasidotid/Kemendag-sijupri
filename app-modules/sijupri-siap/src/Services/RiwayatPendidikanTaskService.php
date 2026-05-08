@@ -11,8 +11,8 @@ use Eyegil\StorageBase\Services\StorageService;
 use Eyegil\WorkflowBase\Dtos\TaskDto;
 use Eyegil\WorkflowBase\Enums\TaskStatus;
 use Eyegil\WorkflowBase\Services\WorkflowService;
+use Illuminate\Database\RecordNotFoundException;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class RiwayatPendidikanTaskService
@@ -91,6 +91,9 @@ class RiwayatPendidikanTaskService
     {
         return DB::transaction(function () use ($taskDto) {
             $pendingTask = $this->workflowService->findTaskById($taskDto->id);
+            if (!$pendingTask->task_status == TaskStatus::PENDING->value) {
+                throw new RecordNotFoundException("Pending Task not found with id " . $taskDto->id);
+            }
 
             if ($taskDto->object) {
                 $riwayatPendidikanDtoOld = new RiwayatPendidikanDto();
@@ -106,21 +109,26 @@ class RiwayatPendidikanTaskService
 
                 $pendidikan = Pendidikan::findOrThrowNotFound($riwayatPendidikanDto->pendidikan_code);
                 $riwayatPendidikanDto->pendidikan_name = $pendidikan->name;
+                $riwayatPendidikanDto->nip = $riwayatPendidikanDtoOld->nip;
 
+                $riwayatPendidikanDto->validateTask();
                 $taskDto->object = $riwayatPendidikanDto;
+
+                $object_name = $taskDto->object->pendidikan_name;
             }
 
             $task = $this->workflowService->submitTask(
                 $taskDto->id,
                 $taskDto->task_action,
                 $taskDto->object,
-                $taskDto->remark
+                $taskDto->remark,
+                $object_name ?? null
             );
 
-            if ($task->flow == "siap_flow_1") {
+            if ($task->flow_id == "siap_flow_1") {
                 $notificationDto = new NotificationDto();
                 $this->sendNotifyService->notifyVerifySIAP($notificationDto);
-            } else if ($task->flow == "siap_flow_2") {
+            } else if ($task->flow_id == "siap_flow_2") {
                 $notificationDto = new NotificationDto();
                 $notificationDto->objectMap = [
                     "siap_type" => "Riwayat pendidikan"

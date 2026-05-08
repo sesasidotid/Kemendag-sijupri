@@ -38,6 +38,21 @@ class WorkflowService
         return $this->pendingTaskService->findByWorkflowNameAndObjectGroup($workflow_name, $object_group);
     }
 
+    public function findByWorkflowNameAndObjectGroupAndObjectId($workflow_name, $object_group, $object_id)
+    {
+        return $this->pendingTaskService->findByWorkflowNameAndObjectGroupAndObjectId($workflow_name, $object_group, $object_id);
+    }
+
+    public function findByWorkflowNameAndObjectGroupFailed($workflow_name, $object_group)
+    {
+        return $this->pendingTaskService->findByWorkflowNameAndObjectGroupFailed($workflow_name, $object_group);
+    }
+
+    public function findByWorkflowNameAndObjectGroupObjectIdFailed($workflow_name, $object_group, $object_id)
+    {
+        return $this->pendingTaskService->findByWorkflowNameAndObjectGroupObjectIdFailed($workflow_name, $object_group, $object_id);
+    }
+
     public function startCreateTask($workflow_name, $object_id, $object_name, array $object_keys, BaseDto $object, $object_group = null)
     {
         $userContext = user_context();
@@ -244,10 +259,10 @@ class WorkflowService
         });
     }
 
-    public function submitTask($id, $task_action, $object = null, $remark = null)
+    public function submitTask($id, $task_action, $object = null, $remark = null, $new_object_name = null)
     {
         $userContext = user_context();
-        return DB::transaction(function () use ($id, $task_action, $userContext, $object, $remark) {
+        return DB::transaction(function () use ($id, $task_action, $userContext, $object, $remark, $new_object_name) {
             $pendingTask = $this->pendingTaskService->findById($id);
             $this->workflowValidationService->validateTaskSubmit($pendingTask);
 
@@ -360,6 +375,7 @@ class WorkflowService
                 $pendingTaskDto['instance_id'] = null;
                 $pendingTaskDto['task_action'] = null;
                 $pendingTaskDto['remark'] = $remark;
+                $pendingTaskDto['object_name'] = $new_object_name ?? $pendingTaskDto['object_name'];
                 $pendingTaskDto['task_status'] = TaskStatus::PENDING->name;
                 $pendingTaskDto['workflow_id'] = $processInstance->workflow_id;
                 $pendingTaskDto['instance_id'] = $processInstance->id;

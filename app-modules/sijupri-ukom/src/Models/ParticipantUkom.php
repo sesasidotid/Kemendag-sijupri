@@ -36,6 +36,8 @@ class ParticipantUkom extends Updatable
     #[Column(["type" => "string"])]
     private $email;
     #[Column(["type" => "string"])]
+    private $tempat_lahir;
+    #[Column(["type" => "string"])]
     private $tanggal_lahir;
     #[Column(["type" => "string"])]
     private $participant_status;
@@ -61,21 +63,24 @@ class ParticipantUkom extends Updatable
     #[Column(["type" => "string", "nullable" => true, "foreign" => PredikatKinerja::class])]
     private $predikat_kinerja_2_id;
 
-    #[Column(["type" => "boolean", "default" => false])]
-    private $is_mengulang;
+    #[Column(["type" => "boolean", "default" => false, 'nullable' => false])]
+    private bool $is_mengulang;
 
 
     #[Column(["type" => "string", "default" => false])]
     private $jenis_instansi;
 
-    #[Column(["type" => "string", "nullable" => true, "foreign" => Provinsi::class])]
+    #[Column(["type" => "unsignedInteger", "nullable" => true, "foreign" => Provinsi::class])]
     private $provinsi_id;
 
-    #[Column(["type" => "string", "nullable" => true, "foreign" => KabupatenKota::class])]
+    #[Column(["type" => "unsignedInteger", "nullable" => true, "foreign" => KabupatenKota::class])]
     private $kabupaten_kota_id;
 
     #[Column(["type" => "string", "nullable" => true, "foreign" => Pangkat::class])]
     private $pangkat_code;
+
+    #[Column(["type" => "date", "nullable" => true])]
+    private $tmt_pangkat;
 
 
 
@@ -87,6 +92,9 @@ class ParticipantUkom extends Updatable
     #[Column(["type" => "string"])]
     private $jabatan_name;
     #[Column(["type" => "string", "foreign" => Jabatan::class])]
+
+    #[Column(["type" => "date", "nullable" => true])]
+    private $tmt_jabatan;
     private $next_jabatan_code;
     #[Column(["type" => "string"])]
     private $jenjang_name;
@@ -96,12 +104,16 @@ class ParticipantUkom extends Updatable
     private $unit_kerja_id;
     #[Column(["type" => "string", "nullable" => true])]
     private $unit_kerja_name;
-    #[Column(["type" => "string", "nullable" => false, "foreign" => BidangJabatan::class])]
+    #[Column(["type" => "string", "nullable" => true, "foreign" => BidangJabatan::class])]
     private $bidang_jabatan_code;
     #[Column(["type" => "string", "index" => true])]
     private $nip;
     #[Column(["type" => "string", "foreign" => User::class, 'cascade' => ['DELETE']])]
     private $user_id;
+
+
+    #[Column(["type" => "string", "default" => false])]
+    private $grade_visibility;
 
     protected $fillable = ['id', 'nip', 'nik', 'name', 'email', 'jenis_ukom', 'rekomendasi', 'next_jabatan_code', 'next_jenjang_code', 'unit_kerja_id', 'unit_kerja_name', 'bidang_jabatan_code', 'user_id'];
     public function __construct()
@@ -156,7 +168,7 @@ class ParticipantUkom extends Updatable
 
     public function ukomBan()
     {
-        return $this->hasOne(UkomBan::class, "id", "id");
+        return $this->hasOne(UkomBan::class, "id", "nip");
     }
 
     public function participantRoomUkom()
@@ -189,11 +201,23 @@ class ParticipantUkom extends Updatable
         return $this->belongsTo(PredikatKinerja::class, "predikat_kinerja_2_id", "id");
     }
 
-    public function provinsi() {
+    public function provinsi()
+    {
         return $this->belongsTo(Provinsi::class, "provinsi_id", "id");
     }
 
-    public function kabupatenKota() {
+    public function kabupatenKota()
+    {
         return $this->belongsTo(KabupatenKota::class, "kabupaten_kota_id", "id");
+    }
+
+    public function participantSchedule()
+    {
+        return $this->hasMany(ParticipantSchedule::class, "participant_id", "id");
+    }
+
+    public function examAttendance()
+    {
+        return $this->hasMany(ExamAttendance::class, "participant_ukom_id", "id");
     }
 }

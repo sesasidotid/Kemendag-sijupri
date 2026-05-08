@@ -3,6 +3,7 @@
 namespace Eyegil\SijupriSiap\Http\Controllers;
 
 use Eyegil\Base\Commons\Rest\Controller;
+use Eyegil\Base\Commons\Rest\Delete;
 use Eyegil\Base\Commons\Rest\Get;
 use Eyegil\Base\Commons\Rest\Post;
 use Eyegil\Base\Commons\Rest\Put;
@@ -21,12 +22,18 @@ class JFController
         private JFService $jFService,
         private PendingTaskService $pendingTaskService,
         private StorageService $storageService,
-    ) {}
+    ) {
+    }
 
     #[Get("/search")]
     public function findSearch(Request $request)
     {
-        return $this->jFService->findSearch(new Pageable($request->query()));
+        $query = $request->query();
+        unset($query['eq_instansi_id']);
+        unset($query['eq_provinsi_id']);
+        unset($query['eq_kabupaten_id']);
+        unset($query['eq_kota_id']);
+        return $this->jFService->findSearch(new Pageable($query), $request->query());
     }
 
     #[Get()]
@@ -61,9 +68,15 @@ class JFController
     }
 
     #[Put()]
-    public function put_update(Request $request)
+    public function update(Request $request)
     {
         $jfDto = JFDto::fromRequest($request)->validateUpdate();
         return $this->jFService->update($jfDto);
+    }
+
+    #[Delete("/{id}")]
+    public function delete($id)
+    {
+        return $this->jFService->delete($id);
     }
 }

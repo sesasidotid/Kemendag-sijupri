@@ -50,4 +50,38 @@ class RiwayatSertifikasiDto extends BaseDto
             ]);
         }
     }
+
+    public function validateTask()
+    {
+        $kategoriSertifikasi = KategoriSertifikasi::findOrThrowNotFound($this->kategori_sertifikasi_id);
+        if ($kategoriSertifikasi->value = 1) {
+            return $this->validate([
+                'no_sk' => 'required',
+                'tgl_sk' => 'required',
+                'sk_pengangkatan_url' => 'required',
+                'sk_pengangkatan' => 'required',
+                'kategori_sertifikasi_id' => 'required',
+                'kategori_sertifikasi_name' => 'required',
+                'kategori_sertifikasi_value' => 'required',
+                'nip' => 'required',
+            ]);
+        } else {
+            return $this->validate([
+                'no_sk' => 'required',
+                'tgl_sk' => 'required',
+                'wilayah_kerja' => 'required',
+                'date_start' => 'required',
+                'date_end' => 'required',
+                'uu_kawalan' => 'required',
+                'sk_pengangkatan_url' => 'required',
+                'sk_pengangkatan' => 'required',
+                'ktp_ppns_url' => 'required',
+                'ktp_ppns' => 'required',
+                'kategori_sertifikasi_id' => 'required',
+                'kategori_sertifikasi_name' => 'required',
+                'kategori_sertifikasi_value' => 'required',
+                'nip' => 'required',
+            ]);
+        }
+    }
 }

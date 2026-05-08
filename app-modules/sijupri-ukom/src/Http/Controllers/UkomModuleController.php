@@ -23,9 +23,9 @@ class UkomModuleController
     }
 
     #[Post("/save/bulk")]
-    public function uploadQuestion(Request $request)
+    public function uploadQuestionFromSheet(Request $request)
     {
         $ukomModuleQuestionDto = UkomModuleQuestionDto::fromRequest($request);
-        return $this->ukomModuleService->saveQuestion($ukomModuleQuestionDto);
+        return $this->ukomModuleService->saveQuestionFromSheet($ukomModuleQuestionDto);
     }
 }

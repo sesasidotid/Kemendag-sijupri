@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\NotificationCode;
-use App\Enums\NotificationTemplateCode;
-use Eyegil\NotificationBase\Models\NotificationTemplate;
 use Eyegil\SijupriUkom\Enums\ExamTypes;
 use Eyegil\SijupriUkom\Models\ExamType;
 use Illuminate\Database\Seeder;
@@ -58,6 +55,24 @@ class ExamTypeSeeder extends Seeder
                 ],
                 [
                     "name" => ExamTypes::PORTOFOLIO->value,
+                ]
+            );
+
+            ExamType::updateOrCreate(
+                [
+                    "code" => ExamTypes::MAKALAH,
+                ],
+                [
+                    "name" => ExamTypes::MAKALAH->value,
+                ]
+            );
+
+            ExamType::updateOrCreate(
+                [
+                    "code" => ExamTypes::STUDI_KASUS,
+                ],
+                [
+                    "name" => ExamTypes::STUDI_KASUS->value,
                 ]
             );
         });

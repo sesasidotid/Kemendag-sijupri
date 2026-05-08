@@ -3,11 +3,10 @@
 namespace Eyegil\SijupriMaintenance\Models;
 
 use Eyegil\Base\Commons\Migration\Column;
-use Eyegil\Base\Models\Metadata;
-use Eyegil\EyegilLms\Models\QuestionGroup;
+use Eyegil\Base\Models\Updatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Kompetensi extends Metadata
+class Kompetensi extends Updatable
 {
     use HasFactory;
 
@@ -19,8 +18,17 @@ class Kompetensi extends Metadata
     #[Column(["type" => "string", "primary" => true])]
     private $id;
 
-    #[Column(["type" => "string", "unique" => true, "index" => true])]
+    #[Column(["type" => "text", "unique" => true, "index" => true])]
     private $code;
+
+    #[Column(["type" => "text"])]
+    private $name;
+
+    #[Column(["type" => "text", "nullable" => true])]
+    private $description;
+
+    #[Column(["type" => "integer", "default" => 0])]
+    private $level;
 
     #[Column(["type" => "string", "nullable" => true])]
     private $type;
@@ -51,10 +59,10 @@ class Kompetensi extends Metadata
     {
         return $this->belongsTo(BidangJabatan::class, 'bidang_jabatan_code', 'code');
     }
-
-    public function questionGroup()
+    
+    public function kompetensiIndikator()
     {
-        return $this->hasMany(QuestionGroup::class, 'association_id', 'id')->where("association", $this->table);
+        return $this->hasMany(KompetensiIndikator::class, 'kompetensi_id', 'id');
     }
 
 }

@@ -4,6 +4,8 @@ namespace Eyegil\SijupriSiap\Services;
 
 use App\Services\SendNotifyService;
 use Carbon\Carbon;
+use Eyegil\Base\Exceptions\BusinessException;
+use Eyegil\Base\Exceptions\RecordExistException;
 use Eyegil\NotificationBase\Dtos\NotificationDto;
 use Eyegil\SijupriMaintenance\Models\PredikatKinerja;
 use Eyegil\SijupriMaintenance\Models\RatingKinerja;
@@ -12,7 +14,9 @@ use Eyegil\StorageBase\Services\StorageService;
 use Eyegil\WorkflowBase\Dtos\TaskDto;
 use Eyegil\WorkflowBase\Enums\TaskStatus;
 use Eyegil\WorkflowBase\Services\WorkflowService;
+use Illuminate\Database\RecordNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class RiwayatKinerjaTaskService
@@ -24,12 +28,38 @@ class RiwayatKinerjaTaskService
         private StorageService $storageService,
         private WorkflowService $workflowService,
         private SendNotifyService $sendNotifyService,
-    ) {}
+    ) {
+    }
 
     public function create(RiwayatKinerjaDto $riwayatKinerjaDto)
     {
         return DB::transaction(function () use ($riwayatKinerjaDto) {
             $userContext = user_context();
+
+            if ($this->riwayatKinerjaService->findByDateStartAndDateEnd($riwayatKinerjaDto->date_start, $riwayatKinerjaDto->date_end)) {
+                throw new RecordExistException("data kinerja sudah ada");
+            }
+
+            $startDate = Carbon::parse($riwayatKinerjaDto->date_start);
+            $endDate = Carbon::parse($riwayatKinerjaDto->date_end);
+            if ($riwayatKinerjaDto->type == "tahunan") {
+                if (
+                    !$startDate->isSameDay($startDate->copy()->startOfMonth()) ||
+                    $startDate->month !== 1 ||
+                    !$endDate->isSameDay($endDate->copy()->endOfMonth()) ||
+                    $endDate->month !== 12
+                ) {
+                    throw new BusinessException("invalid input for type : " . $riwayatKinerjaDto->type, "RWK-000001");
+                }
+            } else {
+                if (
+                    !$startDate->isSameDay($startDate->copy()->startOfMonth()) ||
+                    !$endDate->isSameDay($endDate->copy()->endOfMonth())
+                ) {
+                    throw new BusinessException("invalid input for type : " . $riwayatKinerjaDto->type, "RWK-000001");
+                }
+            }
+
             $riwayatKinerjaDto->nip = $userContext->id;
 
             $riwayatKinerjaDto->doc_evaluasi = $this->storageService->putObjectFromBase64WithFilename("system", "jf", "doc_evaluasi_" . Carbon::now()->format('YmdHis'), $riwayatKinerjaDto->file_doc_evaluasi);
@@ -61,7 +91,7 @@ class RiwayatKinerjaTaskService
             $riwayatKinerjaDto->predikat_kinerja_value = $predikatKinerja->value;
 
             $pendingTask = $this->workflowService->startCreateTask(
-                $this::workflow_name,
+                    $this::workflow_name,
                 Str::uuid(),
                 $riwayatKinerjaDto->angka_kredit,
                 [],
@@ -71,7 +101,7 @@ class RiwayatKinerjaTaskService
 
             $notificationDto = new NotificationDto();
             $this->sendNotifyService->notifyVerifySIAPKinerja($notificationDto);
-    
+
             return $pendingTask;
         });
     }
@@ -129,9 +159,9 @@ class RiwayatKinerjaTaskService
             $riwayatKinerjaDto_old->predikat_kinerja_value = $riwayatKinerja->predikatKinerja->value;
 
             $pendingTask = $this->workflowService->startUpdateTask(
-                $this::workflow_name,
+                    $this::workflow_name,
                 $riwayatKinerjaDto->id,
-                null,
+                $riwayatKinerjaDto->angka_kredit,
                 [],
                 $riwayatKinerjaDto,
                 $riwayatKinerjaDto_old,
@@ -140,7 +170,7 @@ class RiwayatKinerjaTaskService
 
             $notificationDto = new NotificationDto();
             $this->sendNotifyService->notifyVerifySIAPKinerja($notificationDto);
-    
+
             return $pendingTask;
         });
     }
@@ -149,6 +179,9 @@ class RiwayatKinerjaTaskService
     {
         return DB::transaction(function () use ($taskDto) {
             $pendingTask = $this->workflowService->findTaskById($taskDto->id);
+            if (!$pendingTask->task_status == TaskStatus::PENDING->value) {
+                throw new RecordNotFoundException("Pending Task not found with id " . $taskDto->id);
+            }
 
             if ($taskDto->object) {
                 $riwayatKinerjaDtoOld = new RiwayatKinerjaDto();
@@ -168,7 +201,7 @@ class RiwayatKinerjaTaskService
                 }
                 if ($riwayatKinerjaDto->file_doc_akumulasi_ak) {
                     $riwayatKinerjaDto->doc_akumulasi_ak = $this->storageService->putObjectFromBase64WithFilename("system", "jf", "doc_akumulasi_ak_" . Carbon::now()->format('YmdHis'), $riwayatKinerjaDto->file_doc_akumulasi_ak);
-                    $riwayatKinerjaDto->doc_akumulasi_ak_url = $this->storageService->getUrl("system", "jf", $riwayatKinerjaDto->doc_penetapan_ak);
+                    $riwayatKinerjaDto->doc_akumulasi_ak_url = $this->storageService->getUrl("system", "jf", $riwayatKinerjaDto->doc_akumulasi_ak);
                     $riwayatKinerjaDto->file_doc_akumulasi_ak = null;
                 }
                 if ($riwayatKinerjaDto->file_doc_penetapan_ak) {
@@ -188,21 +221,26 @@ class RiwayatKinerjaTaskService
                 $predikatKinerja = PredikatKinerja::findOrThrowNotFound($riwayatKinerjaDto->predikat_kinerja_id);
                 $riwayatKinerjaDto->predikat_kinerja_name = $predikatKinerja->name;
                 $riwayatKinerjaDto->predikat_kinerja_value = $predikatKinerja->value;
+                $riwayatKinerjaDto->nip = $riwayatKinerjaDtoOld->nip;
 
+                $riwayatKinerjaDto->validateTask();
                 $taskDto->object = $riwayatKinerjaDto;
+
+                $object_name = $taskDto->object->angka_kredit;
             }
 
             $task = $this->workflowService->submitTask(
                 $taskDto->id,
                 $taskDto->task_action,
                 $taskDto->object,
-                $taskDto->remark
+                $taskDto->remark,
+                $object_name ?? null
             );
 
-            if ($task->flow == "siap_flow_1") {
+            if ($task->flow_id == "siap_flow_1") {
                 $notificationDto = new NotificationDto();
                 $this->sendNotifyService->notifyVerifySIAPKinerja($notificationDto);
-            } else if ($task->flow == "siap_flow_2") {
+            } else if ($task->flow_id == "siap_flow_2") {
                 $notificationDto = new NotificationDto();
                 $notificationDto->objectMap = [
                     "siap_type" => "Riwayat kinerja"
@@ -219,6 +257,7 @@ class RiwayatKinerjaTaskService
             if ($task->task_status == TaskStatus::COMPLETED->name) {
                 $riwayatKinerjaDto = new RiwayatKinerjaDto();
                 $riwayatKinerjaDto->fromArray((array) $task->objectTask->object);
+                Log::info("OBJEK BOR::::::::: " . json_encode($riwayatKinerjaDto));
 
                 if (strtolower($task->task_action) == strtolower(TaskStatus::APPROVE->name)) {
                     if ($task->task_type == "create") {

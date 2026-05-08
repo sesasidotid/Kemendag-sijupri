@@ -27,4 +27,17 @@ class RiwayatJabatanDto extends BaseDto
             'file_sk_jabatan' => 'required',
         ]);
     }
+
+    public function validateTask()
+    {
+        return $this->validate([
+            'tmt' => 'required',
+            'jabatan_code' => 'required',
+            'jabatan_name' => 'required',
+            'jenjang_code' => 'required',
+            'jenjang_name' => 'required',
+            'sk_jabatan' => 'required',
+            'sk_jabatan_url' => 'required',
+        ]);
+    }
 }

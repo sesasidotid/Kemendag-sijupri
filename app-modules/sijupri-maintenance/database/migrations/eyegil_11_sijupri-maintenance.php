@@ -27,6 +27,7 @@ use Eyegil\SijupriMaintenance\Models\RatingKinerja;
 use Eyegil\SijupriMaintenance\Models\UnitKerja;
 use Eyegil\SijupriMaintenance\Models\Wilayah;
 use Eyegil\SijupriMaintenance\Models\Kompetensi;
+use Eyegil\SijupriMaintenance\Models\KompetensiIndikator;
 use Eyegil\SijupriMaintenance\Models\SystemConfiguration;
 use Illuminate\Database\Migrations\Migration;
 
@@ -61,6 +62,7 @@ return new class() extends Migration
 			->createSchema(PelatihanTeknis::class)
 			->createSchema(BidangJabatan::class)
 			->createSchema(Kompetensi::class)
+			->createSchema(KompetensiIndikator::class)
 			->createSchema(SystemConfiguration::class)
 			->up();
 	}
@@ -94,6 +96,7 @@ return new class() extends Migration
 			->createSchema(PelatihanTeknis::class)
 			->createSchema(BidangJabatan::class)
 			->createSchema(Kompetensi::class)
+			->createSchema(KompetensiIndikator::class)
 			->createSchema(SystemConfiguration::class)
 			->down();
 	}

@@ -7,4 +7,5 @@ enum JenisUkom: string
     case KENAIKAN_JENJANG = "KENAIKAN_JENJANG";
     case PERPINDAHAN_JABATAN = "PERPINDAHAN_JABATAN";
     case PROMOSI = "PROMOSI";
+    case PROMOSI_JF = "PROMOSI_JF";
 }

@@ -4,6 +4,7 @@ namespace Eyegil\SijupriUkom\Models;
 
 use Eyegil\Base\Commons\Migration\Column;
 use Eyegil\Base\Models\Creatable;
+use Eyegil\SecurityBase\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UkomBan extends Creatable
@@ -15,7 +16,7 @@ class UkomBan extends Creatable
     public $incrementing = false;
     public $keyType = 'string';
 
-    #[Column(["type" => "string", "primary" => true, "foreign" => ParticipantUkom::class, 'cascade' => ['DELETE']])]
+    #[Column(["type" => "string", "primary" => true, "foreign" => User::class, 'cascade' => ['DELETE']])]
     private $id;
     #[Column(["type" => "timestamp"])]
     private $until;
@@ -24,5 +25,10 @@ class UkomBan extends Creatable
     public function __construct()
     {
         $this->fillable = array_merge($this->fillable, parent::getFillable());
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'id');
     }
 }

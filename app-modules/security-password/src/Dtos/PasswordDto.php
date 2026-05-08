@@ -11,6 +11,14 @@ class PasswordDto extends BaseDto
     public $password;
     public $old_password;
 
+    public function validateForceUpdate()
+    {
+        return $this->validate([
+            'user_id' => 'required',
+            'password' => 'required',
+        ]);
+    }
+
     public function validateUpdate()
     {
         return $this->validate([

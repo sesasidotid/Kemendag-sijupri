@@ -35,6 +35,8 @@ class UkomFormula extends Creatable
     #[Column(["type" => "double", "default" => 100])]
     private $portofolio_percentage;
     #[Column(["type" => "double", "default" => 100])]
+    private $studi_kasus_percentage;
+    #[Column(["type" => "double", "default" => 100])]
     private $ukt_percentage;
     #[Column(["type" => "double", "default" => 100])]
     private $ukmsk_percentage;

@@ -44,6 +44,8 @@ sudo systemctl start supervisor
 sudo systemctl enable supervisor
 sudo supervisorctl reread
 sudo supervisorctl update
+
+sudo supervisorctl restart all
 ```
 
 ## 2. **JOB**

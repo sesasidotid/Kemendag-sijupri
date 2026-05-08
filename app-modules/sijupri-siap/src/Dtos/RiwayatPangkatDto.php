@@ -24,4 +24,16 @@ class RiwayatPangkatDto extends BaseDto
             'file_sk_pangkat' => 'required',
         ]);
     }
+
+    public function validateTask()
+    {
+        return $this->validate([
+            'tmt' => 'required',
+            'pangkat_code' => 'required',
+            'pangkat_name' => 'required',
+            'sk_pangkat_url' => 'required',
+            'sk_pangkat' => 'required',
+            'nip' => 'required',
+        ]);
+    }
 }

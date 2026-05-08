@@ -8,7 +8,12 @@ class UkomModuleQuestionDto extends BaseDto
 {
     public $id;
     public $exam_type;
+    public $question;
     public $file_question;
+
+    public $upload_soal_list;
+
+    public $bidang_jabatan_id;
 
     public function validateUpload()
     {

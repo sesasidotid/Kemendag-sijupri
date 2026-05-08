@@ -1,6 +1,7 @@
 <?php
 
 use Eyegil\Base\Commons\Rest\RESTor;
+use Eyegil\SijupriMaintenance\Controllers\CounterController;
 use Eyegil\SijupriMaintenance\Controllers\KompetensiController;
 use Eyegil\SijupriMaintenance\Controllers\BidangJabatanController;
 use Eyegil\SijupriMaintenance\Controllers\DokumenPersyaratanController;
@@ -12,12 +13,14 @@ use Eyegil\SijupriMaintenance\Controllers\JenjangController;
 use Eyegil\SijupriMaintenance\Controllers\KabupatenKotaController;
 use Eyegil\SijupriMaintenance\Controllers\KategoriPengembanganController;
 use Eyegil\SijupriMaintenance\Controllers\KategoriSertifikasiController;
+use Eyegil\SijupriMaintenance\Controllers\KompetensiIndikatorController;
 use Eyegil\SijupriMaintenance\Controllers\PangkatController;
 use Eyegil\SijupriMaintenance\Controllers\PendidikanController;
 use Eyegil\SijupriMaintenance\Controllers\PeriodePendaftaranController;
 use Eyegil\SijupriMaintenance\Controllers\PredikatKinerjaController;
 use Eyegil\SijupriMaintenance\Controllers\ProvinsiController;
 use Eyegil\SijupriMaintenance\Controllers\RatingKinerjaController;
+use Eyegil\SijupriMaintenance\Controllers\SuratRekomTemplateController;
 use Eyegil\SijupriMaintenance\Controllers\SystemConfigurationController;
 use Eyegil\SijupriMaintenance\Controllers\UnitKerjaController;
 use Eyegil\SijupriMaintenance\Controllers\WilayahController;
@@ -41,5 +44,8 @@ RESTor::createRest(InstansiController::class)
     ->createRest(DokumenPersyaratanController::class)
     ->createRest(BidangJabatanController::class)
     ->createRest(KompetensiController::class)
+    ->createRest(KompetensiIndikatorController::class)
     ->createRest(SystemConfigurationController::class)
+    ->createRest(SuratRekomTemplateController::class)
+    ->createRest(CounterController::class)
     ->build();

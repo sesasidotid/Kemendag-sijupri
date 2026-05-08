@@ -61,6 +61,41 @@ class PendingTaskService
         return $pendingTask;
     }
 
+    public function findByWorkflowNameAndObjectGroupAndObjectId($workflow_name, $object_group, $object_id)
+    {
+        $pendingTask = PendingTask::with("objectTask")->where("workflow_name", $workflow_name)
+            ->where("object_group", $object_group)
+            ->where("object_id", $object_id)
+            ->where("task_status", TaskStatus::PENDING->name)
+            ->firstOrThrowNotFound();
+        $pendingTask->assignee;
+        $pendingTask->pendingTaskHistory;
+        return $pendingTask;
+    }
+
+    public function findByWorkflowNameAndObjectGroupFailed($workflow_name, $object_group)
+    {
+        $pendingTask = PendingTask::with("objectTask")->where("workflow_name", $workflow_name)
+            ->where("object_group", $object_group)
+            ->where("task_status", TaskStatus::FAILED->name)
+            ->firstOrThrowNotFound();
+        $pendingTask->assignee;
+        $pendingTask->pendingTaskHistory;
+        return $pendingTask;
+    }
+
+    public function findByWorkflowNameAndObjectGroupObjectIdFailed($workflow_name, $object_group, $object_id)
+    {
+        $pendingTask = PendingTask::with("objectTask")->where("workflow_name", $workflow_name)
+            ->where("object_group", $object_group)
+            ->where("object_id", $object_id)
+            ->where("task_status", TaskStatus::FAILED->name)
+            ->firstOrThrowNotFound();
+        $pendingTask->assignee;
+        $pendingTask->pendingTaskHistory;
+        return $pendingTask;
+    }
+
     public function findByInstanceId($instance_id)
     {
         return PendingTask::where('instance_id', $instance_id)

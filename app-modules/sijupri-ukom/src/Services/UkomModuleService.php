@@ -5,18 +5,19 @@ namespace Eyegil\SijupriUkom\Services;
 use Carbon\Carbon;
 use Eyegil\Base\Exceptions\BusinessException;
 use Eyegil\Base\Exceptions\RecordNotFoundException;
+use Eyegil\EyegilLms\Dtos\ChecklistDto;
 use Eyegil\EyegilLms\Enums\Choices;
 use Eyegil\EyegilLms\Services\QuestionService;
 use Eyegil\EyegilLms\Dtos\MultipleChoiceDto;
 use Eyegil\EyegilLms\Dtos\QuestionDto;
 use Eyegil\EyegilLms\Enums\QuestionType;
-use Eyegil\SijupriMaintenance\Services\KompetensiService;
+use Eyegil\SijupriMaintenance\Services\KompetensiIndikatorService;
 use Eyegil\SijupriUkom\Dtos\UkomModuleQuestionDto;
 use Eyegil\SijupriUkom\Enums\ExamTypes;
 use Eyegil\StorageBase\Services\StorageService;
 use Eyegil\StorageSystem\Services\StorageSystemService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing;
 use Symfony\Component\Mime\MimeTypes;
@@ -27,20 +28,64 @@ class UkomModuleService
         private QuestionService $questionService,
         private StorageService $storageService,
         private StorageSystemService $storageSystemService,
-        private KompetensiService $kompetensiService,
-    ) {}
+        private KompetensiIndikatorService $kompetensiIndikatorService,
+    ) {
+    }
 
     public function downloadTemplate($exam_type)
     {
         switch ($exam_type) {
             case ExamTypes::CAT->value:
                 return $this->storageSystemService->downloadFile("template", "cat_question_template.xlsx");
+            case ExamTypes::MAKALAH->value:
+                return $this->storageSystemService->downloadFile("template", "makalah_question_template.xlsx");
+            case ExamTypes::WAWANCARA->value:
+                return $this->storageSystemService->downloadFile("template", "wawancara_question_template.xlsx");
+            case ExamTypes::PORTOFOLIO->value:
+                return $this->storageSystemService->downloadFile("template", "portofolio_question_template.xlsx");
+            case ExamTypes::PRAKTIK->value:
+                return $this->storageSystemService->downloadFile("template", "praktik_question_template.xlsx");
+            case ExamTypes::STUDI_KASUS->value:
+                return $this->storageSystemService->downloadFile("template", "studi_kasus_question_template.xlsx");
             default:
                 throw new RecordNotFoundException("exam_type not exist");
         }
     }
 
-    public function saveQuestion(UkomModuleQuestionDto $ukomModuleQuestionDto)
+    // public function saveQuestion(UkomModuleQuestionDto $ukomModuleQuestionDto)
+    // {
+    //     return DB::transaction(function () use ($ukomModuleQuestionDto) {
+    //         $questionDto = new QuestionDto();
+    //         $questionDto->question = $this->sanitizeInput($ukomModuleQuestionDto->question);
+
+    //         if ($ukomModuleQuestionDto->exam_type == ExamTypes::MAKALAH->name) {
+    //             $questionDto->module_id = ExamTypes::MAKALAH;
+    //             $questionDto->type = QuestionType::UPLOADS;
+    //             $this->questionService->save($questionDto);
+    //         }
+
+    //         return $questionDto;
+    //     });
+    // }
+
+    // public function updateQuestion(UkomModuleQuestionDto $ukomModuleQuestionDto)
+    // {
+    //     return DB::transaction(function () use ($ukomModuleQuestionDto) {
+    //         $questionDto = new QuestionDto();
+    //         $questionDto->id = $ukomModuleQuestionDto->id;
+    //         $questionDto->question = $this->sanitizeInput($ukomModuleQuestionDto->question);
+
+    //         if ($ukomModuleQuestionDto->exam_type == ExamTypes::MAKALAH->name) {
+    //             $questionDto->module_id = ExamTypes::MAKALAH;
+    //             $questionDto->type = QuestionType::UPLOADS;
+    //             $this->questionService->update($questionDto);
+    //         }
+
+    //         return $questionDto;
+    //     });
+    // }
+
+    public function saveQuestionFromSheet(UkomModuleQuestionDto $ukomModuleQuestionDto)
     {
         DB::transaction(function () use ($ukomModuleQuestionDto) {
             $object_name = $this->storageService->putObjectFromBase64WithFilename("system", "lms", "questions_" . Carbon::now()->format('YmdHis'), $ukomModuleQuestionDto->file_question);
@@ -69,6 +114,21 @@ class UkomModuleService
                     case ExamTypes::CAT->value:
                         $this->saveCatFromSheet($data, $imageMap);
                         break;
+                    case ExamTypes::MAKALAH->value:
+                        $this->saveMakalahFromSheet($data, $imageMap);
+                        break;
+                    case ExamTypes::WAWANCARA->value:
+                        $this->saveWawancaraFromSheet($data, $imageMap);
+                        break;
+                    case ExamTypes::PORTOFOLIO->value:
+                        $this->savePortofolioFromSheet($data, $imageMap);
+                        break;
+                    case ExamTypes::STUDI_KASUS->value:
+                        $this->saveStudiKasusFromSheet($ukomModuleQuestionDto->upload_soal_list, $data, $imageMap);
+                        break;
+                    case ExamTypes::PRAKTIK->value:
+                        $this->savePraktikFromSheet($data, $imageMap);
+                        break;
                     default:
                         throw new RecordNotFoundException("exam_type not exist");
                 }
@@ -84,7 +144,8 @@ class UkomModuleService
     {
         DB::transaction(function () use ($data, $imageMap) {
             foreach ($data as $rowIndex => $value) {
-                if ($rowIndex == 0) continue;
+                if ($rowIndex == 0)
+                    continue;
 
                 $questionDto = new QuestionDto();
                 $questionDto->question = $this->sanitizeInput($value[0]);
@@ -131,13 +192,248 @@ class UkomModuleService
                     $questionDto->multiple_choice_dto_list[] = $multipleChoiceDtoE;
                 }
 
-                $kompetensi = $this->kompetensiService->findByCode($value[8]);
-                if (!$kompetensi) {
+                $kompetensiIndikator = $this->kompetensiIndikatorService->findByCode($value[8]);
+                if (!$kompetensiIndikator) {
                     throw new RecordNotFoundException("code not found", ["code" => $value[8]]);
                 }
 
-                $questionDto->association = $kompetensi->getTable();
-                $questionDto->association_id = $kompetensi->id;
+                $questionDto->association = $kompetensiIndikator->getTable();
+                $questionDto->association_id = $kompetensiIndikator->id;
+                $this->questionService->save($questionDto);
+            }
+        });
+    }
+
+    private function saveMakalahFromSheet($data, $imageMap): void
+    {
+        DB::transaction(function () use ($data, $imageMap) {
+            $question = $this->questionService->findByIdV2("base_makalah_question");
+            if (!$question) {
+                $questionDto = new QuestionDto();
+                $questionDto->id = "base_makalah_question";
+                $questionDto->question = "Silahkan upload makalah Anda sesuai dengan instruksi yang diberikan.";
+                $questionDto->module_id = ExamTypes::MAKALAH;
+                $questionDto->type = QuestionType::UPLOADS;
+                $question = $this->questionService->saveV2($questionDto);
+            }
+
+            foreach ($data as $rowIndex => $value) {
+                if ($rowIndex == 0)
+                    continue;
+
+                $questionDto = new QuestionDto();
+                $questionDto->parent_question_id = $question->id;
+                $questionDto->question = $this->sanitizeInput($value[0]);
+                $questionDto->module_id = ExamTypes::MAKALAH;
+                $questionDto->type = QuestionType::UPLOADS;
+                if (isset($imageMap["B" . ($rowIndex + 1)])) {
+                    $questionDto->attachment = $imageMap["B" . ($rowIndex + 1)];
+                }
+                if ($value[2] === null) {
+                    throw new BusinessException("invalid weight", "");
+                }
+                $questionDto->weight = (float) $value[2];
+
+                if (!in_array(Str::lower($value[3]), ["a", "b", "c"])) {
+                    throw new RecordNotFoundException("code not found", ["code" => $value[3]]);
+                }
+
+                $questionDto->association = "komponen";
+                $questionDto->association_id = $value[3];
+
+                $this->questionService->deleteByModuleIdAndAssociationAndAssociationId(ExamTypes::WAWANCARA, $questionDto->association, $questionDto->association_id);
+                $this->questionService->save($questionDto);
+            }
+        });
+    }
+
+    private function saveWawancaraFromSheet($data, $imageMap): void
+    {
+        DB::transaction(function () use ($data, $imageMap) {
+            $this->questionService->deleteByModuleId(ExamTypes::WAWANCARA);
+
+            foreach ($data as $rowIndex => $value) {
+                if ($rowIndex == 0)
+                    continue;
+
+                $questionDto = new QuestionDto();
+                $questionDto->question = $this->sanitizeInput($value[0]);
+                $questionDto->module_id = ExamTypes::WAWANCARA;
+                $questionDto->type = QuestionType::ESSAY;
+                $questionDto->hint = $value[2];
+                if (isset($imageMap["B" . ($rowIndex + 1)])) {
+                    $questionDto->attachment = $imageMap["B" . ($rowIndex + 1)];
+                }
+                if ($value[3] === null) {
+                    throw new BusinessException("invalid weight", "");
+                }
+                $questionDto->weight = (float) $value[3];
+
+                $questionDto->multiple_choice_dto_list = [];
+
+                $multipleChoiceDtoKompeten = new MultipleChoiceDto();
+                $multipleChoiceDtoKompeten->choice_id = "kompeten";
+                $multipleChoiceDtoKompeten->choice_value = "Kompeten";
+                $multipleChoiceDtoKompeten->correct = true;
+                $questionDto->multiple_choice_dto_list[] = $multipleChoiceDtoKompeten;
+
+                $multipleChoiceDtoTidakKompeten = new MultipleChoiceDto();
+                $multipleChoiceDtoTidakKompeten->choice_id = "tidak_kompeten";
+                $multipleChoiceDtoTidakKompeten->choice_value = "Tidak Kompeten";
+                $multipleChoiceDtoTidakKompeten->correct = false;
+                $questionDto->multiple_choice_dto_list[] = $multipleChoiceDtoTidakKompeten;
+
+                $kompetensiIndikator = $this->kompetensiIndikatorService->findByCode($value[4]);
+                if (!$kompetensiIndikator) {
+                    throw new RecordNotFoundException("code not found", ["code" => $value[4]]);
+                }
+
+                $questionDto->association = $kompetensiIndikator->getTable();
+                $questionDto->association_id = $kompetensiIndikator->id;
+
+                $this->questionService->deleteByModuleIdAndAssociationAndAssociationId(ExamTypes::WAWANCARA, $questionDto->association, $questionDto->association_id);
+                $this->questionService->save($questionDto);
+            }
+        });
+    }
+
+    private function savePortofolioFromSheet($data, $imageMap): void
+    {
+        DB::transaction(function () use ($data, $imageMap) {
+            foreach ($data as $rowIndex => $value) {
+                if ($rowIndex == 0)
+                    continue;
+
+                $questionDto = new QuestionDto();
+                $questionDto->question = $this->sanitizeInput($value[0]);
+                $questionDto->module_id = ExamTypes::PORTOFOLIO;
+                $questionDto->type = QuestionType::UPLOADS;
+                if (isset($imageMap["B" . ($rowIndex + 1)])) {
+                    $questionDto->attachment = $imageMap["B" . ($rowIndex + 1)];
+                }
+                if ($value[2] === null) {
+                    throw new BusinessException("invalid weight", "");
+                }
+                $questionDto->weight = (float) $value[2];
+
+
+                $questionDto->checklist_dto_list = [];
+
+                $checklistValid = new ChecklistDto();
+                $checklistValid->list_id = "valid";
+                $checklistValid->checked = true;
+                $questionDto->checklist_dto_list[] = $checklistValid;
+
+                $checklistTidakMemadai = new ChecklistDto();
+                $checklistTidakMemadai->list_id = "memadai";
+                $checklistTidakMemadai->checked = true;
+                $questionDto->checklist_dto_list[] = $checklistTidakMemadai;
+
+
+                $kompetensiIndikator = $this->kompetensiIndikatorService->findByCode($value[3]);
+                if (!$kompetensiIndikator) {
+                    throw new RecordNotFoundException("code not found", ["code" => $value[3]]);
+                }
+
+
+
+                $questionDto->association = $kompetensiIndikator->getTable();
+                $questionDto->association_id = $kompetensiIndikator->id;
+
+                $this->questionService->deleteByModuleIdAndAssociationAndAssociationId(ExamTypes::PORTOFOLIO, $questionDto->association, $questionDto->association_id);
+                $this->questionService->save($questionDto);
+            }
+        });
+    }
+
+    private function savePraktikFromSheet($data, $imageMap): void
+    {
+        DB::transaction(function () use ($data, $imageMap) {
+            $question = $this->questionService->findByIdV2("base_praktik_question");
+            if (!$question) {
+                $questionDto = new QuestionDto();
+                $questionDto->id = "base_praktik_question";
+                $questionDto->question = "Silahkan upload jawaban anda dan masukkan link drive anda";
+                $questionDto->module_id = ExamTypes::PRAKTIK;
+                $questionDto->type = QuestionType::UPLOADS;
+                $question = $this->questionService->saveV2($questionDto);
+            } else {
+                $question->id = "base_praktik_question";
+                $question->question = "Silahkan upload jawaban anda dan masukkan link drive anda";
+                $question->module_id = ExamTypes::PRAKTIK;
+                $question->type = QuestionType::UPLOADS;
+                $question->save();
+            }
+
+            $this->questionService->deleteByParentQuestionId($question->id);
+
+            foreach ($data as $rowIndex => $value) {
+                if ($rowIndex == 0)
+                    continue;
+
+                $questionDto = new QuestionDto();
+                $questionDto->parent_question_id = $question->id;
+                $questionDto->question = $this->sanitizeInput($value[0]);
+                $questionDto->module_id = ExamTypes::PRAKTIK;
+                $questionDto->type = QuestionType::ESSAY;
+                if (isset($imageMap["B" . ($rowIndex + 1)])) {
+                    $questionDto->attachment = $imageMap["B" . ($rowIndex + 1)];
+                }
+                if ($value[2] === null) {
+                    throw new BusinessException("invalid weight", "");
+                }
+                $questionDto->weight = (float) $value[2];
+
+                $this->questionService->save($questionDto);
+            }
+        });
+    }
+
+    private function saveStudiKasusFromSheet($upload_soal_list, $data, $imageMap): void
+    {
+        DB::transaction(function () use ($upload_soal_list, $data, $imageMap) {
+            $this->questionService->deleteByModuleIdAndAssociationAndAssociationId(ExamTypes::STUDI_KASUS->value, 'examiner_studi_kasus', 'examiner_studi_kasus');
+
+            foreach ($data as $rowIndex => $value) {
+                if ($rowIndex == 0)
+                    continue;
+
+                $questionDto = new QuestionDto();
+                $questionDto->question = $this->sanitizeInput($value[0]);
+                $questionDto->module_id = ExamTypes::STUDI_KASUS;
+                $questionDto->type = QuestionType::UPLOADS;
+                if (isset($imageMap["B" . ($rowIndex + 1)])) {
+                    $questionDto->attachment = $imageMap["B" . ($rowIndex + 1)];
+                }
+                if ($value[2] === null) {
+                    throw new BusinessException("invalid weight", "");
+                }
+                $questionDto->weight = (float) $value[2];
+
+
+                $questionDto->association = "examiner_studi_kasus";
+                $questionDto->association_id = "examiner_studi_kasus";
+                $this->questionService->save($questionDto);
+            }
+
+            foreach ($upload_soal_list as $upload_soal) {
+                $soal_name = $this->storageService->putObjectFromBase64WithFilename("system", "lms", "soal_" . $upload_soal['code'] . Carbon::now()->format('YmdHis'), $upload_soal['file']);
+
+                $questionDto = new QuestionDto();
+                $questionDto->question = "Silahkan unduh soal ujian";
+                $questionDto->attachment = $soal_name;
+                $questionDto->module_id = ExamTypes::STUDI_KASUS;
+                $questionDto->type = QuestionType::UPLOADS;
+
+                $kompetensiIndikator = $this->kompetensiIndikatorService->findByCode($upload_soal['code']);
+                if (!$kompetensiIndikator) {
+                    throw new RecordNotFoundException("code not found", ["code" => $upload_soal['code']]);
+                }
+
+                $questionDto->association = $kompetensiIndikator->getTable();
+                $questionDto->association_id = $kompetensiIndikator->id;
+                $this->questionService->deleteByModuleIdAndAssociationAndAssociationId(ExamTypes::STUDI_KASUS->value, $questionDto->association, $questionDto->association_id);
+
                 $this->questionService->save($questionDto);
             }
         });

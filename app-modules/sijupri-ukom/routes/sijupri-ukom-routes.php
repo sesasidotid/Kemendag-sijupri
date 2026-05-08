@@ -2,6 +2,8 @@
 
 use Eyegil\Base\Commons\Rest\RESTor;
 use Eyegil\SijupriUkom\Http\Controllers\DocumentUkomController;
+use Eyegil\SijupriUkom\Http\Controllers\ExamAttendanceController;
+use Eyegil\SijupriUkom\Http\Controllers\ExamConfigurationController;
 use Eyegil\SijupriUkom\Http\Controllers\ExaminerUkomController;
 use Eyegil\SijupriUkom\Http\Controllers\ExamScheduleController;
 use Eyegil\SijupriUkom\Http\Controllers\ExamTypeController;
@@ -15,6 +17,7 @@ use Eyegil\SijupriUkom\Http\Controllers\UkomBanController;
 use Eyegil\SijupriUkom\Http\Controllers\UkomModuleController;
 use Eyegil\SijupriUkom\Http\Controllers\UkomFormulaController;
 use Eyegil\SijupriUkom\Http\Controllers\UkomGradeController;
+use Eyegil\SijupriUkom\Http\Controllers\UkomRegistrationRulesController;
 
 RESTor::createRest(ExaminerUkomController::class)
     ->createRest(DocumentUkomController::class)
@@ -30,4 +33,7 @@ RESTor::createRest(ExaminerUkomController::class)
     ->createRest(UkomBanController::class)
     ->createRest(UkomGradeController::class)
     ->createRest(ParticipantUkomDetailController::class)
+    ->createRest(ExamAttendanceController::class)
+    ->createRest(UkomRegistrationRulesController::class)
+    ->createRest(ExamConfigurationController::class)
     ->build();

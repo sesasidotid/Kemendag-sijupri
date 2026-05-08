@@ -4,6 +4,7 @@ namespace Eyegil\SijupriUkom\Models;
 
 use Eyegil\Base\Commons\Migration\Column;
 use Eyegil\Base\Models\Serializable;
+use Eyegil\SijupriUkom\Enums\ExamStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ExamAttendance extends Serializable
@@ -17,16 +18,34 @@ class ExamAttendance extends Serializable
 
     #[Column(["type" => "string", "primary" => true])]
     private $id;
+
     #[Column(["type" => "timestamp"])]
     private $start_at;
+
     #[Column(["type" => "timestamp", "nullable" => true])]
     private $finish_at;
+
+    #[Column(["type" => "integer", "default" => 0])]
+    private $violation_count;
+
+    #[Column(["type" => "integer", "default" => 0])]
+    private $mouse_away_count;
+
+    #[Column(["type" => "integer", "default" => ExamStatus::ONGOING->name, "nullable" => true, "enum" => ExamStatus::class])]
+    private $status;
+
     #[Column(["type" => "string", "foreign" => ParticipantUkom::class, 'cascade' => ['DELETE']])]
     private $participant_ukom_id;
-    #[Column(["type" => "string", "foreign" => Examtype::class])]
-    private $exam_type_code;
-    #[Column(["type" => "string", "foreign" => RoomUkom::class])]
-    private $room_ukom_id;
+
+    // new column
+    #[Column(["type" => "string", "nullable" => false, "foreign" => ExamSchedule::class, 'cascade' => ['DELETE']])]
+    private $exam_schedule_id;
+
+    // #[Column(["type" => "string", "foreign" => Examtype::class])]
+    // private $exam_type_code;
+
+    // #[Column(["type" => "string", "foreign" => RoomUkom::class])]
+    // private $room_ukom_id;
 
     protected $fillable = ['id', 'start_at', 'finish_at', 'participant_ukom_id', 'exam_type_code', 'room_ukom_id'];
     public function __construct()
@@ -38,12 +57,9 @@ class ExamAttendance extends Serializable
     {
         return $this->belongsTo(ParticipantUkom::class, "participant_ukom", "id");
     }
-    public function examType()
+
+    public function examSchedule()
     {
-        return $this->belongsTo(ExamType::class, "exam_type_code", "code");
-    }
-    public function roomUkom()
-    {
-        return $this->belongsTo(RoomUkom::class, "room_ukom_id", "id");
+        return $this->belongsTo(ExamSchedule::class, "exam_schedule_id", "id");
     }
 }

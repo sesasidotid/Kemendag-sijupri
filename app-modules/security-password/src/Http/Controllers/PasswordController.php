@@ -28,7 +28,7 @@ class PasswordController
     #[Put("/force_update")]
     public function forceUpdate(Request $request)
     {
-        $passwordDto = PasswordDto::fromRequest($request)->validateUpdate();
+        $passwordDto = PasswordDto::fromRequest($request)->validateForceUpdate();
         $this->passwordService->forceUpdate($passwordDto);
     }
 

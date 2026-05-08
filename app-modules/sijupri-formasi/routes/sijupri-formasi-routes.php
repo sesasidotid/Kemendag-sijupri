@@ -9,11 +9,11 @@ use Eyegil\SijupriFormasi\Http\Controllers\FormasiTaskController;
 use Eyegil\SijupriFormasi\Http\Controllers\PendingFormasiController;
 use Eyegil\SijupriFormasi\Http\Controllers\UnsurController;
 
-RESTor::createRest(FormasiTaskController::class)
-    ->createRest(FormasiController::class)
-    ->createRest(UnsurController::class)
-    ->createRest(PendingFormasiController::class)
-    ->createRest(FormasiDokumenController::class)
-    ->createRest(FormasiDetailController::class)
-    ->createRest(FormasiProsesVerifikasiController::class)
-    ->build();
+// RESTor::createRest(FormasiTaskController::class)
+//     ->createRest(FormasiController::class)
+//     ->createRest(UnsurController::class)
+//     ->createRest(PendingFormasiController::class)
+//     ->createRest(FormasiDokumenController::class)
+//     ->createRest(FormasiDetailController::class)
+//     ->createRest(FormasiProsesVerifikasiController::class)
+//     ->build();

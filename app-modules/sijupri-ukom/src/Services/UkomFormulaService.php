@@ -39,6 +39,7 @@ class UkomFormulaService
             $ukomFormula->ukmsk_percentage = $ukomFormulaDto->ukmsk_percentage;
             $ukomFormula->grade_threshold = $ukomFormulaDto->grade_threshold;
             $ukomFormula->portofolio_percentage = $ukomFormulaDto->portofolio_percentage;
+            $ukomFormula->studi_kasus_percentage = $ukomFormulaDto->studi_kasus_percentage;
             $ukomFormula->ukt_threshold = $ukomFormulaDto->ukt_threshold;
             $ukomFormula->jpm_threshold = $ukomFormulaDto->jpm_threshold;
             $ukomFormula->created_by = $userContext->id;

@@ -3,6 +3,7 @@
 namespace Eyegil\SijupriMaintenance\Controllers;
 
 use Eyegil\Base\Commons\Rest\Controller;
+use Eyegil\Base\Commons\Rest\Delete;
 use Eyegil\Base\Commons\Rest\Get;
 use Eyegil\Base\Commons\Rest\Post;
 use Eyegil\Base\Commons\Rest\Put;
@@ -59,5 +60,11 @@ class KompetensiController
     {
         $kompetensiDto = KompetensiDto::fromRequest($request)->validateUpdate();
         return $this->kompetensiService->update($kompetensiDto);
+    }
+
+    #[Delete("/{id}")]
+    public function delete($id)
+    {
+        return $this->kompetensiService->delete($id);
     }
 }

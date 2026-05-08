@@ -30,7 +30,7 @@ class AkpRekap extends Updatable
     private $rank_prioritas;
     #[Column(["type" => "string", "nullable" => true])]
     private $dokumen_verifikasi;
-    #[Column(["type" => "string", "nullable" => true])]
+    #[Column(["type" => "string"])]
     private $remark;
     #[Column(["type" => "string", "default" => AkpRekapVerified::EMPTY->value])]
     private $verified;

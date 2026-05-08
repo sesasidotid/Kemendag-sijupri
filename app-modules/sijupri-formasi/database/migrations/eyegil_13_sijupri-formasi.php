@@ -15,29 +15,29 @@ return new class() extends Migration
 {
 	public function up()
 	{
-		$migrator = new Migrator();
-		$migrator->createSchema(Unsur::class)
-			->createSchema(Formasi::class)
-			->createSchema(FormasiProsesVerifikasi::class)
-			->createSchema(FormasiDetail::class)
-			->createSchema(FormasiScore::class)
-			->createSchema(FormasiResult::class)
-			->createSchema(FormasiDokumen::class)
-			->createSchema(FormasiUnitKerja::class)
-			->up();
+		// $migrator = new Migrator();
+		// $migrator->createSchema(Unsur::class)
+		// 	->createSchema(Formasi::class)
+		// 	->createSchema(FormasiProsesVerifikasi::class)
+		// 	->createSchema(FormasiDetail::class)
+		// 	->createSchema(FormasiScore::class)
+		// 	->createSchema(FormasiResult::class)
+		// 	->createSchema(FormasiDokumen::class)
+		// 	->createSchema(FormasiUnitKerja::class)
+		// 	->up();
 	}
 
 	public function down()
 	{
-		$migrator = new Migrator();
-		$migrator->createSchema(Unsur::class)
-			->createSchema(Formasi::class)
-			->createSchema(FormasiDetail::class)
-			->createSchema(FormasiProsesVerifikasi::class)
-			->createSchema(FormasiScore::class)
-			->createSchema(FormasiResult::class)
-			->createSchema(FormasiDokumen::class)
-			->createSchema(FormasiUnitKerja::class)
-			->down();
+		// $migrator = new Migrator();
+		// $migrator->createSchema(Unsur::class)
+		// 	->createSchema(Formasi::class)
+		// 	->createSchema(FormasiDetail::class)
+		// 	->createSchema(FormasiProsesVerifikasi::class)
+		// 	->createSchema(FormasiScore::class)
+		// 	->createSchema(FormasiResult::class)
+		// 	->createSchema(FormasiDokumen::class)
+		// 	->createSchema(FormasiUnitKerja::class)
+		// 	->down();
 	}
 };

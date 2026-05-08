@@ -43,16 +43,16 @@ class Instansi extends Metadata
 
     public function provinsi()
     {
-        return $this->belongsTo(InstansiType::class, 'provinsi_id', 'code');
+        return $this->belongsTo(Provinsi::class, 'provinsi_id', 'id');
     }
 
     public function kabupaten()
     {
-        return $this->belongsTo(InstansiType::class, 'kabupaten_id', 'code');
+        return $this->belongsTo(KabupatenKota::class, 'kabupaten_id', 'id');
     }
 
     public function kota()
     {
-        return $this->belongsTo(InstansiType::class, 'kota_id', 'code');
+        return $this->belongsTo(KabupatenKota::class, 'kota_id', 'id');
     }
 }

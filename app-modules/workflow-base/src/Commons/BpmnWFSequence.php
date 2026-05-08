@@ -31,6 +31,7 @@ class BpmnWFSequence
                 $processInstance->workflow_data = $bpmn2->parseBpmnXml(config("eyegil.workflow.$wfName"));
                 $processInstance->current_element_id = $processInstance->workflow_data['elements']['startEvents'][0]['id'];
                 $processInstance->current_variables = null;
+                $processInstance->version = 1;
                 $processInstance->saveWithUUid();
             }
 
@@ -42,7 +43,7 @@ class BpmnWFSequence
         });
     }
 
-    public function  getProcessInstance()
+    public function getProcessInstance()
     {
         return $this->processInstance;
     }
@@ -69,11 +70,11 @@ class BpmnWFSequence
             } elseif ($this->isEndEvent($this->currentElement['id'])) {
                 $this->saveCurrentState();
                 Log::info("Stopped at end element: " . $this->currentElement['id']);
-                return $this; 
+                return $this;
             } elseif ($this->isTaskElement($this->currentElement['id'])) {
                 $this->saveCurrentState();
                 Log::info("Stopped at task element: " . $this->currentElement['id']);
-                return $this; 
+                return $this;
             }
 
             $this->handleOutgoingElements($variables);
@@ -154,7 +155,7 @@ class BpmnWFSequence
         }
 
         extract($variables);
-        return eval('return ' . $expression . ';');
+        return eval ('return ' . $expression . ';');
     }
 
     private function isEndEvent($elementId)
@@ -171,10 +172,15 @@ class BpmnWFSequence
     {
         DB::transaction(function () {
             $processInstance = ProcessInstance::findOrThrowNotFound($this->workflowInstanceId);
+            if ($processInstance->version !== $this->processInstance->version) {
+                throw new BusinessException("Process instance has been modified by another transaction", "BPMN-00005");
+            }
+
             $processInstance->current_element_id = $this->currentElement['id'];
             $processInstance->current_variables = $this->currentVariables;
             $processInstance->is_completed = $this->isEndEvent($this->currentElement['id']);
             $processInstance->current_flow_name = $this->currentElement['name'] ?? null;
+            $processInstance->version++;
             $processInstance->save();
 
             $this->workflowInstanceId = $processInstance->id;

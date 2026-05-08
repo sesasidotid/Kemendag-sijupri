@@ -4,6 +4,7 @@ namespace Eyegil\EyegilLms\Models;
 
 use Eyegil\Base\Commons\Migration\Column;
 use Eyegil\Base\Models\Creatable;
+use Eyegil\SijupriMaintenance\Models\KompetensiIndikator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class QuestionGroup extends Creatable
@@ -36,5 +37,10 @@ class QuestionGroup extends Creatable
     public function question()
     {
         return $this->hasMany(Question::class, "question_id", "id");
+    }
+
+    public function associationIndikator()
+    {
+        return $this->belongsTo(KompetensiIndikator::class, "association_id", "id");
     }
 }

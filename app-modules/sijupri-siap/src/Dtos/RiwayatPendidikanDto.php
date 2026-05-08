@@ -28,4 +28,18 @@ class RiwayatPendidikanDto extends BaseDto
             'pendidikan_code' => 'required|string',
         ]);
     }
+
+    public function validateTask()
+    {
+        return $this->validate([
+            'institusi_pendidikan' => 'required',
+            'jurusan' => 'required',
+            'tanggal_ijazah' => 'required',
+            'ijazah' => 'required',
+            'ijazah_url' => 'required',
+            'pendidikan_code' => 'required',
+            'pendidikan_name' => 'required',
+            'nip' => 'required',
+        ]);
+    }
 }

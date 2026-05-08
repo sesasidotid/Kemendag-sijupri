@@ -12,6 +12,7 @@ use Eyegil\WorkflowBase\Dtos\TaskDto;
 use Eyegil\WorkflowBase\Enums\TaskStatus;
 use Eyegil\WorkflowBase\Models\PendingTask;
 use Eyegil\WorkflowBase\Services\WorkflowService;
+use Illuminate\Database\RecordNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -33,7 +34,11 @@ class JFTaskService
         $pageable->addEqual("pendingTask|flow_id", 'siap_flow_1');
         $pageable->addEqual("pendingTask|workflow_template", 'approvalSiap');
         $pageable->addEqual("pendingTask|task_status", TaskStatus::PENDING->name);
-        return $pageable->with(['user'])->searchHas(JF::class, ['pendingTask']);
+        return $pageable->with(['user', 'pendingTask'])
+            ->setGroupQueries(function (Pageable $instance, $groupQueries) {
+                $groupQueries->groupBy('nip');
+            }, true)
+            ->searchHas(JF::class, ['pendingTask']);
     }
 
     public function findWithKinerjaSearch(Pageable $pageable)
@@ -42,7 +47,11 @@ class JFTaskService
         $pageable->addEqual("pendingTask|flow_id", 'siap_flow_1');
         $pageable->addEqual("pendingTask|workflow_template", 'approvalSiap');
         $pageable->addEqual("pendingTask|task_status", TaskStatus::PENDING->name);
-        return $pageable->with(['user'])->searchHas(JF::class, ['pendingTask']);
+        return $pageable->with(['user', 'pendingTask'])
+            ->setGroupQueries(function (Pageable $instance, $groupQueries) {
+                $groupQueries->groupBy('nip');
+            }, true)
+            ->searchHas(JF::class, ['pendingTask']);
     }
 
     public function detail($object_group)
@@ -95,6 +104,9 @@ class JFTaskService
     {
         return DB::transaction(function () use ($taskDto) {
             $pendingTask = $this->workflowService->findTaskById($taskDto->id);
+            if (!$pendingTask->task_status == TaskStatus::PENDING->value) {
+                throw new RecordNotFoundException("Pending Task not found with id " . $taskDto->id);
+            }
 
             if ($taskDto->object) {
                 $jfDtoOld = new JFDto();

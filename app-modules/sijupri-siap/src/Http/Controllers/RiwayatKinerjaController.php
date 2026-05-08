@@ -69,6 +69,12 @@ class RiwayatKinerjaController
         return $this->riwayatKinerjaService->findByNip($nip);
     }
 
+    #[Get("/jf/{nip}/{year}")]
+    public function findByNipAndLastNYear(Request $request)
+    {
+        return $this->riwayatKinerjaService->findByNipAndLastNYear($request->nip, $request->year);
+    }
+
     #[Delete("/{id}")]
     public function delete(Request $request)
     {

@@ -11,6 +11,8 @@ class ExaminerUkomDto extends UserDto
     public $jenis_kelamin_code;
     public $nip;
 
+    public $exam_type_list;
+
     public function validateSaveExaminer()
     {
         return $this->validate([

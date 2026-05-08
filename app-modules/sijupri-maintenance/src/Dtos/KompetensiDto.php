@@ -10,6 +10,7 @@ class KompetensiDto extends BaseDto
     public $code;
     public $name;
     public $description;
+    public $level;
     public $type;
     public $jabatan_code;
     public $jabatan_name;
@@ -18,13 +19,15 @@ class KompetensiDto extends BaseDto
     public $bidang_jabatan_code;
     public $bidang_jabatan_name;
 
-    public $question_dto_list;
+    public $kompetensi_indikator_list;
 
     public function validateSave()
     {
         return $this->validate([
             "code" => "required",
             "name" => "required",
+            "level" => "required",
+            "description" => "required",
             "jabatan_code" => "required",
             "jenjang_code" => "required",
         ]);
@@ -34,7 +37,9 @@ class KompetensiDto extends BaseDto
     {
         return $this->validate([
             "id" => "required",
-            "name" => "required"
+            "name" => "required",
+            "description" => "required",
+            "level" => "required",
         ]);
     }
 }

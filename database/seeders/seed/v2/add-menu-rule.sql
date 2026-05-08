@@ -1,0 +1,2 @@
+INSERT INTO sec_menu (code,parent_menu_code,application_code,name,url,level,path,description,delete_flag,inactive_flag,version,updated_by,last_updated,created_by,date_created,idx) VALUES
+	 ('MNU_UKM0012','MNU_UKM0001','sijupri-admin','Syarat Pendaftaran','/api/v1/**',2,'ukom-rules',NULL,false,false,NULL,NULL,'2024-05-14 15:21:36',NULL,'2024-05-14 15:21:36',10);

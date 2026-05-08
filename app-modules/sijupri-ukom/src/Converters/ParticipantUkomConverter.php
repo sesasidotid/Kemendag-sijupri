@@ -21,7 +21,7 @@ class ParticipantUkomConverter
         } else {
             $participantUkomDto->jabatan_name = $participantUkom->jabatan_name;
         }
-        
+
         if ($participantUkom->jenjang_code) {
             $participantUkomDto->jenjang_name = $participantUkom->jenjang->name;
         } else {
@@ -75,6 +75,18 @@ class ParticipantUkomConverter
         return $participantUkomDto;
     }
 
+    public static function withRoomOrBanPersonal(ParticipantUkom $participantUkom): ParticipantUkomDto
+    {
+        $participantUkomDto = static::withRoomPersonal($participantUkom);
+
+        $ukomBan = $participantUkom->ukomBan;
+        if ($ukomBan) {
+            $participantUkomDto->ukom_ban_dto = $ukomBan;
+        }
+
+        return $participantUkomDto;
+    }
+
     public static function withRoom(ParticipantUkom $participantUkom): ParticipantUkomDto
     {
         $participantUkomDto = static::toDto($participantUkom);
@@ -82,6 +94,18 @@ class ParticipantUkomConverter
         $roomUkom = optional($participantUkom->participantRoomUkom)->roomUkom;
         if ($roomUkom) {
             $participantUkomDto->room_ukom_dto = RoomUkomConverter::withSchedule($roomUkom);
+        }
+
+        return $participantUkomDto;
+    }
+
+    public static function withRoomPersonal(ParticipantUkom $participantUkom): ParticipantUkomDto
+    {
+        $participantUkomDto = static::toDto($participantUkom);
+
+        $roomUkom = optional($participantUkom->participantRoomUkom)->roomUkom;
+        if ($roomUkom) {
+            $participantUkomDto->room_ukom_dto = RoomUkomConverter::withPersonalSchedule($roomUkom, $participantUkom->id);
         }
 
         return $participantUkomDto;

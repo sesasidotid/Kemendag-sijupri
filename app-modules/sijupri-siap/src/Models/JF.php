@@ -78,7 +78,7 @@ class JF extends Updatable
 
     public function riwayatKinerjaList()
     {
-        return $this->hasMany(RiwayatKinerja::class, 'nip', 'nip');
+        return $this->hasMany(RiwayatKinerja::class, 'nip', 'nip')->orderBy('tgl_sertifikat', 'desc');
     }
 
     public function riwayatKompetensi()
@@ -103,7 +103,9 @@ class JF extends Updatable
 
     public function riwayatPendidikan()
     {
-        return $this->hasOne(RiwayatPendidikan::class, 'nip', 'nip')->latest('tanggal_ijazah');
+        return $this->hasOne(RiwayatPendidikan::class, 'nip', 'nip')
+            ->orderBy('pendidikan_code', 'desc')
+            ->orderBy('tanggal_ijazah', 'desc');
     }
 
     public function riwayatPendidikanList()
@@ -123,6 +125,15 @@ class JF extends Updatable
 
     public function pendingTask()
     {
-        return $this->hasOne(PendingTask::class, 'object_group', 'nip')->where("task_status", TaskStatus::PENDING->name);
+        return $this->hasOne(PendingTask::class, 'object_group', 'nip')
+            ->where("workflow_id", "approvalSiap")
+            ->where("task_status", TaskStatus::PENDING->name);
+    }
+
+    public function pendingTaskUkom()
+    {
+        return $this->hasOne(PendingTask::class, 'object_group', 'nip')
+            ->where("workflow_id", "approvalUkom")
+            ->where("task_status", TaskStatus::PENDING->name);
     }
 }

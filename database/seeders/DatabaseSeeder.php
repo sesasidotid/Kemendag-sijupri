@@ -24,12 +24,24 @@ class DatabaseSeeder extends Seeder
             base_path($this::base_path . 'v2/security-v2.sql'),
             base_path($this::base_path . 'v2/add-menu.sql'),
             base_path($this::base_path . 'v2/ukm-formula.sql'),
+            base_path($this::base_path . 'v2/add-menu-rule.sql'),
         ])->seedSeeder([
-            InstansiPKKSeeder::class
-        ]);
+                    InstansiPKKSeeder::class,
+                    ConfigurationMigrate::class,
+                    ChangeBanToNip::class,
+                    MigrateExamWithSchedule::class,
+                    ParticipantScheduleMigration::class,
+                    FixAnswerDuplicate::class,
+                    ExamAnswerMigration::class,
+                    
+                    ExamTypeSeeder::class,
+                    SuratRekomSeeder::class,
+                    SysConfSeeder::class
+                ]);
         NotificationSeeder::run();
         ExamTypeSeeder::run();
         SysConfSeeder::run();
         NotificationTopicSeeder::run();
+        BpmnMigration::run();
     }
 }

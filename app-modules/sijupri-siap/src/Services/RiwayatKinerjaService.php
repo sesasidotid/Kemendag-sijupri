@@ -2,7 +2,9 @@
 
 namespace Eyegil\SijupriSiap\Services;
 
+use Carbon\Carbon;
 use Eyegil\Base\Pageable;
+use Eyegil\SijupriSiap\Converters\RiwayatKinerjaConverter;
 use Eyegil\SijupriSiap\Dtos\RiwayatKinerjaDto;
 use Eyegil\SijupriSiap\Models\RiwayatKinerja;
 use Eyegil\StorageBase\Services\StorageService;
@@ -12,7 +14,8 @@ class RiwayatKinerjaService
 {
     public function __construct(
         private StorageService $storageService,
-    ) {}
+    ) {
+    }
 
     public function findSearch(Pageable $pageable)
     {
@@ -23,6 +26,15 @@ class RiwayatKinerjaService
         return $pageable->with(['jf'])->search(RiwayatKinerja::class);
     }
 
+    public function findByDateStartAndDateEnd($date_start, $date_end)
+    {
+        RiwayatKinerja::where("date_start", $date_start)
+            ->where("date_end", $date_end)
+            ->where("delete_flag", false)
+            ->where("inactive_flag", false)
+            ->first();
+    }
+
     public function findById($id): RiwayatKinerja
     {
         return RiwayatKinerja::find($id);
@@ -30,7 +42,69 @@ class RiwayatKinerjaService
 
     public function findByNip($nip)
     {
-        return RiwayatKinerja::findMany($nip);
+        return RiwayatKinerja::where("nip", $nip)
+            ->where("delete_flag", false)
+            ->where("inactive_flag", false)
+            ->get();
+    }
+
+    public function findByNipAndLastNYearList($nip, $yearRange)
+    {
+        return RiwayatKinerja::where("nip", $nip)
+            ->where("delete_flag", false)
+            ->where("inactive_flag", false)
+            ->where("type", "tahunan")
+            ->whereBetween("date_start", [
+                now()->copy()->startOfYear()->subYears((int) $yearRange),
+                now()->copy()->subYear()->endOfYear(),
+            ])
+            ->get()
+            ->groupBy(function ($item) {
+                return Carbon::parse($item->date_start)->format('Y');
+            })
+            ->map(function ($group) {
+                return $group->sortByDesc('date_start')->first();
+            })
+            ->sortByDesc(fn($item) => $item->date_start)
+            ->values();
+    }
+
+    public function findByNipAndLastNYear($nip, $yearRange)
+    {
+        return RiwayatKinerja::where("nip", $nip)
+            ->where("delete_flag", false)
+            ->where("inactive_flag", false)
+            ->where("type", "tahunan")
+            ->whereBetween("date_start", [
+                now()->copy()->startOfYear()->subYears((int) $yearRange),
+                now()->copy()->subYear()->endOfYear(),
+            ])
+            ->get()
+            ->groupBy(function ($item) {
+                return Carbon::parse($item->date_start)->format('Y');
+            })
+            ->map(function ($group) {
+                return $group->sortByDesc('date_start')->first();
+            })
+            ->sortByDesc(fn($item) => $item->date_start)
+            ->values()
+            ->map(function ($riwayatKinerja) {
+                $riwayatKinerjaDto = RiwayatKinerjaConverter::toDto($riwayatKinerja);
+                if ($riwayatKinerja->doc_evaluasi) {
+                    $riwayatKinerjaDto->doc_evaluasi_url = $this->storageService->getUrl("system", "jf", $riwayatKinerja->doc_evaluasi);
+                }
+                if ($riwayatKinerja->doc_predikat) {
+                    $riwayatKinerjaDto->doc_predikat_url = $this->storageService->getUrl("system", "jf", $riwayatKinerja->doc_predikat);
+                }
+                if ($riwayatKinerja->doc_akumulasi_ak) {
+                    $riwayatKinerjaDto->doc_akumulasi_ak_url = $this->storageService->getUrl("system", "jf", $riwayatKinerja->doc_akumulasi_ak);
+                }
+                if ($riwayatKinerja->doc_penetapan_ak) {
+                    $riwayatKinerjaDto->doc_penetapan_ak_url = $this->storageService->getUrl("system", "jf", $riwayatKinerja->doc_penetapan_ak);
+                }
+
+                return $riwayatKinerjaDto;
+            });
     }
 
     public function current()

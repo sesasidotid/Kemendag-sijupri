@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum NotificationTemplateCode: string
 {
-        //---siap---
+    //---siap---
     case NOTIFY_SIAP = "FCM_0001";
     case NOTIFY_VERIFY_SIAP = "FCM_0002";
     case NOTIFY_REJECT_SIAP = "FCM_0003";
@@ -17,8 +17,9 @@ enum NotificationTemplateCode: string
 
         //---FORMASI---
     case NOTIFY_VERIFY_UKOM = "FCM_0008";
-    case NOTIFY_REJECT_UKOM = "FCM_0009";
-    case NOTIFY_FINISH_UKOM = "FCM_0010";
+    case NOTIFY_AMEND_UKOM = "FCM_0009";
+    case NOTIFY_REJECT_UKOM = "FCM_0010";
+    case NOTIFY_FINISH_UKOM = "FCM_0014";
 
         //---AKP---
     case NOTIFY_AKP_ATASAN = "SMTP_0001";
@@ -28,6 +29,8 @@ enum NotificationTemplateCode: string
         //---UKOM---
     case NOTIFY_UKOM_REG_FINISHED = "SMTP_0002";
     case NOTIFY_UKOM_REG_NON_JF = "SMTP_0003";
+    case NOTIFY_UKOM_SCHEDULE = "SMTP_0005";
+    case NOTIFY_UKOM_SCHEDULE_CHILD = "SMTP_0006";
 
         //---PASSWORD---
     case FORGOT_PASSWORD = "SMTP_0004";

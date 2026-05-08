@@ -35,4 +35,14 @@ class ExaminerUkom extends Updatable
     {
         return $this->belongsTo(User::class, "user_id", "id");
     }
+
+    public function examinerRoom()
+    {
+        return $this->hasMany(ExaminerRoomUkom::class, "examiner_id", "id");
+    }
+    
+    public function examinerTypeList()
+    {
+        return $this->hasMany(ExaminerUkomType::class, "examiner_id", "id");
+    }
 }
