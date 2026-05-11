@@ -14,7 +14,6 @@ use Eyegil\SecurityBase\Services\AuthenticationFilterServiceMap;
 use Eyegil\SecurityBase\Services\UserApplicationChannelService;
 use Eyegil\SecurityBase\Services\UserAuthenticationService;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -75,6 +74,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::hashClientSecrets();
+        //
     }
 }
