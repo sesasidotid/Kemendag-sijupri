@@ -91,10 +91,11 @@ class ParticipantUkom extends Updatable
     private $rekomendasi;
     #[Column(["type" => "string"])]
     private $jabatan_name;
-    #[Column(["type" => "string", "foreign" => Jabatan::class])]
 
     #[Column(["type" => "date", "nullable" => true])]
     private $tmt_jabatan;
+
+    #[Column(["type" => "string", "foreign" => Jabatan::class])]
     private $next_jabatan_code;
     #[Column(["type" => "string"])]
     private $jenjang_name;

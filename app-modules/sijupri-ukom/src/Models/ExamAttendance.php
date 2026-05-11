@@ -31,7 +31,7 @@ class ExamAttendance extends Serializable
     #[Column(["type" => "integer", "default" => 0])]
     private $mouse_away_count;
 
-    #[Column(["type" => "integer", "default" => ExamStatus::ONGOING->name, "nullable" => true, "enum" => ExamStatus::class])]
+    #[Column(["type" => "string", "default" => ExamStatus::ONGOING->name, "nullable" => true, "enum" => ExamStatus::class])]
     private $status;
 
     #[Column(["type" => "string", "foreign" => ParticipantUkom::class, 'cascade' => ['DELETE']])]

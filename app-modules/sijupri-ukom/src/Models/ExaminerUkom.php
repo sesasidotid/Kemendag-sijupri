@@ -17,7 +17,7 @@ class ExaminerUkom extends Updatable
     public $incrementing = false;
     public $keyType = 'string';
 
-    #[Column(["type" => "string", "index" => true])]
+    #[Column(["type" => "string", "primary" => true])]
     private $id;
     #[Column(["type" => "string", "foreign" => JenisKelamin::class])]
     private $jenis_kelamin_code;

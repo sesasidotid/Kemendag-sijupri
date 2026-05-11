@@ -31,17 +31,17 @@ class DatabaseSeeder extends Seeder
                     ChangeBanToNip::class,
                     MigrateExamWithSchedule::class,
                     ParticipantScheduleMigration::class,
-                    FixAnswerDuplicate::class,
+                    // FixAnswerDuplicate::class,
                     ExamAnswerMigration::class,
                     
                     ExamTypeSeeder::class,
                     SuratRekomSeeder::class,
-                    SysConfSeeder::class
+                    // SysConfSeeder::class
                 ]);
         NotificationSeeder::run();
         ExamTypeSeeder::run();
-        SysConfSeeder::run();
+        // SysConfSeeder::run();
         NotificationTopicSeeder::run();
-        BpmnMigration::run();
+        // BpmnMigration::run();
     }
 }

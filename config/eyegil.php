@@ -319,7 +319,7 @@ return [
     ],
 
     "firebase" => [
-        "credentials" => env("BASE_PROJECT") . "storage/sijupri-firebase-adminsdk-m3ssv-cfbd89ada7.json"
+        "credentials" => storage_path(env("FIREBASE_CREDENTIALS", "sijupri-firebase-adminsdk-m3ssv-cfbd89ada7.json"))
     ],
 
     "captcha" => [

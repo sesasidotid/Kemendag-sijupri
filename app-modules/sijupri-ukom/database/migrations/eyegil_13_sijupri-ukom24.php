@@ -14,7 +14,7 @@ return new class () extends Migration {
 			if (!Schema::hasColumn('ukm_grade', 'nb_studi_kasus')) {
 				$table->double('nb_studi_kasus')->nullable();
 			}
-			if (Schema::hasColumn('ukm_grade', 'studi_kasus_grade_id')) {
+			if (!Schema::hasColumn('ukm_grade', 'studi_kasus_grade_id')) {
 				$table->string('studi_kasus_grade_id')->references('id')->on('ukm_exam_grade')->onDelete('cascade');
 			}
 		});
